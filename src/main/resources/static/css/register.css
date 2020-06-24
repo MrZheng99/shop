@@ -1,0 +1,104 @@
+body {
+    padding: 0;
+    margin: 0 auto;
+}
+
+* {
+    padding: 0;
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+.steps {
+    height: 46px;
+    border-bottom: 2px solid #e6e6e6;
+    position: relative;
+}
+
+.steps ol {
+    width: 550px;
+    margin: 0 auto;
+}
+
+.steps ol li {
+    line-height: 46px;
+    float: left;
+    font-size: 16px;
+    font-weight: 700;
+    width: 170px;
+    padding-left: 35px;
+    color: #999;
+    list-style: none;
+    font-family: "\5FAE\8F6F\96C5\9ED1", "\534E\6587\7EC6\9ED1", "\9ED1\4F53", arial;
+}
+
+.steps ol li.active {
+    color: #3e3e3e;
+    border-bottom: 2px solid #ff4700;
+}
+
+.steps ol li i {
+    display: inline-block;
+    margin-right: 5px;
+    width: 24px;
+    height: 24px;
+    font-style: normal;
+    line-height: 24px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #FFF;
+    background-image: url(../images/ico-circle2.png);
+    background-color: rgba(0, 0, 0, 0);
+    background-position-x: 0px;
+    background-position-y: 0px;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-size: auto;
+    background-origin: padding-box;
+    background-clip: border-box;
+}
+
+.steps ol li.active i {
+    background-image: url(../images/ico-circle1.png);
+}
+
+.content {
+    width: 400px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.form-line {
+    margin-bottom: 20px;
+    height: 30px;
+}
+
+.mform input {
+    float: left;
+    text-align: left;
+    width: 50%;
+    margin-right: 1px;
+}
+
+.msg {
+    float: left;
+    width: 25%;
+    line-height: 30px;
+    text-align: right;
+    letter-spacing: 2px;
+}
+
+.msgError {
+    width: 20%;
+    float: left;
+    line-height: 30px;
+
+    color: red;
+    text-align: center;
+    letter-spacing: 1px;
+    font-size: 10px;
+    font-style: normal;
+}

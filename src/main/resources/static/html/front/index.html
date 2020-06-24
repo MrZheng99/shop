@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZYL商城登录</title>
+    <link type="image/x-icon" rel="shortcut icon" href="../../images/logo1.png">
+    <link href="../../css/index.css" type="text/css" rel="stylesheet"> </head>
+
+<body>
+    <header>
+        <a href="#" target="_blank" style="text-decoration: none;">
+            <font size="12px">欢迎来到ZYL商城</font>
+        </a>
+    </header>
+    <article>
+        <div class="login">
+            <div style="display:inline;line-height:16px;">
+                <h3 style="float: left; margin-top: 30px;margin-left: 5%;">ZYL会员</h3>
+                <label style="float: right;margin-top: 30px;margin-right: 5%;color: red;background: url(../images/icon5.jpg) no-repeat left center;width: 90px; height: 16px;">
+                 <a href="register"><font size="2px" >我要注册</font></a></label>
+            </div>
+            <p id="error" style="color: red;width: 100%;float: left; height: 20px;margin-top: 10px;"></p>
+            <form action="login" method="post" id="mform">
+             <div class="item" style="margin-top: 10px;">
+
+                <input id="account" name="account" type="text" onblur="checkAccount(this.value)" onfocus="clearError();" style="background: url(../images/icon1.jpg) no-repeat;" placeholder="邮箱/用户名/已验证的手机" />
+                <label class="clearLabel" onclick="clearInput('account')"></label>
+            </div>
+            <div class=" item  " style="margin-top: 15px;">
+
+                <input id="password" name="password" style=" background: url(../../images/icon2.jpg) no-repeat;" placeholder="请输入密码" type="password" />
+                <label class="clearLabel" onclick="clearInput('password')"></label>
+
+            </div>
+            </form>
+           
+            <span style="float: left; margin: 10px 5% 10px 5%;padding-right: 50px;"><input type="checkbox">&nbsp;&nbsp;自动登录</span>
+            <a style="float: right; margin: 10px 5% 10px 5%; text-decoration: none;" href="forgetPassword.html">忘记密码</a>
+            <span style="float:left;background:  url(../../images/QQ-weixin.png) no-repeat 0 0px; width: 20px; height: 18px;margin: 10px 10px 10px 5% ;">
+            </span>
+
+            <span style="float:left;background:  url(../../images/QQ-weixin.png) no-repeat -20px 0px; width: 20px; height: 18px;margin: 10px 0px 10px 0px ;">
+            </span>
+        </div>
+    </article>
+    <footer>
+        <a href="#">关于我们</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a href="#">联系我们</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a href="#">人才招聘</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a href="#">商家入住</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a href="#">广告服务</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a href="#">手机商城</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a href="#">友情链接</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a href="#">销售联盟</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a href="#">ZYL社区</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a href="#">ZYL公益</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a href="#">English Site</a>
+        <div style="margin-top: 10px;">
+            Copyright&nbsp;&copy;&nbsp;2020&nbsp;&nbsp;ZYL团队&nbsp;版权所有
+        </div>
+    </footer>
+    <script src="../../js/jquery.js"></script>
+    <script src="../../js/checkUtil.js"></script>
+        <script src="../../js/md5.js"></script>
+    
+    <script>
+        window.onload = function() {
+            document.getElementById('account').focus();
+            document.onkeyup = function(e) {
+                if (e.keyCode == 13) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "/login",
+                        data: {
+                            account: $("#account").val(),
+                            password: hex_md5($("#password").val())
+                        },
+                        success:function(msg){
+                        	if(msg.success){
+                        		location.href="/home/"+msg.data;
+                        	}else{
+                                document.getElementById('error').textContent = '账户密码不匹配';
+
+                        	}
+                        }
+                    
+                    });
+                }
+            }
+        }
+
+        function clearInput(inputID) {
+            let password = document.getElementById('password').value = "";
+            if (inputID == "account") {
+                document.getElementById('account').value = "";
+            }
+
+        }
+
+        function clearError() {
+            document.getElementById('error').textContent = '';
+
+        }
+
+        function checkAccount(account) {
+            if (account === "") { //输入不能为空
+                document.getElementById('error').textContent = '账户名不能为空!';
+
+                document.getElementById('account').select();
+                return;　　
+            }
+            if (!checkName(account)) {
+                document.getElementById('error').textContent = '用户名格式不正确';
+            }
+
+        }
+    </script>
+</body>
+
+</html>

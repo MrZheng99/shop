@@ -1,0 +1,71 @@
+body {
+    margin: 0 auto;
+    padding: 0;
+}
+
+* {
+    padding: 0;
+    margin: 0 auto;
+}
+
+header {
+    text-align: center;
+}
+
+article {
+    height: 475px;
+    background-repeat: no-repeat;
+    background-color: #E93854;
+    background-image: url("../images/banner.png");
+    background-position: center;
+}
+
+footer {
+    height: 100px;
+    background-color: white;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.login {
+    background-color: white;
+    margin-left: 60%;
+    float: left;
+    height: 300px;
+    width: 300px;
+    margin-top: 90px;
+    text-align: center;
+}
+
+.item {
+    float: left;
+    width: 90%;
+    height: 38px;
+    margin: 30px 5% 10px 5%;
+    border: 1px solid;
+}
+
+.item input {
+    float: left;
+    border: none;
+    width: 70%;
+    height: 38px;
+    padding: 0 0 0 40px;
+}
+
+.clearLabel {
+    margin: 9px 10px 9px 10px;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: url(../images/pwd-icons-new.png) no-repeat 0 -140px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    color: red;
+}
