@@ -23,17 +23,46 @@ public class UserServiceImpl implements UserService{
 	public Boolean register(String account, String password, String email) {
 		Integer row = userDao.register(account, password,email);
 		System.out.println(row);
-		if(row==null&&row<=0) {
+		if(row==null && row<=0) {
 			return false;
 		}
 		return true;
 	}
+	/**
+	 * 查找账户通过名字
+	 * @see #existAccount(String, String)
+	 */
+	@Override
 	public Boolean existAccount(String account) {
 		Integer userID = userDao.queryByName(account);
 		if(userID!=null && userID>100) {
 			return true;
 		}
 		return false;
+	}
+	/**
+	 * 查找账户通过名字和邮箱
+	 * @see #existAccount(String)
+	 */
+	@Override
+	public Boolean existAccount(String account, String email) {
+		Integer userID = userDao.queryByNameEmail(account,email);
+		if(userID!=null && userID>100) {
+			return true;
+		}
+		return false;
+		
+	}
+	/**
+	 * 更新密码
+	 */
+	public Boolean updatePassword(String account, String password, String email) {
+		Integer row = userDao.update(account,email,password);
+		System.out.println(row);
+		if(row==null && row<=0) {
+			return false;
+		}
+		return true;
 	}
 
 }

@@ -33,6 +33,66 @@ function checkEmail(account) {
     return false;　　　
 
 }
+/*****忘记密码和注册******/
+function checkAccount(account) {
+    if (account === "") { //输入不能为空
+        document.getElementById('userNameError').textContent = '不能为空';
+        return false;
+    } else if (!checkName(account)) {
+
+        document.getElementById('userNameError').textContent = '格式不正确';
+        return false;
+    }
+    return true;
+}
+
+function checkPassword(password) {
+    let account = document.getElementById('userName').value;
+
+    if (password === "" && !account === "") { //输入不能为空
+        document.getElementById('pwdError').textContent = '不能为空';
+        return false;
+
+    } else if (!checkPwd(password)) {
+        document.getElementById('pwdError').textContent = '格式不正确';
+        return false;
+
+    }
+    return true;
+
+}
+
+function checkPasswordAgain(passwordAgain) {
+    let password = document.getElementById('pwd').value;
+    if (passwordAgain === "" && !password === "") { //输入不能为空
+        document.getElementById('pwdAgainError').textContent = '不能为空';　
+        return false;
+
+    } else if (!(password === passwordAgain)) {
+
+        document.getElementById('pwdAgainError').textContent = '密码不一致';
+        return false;
+
+
+    }
+    return true;
+
+}
+
+function checkMail(email) {
+
+    if (email === "") { //输入不能为空
+        document.getElementById('emailError').textContent = '不能为空';
+        return false;
+
+    } else if (!checkEmail(email)) {
+        document.getElementById('emailError').textContent = '格式不正确';
+        return false;
+
+    }
+    return true;
+
+}
 
 function checkPwd(pwd) {
     let regPassword = new RegExp("([a-zA-Z0-9]){6,16}"); //密码

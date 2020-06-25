@@ -4,11 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZYL会员忘记密码</title>
+    <title>ZYL注册</title>
+    
     <script type="text/javascript">
         function getCode() {
+        	let email = document.getElementById("email").value;
+        	if(!checkMail(email)){
+				return;
+        	}
             document.getElementById('codeError').textContent = '';
-
+            setTimeOut();
             $.ajax({
                 type: 'POST',
                 url: "/register/getCode",
@@ -19,20 +24,7 @@
 
                 success: function(rs) {
                     if (rs.success) {
-                        $("#btnGetCode").removeClass("btn-primary");
-                        $("#btnGetCode").addClass("btn-default");
-                        var i = 10;
-                        interval = setInterval(function() {
-                            $("#btnGetCode").val(i);
-
-                            i--;
-                            if (i === 0) {
-                                clearInterval(interval);
-                                $("#btnGetCode").val('获取验证码');
-                                $("#btnGetCode").addClass("btn-primary");
-                                $("#btnGetCode").removeClass("btn-default");
-                            }
-                        }, 1000);
+                      
 
                     }
 
