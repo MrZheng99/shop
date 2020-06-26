@@ -1,9 +1,11 @@
 package com.zyl.shop.entity;
 
+import java.util.Date;
+
 public class Order {
 	private int oid;
 	private int uid;
-	private String date;
+	private Date date;
 	private String orderprogress;
 	private double amount;
 	private String status;
@@ -20,10 +22,10 @@ public class Order {
 	public void setUid(int uid) {
 		this.uid = uid;
 	}
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 	public String getOrderprogress() {

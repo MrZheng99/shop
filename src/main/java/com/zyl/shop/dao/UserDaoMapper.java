@@ -1,5 +1,7 @@
 package com.zyl.shop.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -8,7 +10,9 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import com.zyl.shop.entity.Address;
 import com.zyl.shop.entity.User;
+
 @Mapper
 public interface UserDaoMapper {
 	@Results(id = "userResult", value = {
@@ -26,4 +30,7 @@ public interface UserDaoMapper {
 	
 	@Update("update tb_userinfo set `password`=#{password} where name = #{account} and email = #{email} and status=1;")
 	Integer update(@Param("account")String account, @Param("email") String email, @Param("password")String password);
+
+	@Select("select aid, address, uid, status from tb_address where uid=#{uid}")
+	List<Address> getUserAddresses(@Param("uid")int uid);
 }
