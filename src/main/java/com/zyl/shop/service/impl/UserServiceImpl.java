@@ -1,21 +1,23 @@
 package com.zyl.shop.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.zyl.shop.dao.UserDaoMapper;
+import com.zyl.shop.dao.UserDao;
 import com.zyl.shop.entity.User;
 import com.zyl.shop.service.UserService;
 @Service
 public class UserServiceImpl implements UserService{
 	@Autowired
-	private UserDaoMapper userDao; 
+	private UserDao userDao; 
 	@Override
-	public Integer login(String account, String password) {
+	public User login(String account, String password) {
 		
 		User user = userDao.login(account, password);
 		if(user!=null) {
-			return user.getId() ;
+			return user;
 		}
 		return  null;
 	}
@@ -64,5 +66,6 @@ public class UserServiceImpl implements UserService{
 		}
 		return true;
 	}
+	
 
 }

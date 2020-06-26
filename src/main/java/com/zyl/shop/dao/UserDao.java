@@ -10,11 +10,12 @@ import org.apache.ibatis.annotations.Update;
 
 import com.zyl.shop.entity.User;
 @Mapper
-public interface UserDaoMapper {
+public interface UserDao {
 	@Results(id = "userResult", value = {
-			  @Result(property = "id", column = "uid", id = true)
+			  @Result(property = "id", column = "uid", id = true),
+			  @Result(property = "name", column = "name")
 			})
-	@Select("select uid from tb_userinfo where name = #{account} and password=#{password} and status=1;")
+	@Select("select uid,name from tb_userinfo where name = #{account} and password=#{password} and status=1;")
 	User login(@Param("account")String account, @Param("password")String password);
 	@Select("select uid from tb_userinfo where name = #{account} and status=1;")
 	Integer queryByName(@Param("account")String account);

@@ -4,10 +4,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZYL商城主页,未登录</title>
+    <title>ZYL商城主页</title>
+    <link rel="stylesheet" type="text/css" href="../../css/home.css">
+        <link rel="stylesheet" href="../../css/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    
 </head>
-<h1>老子的页面</h1>
+
 <body>
+    <h1>老子的页面</h1>
+    当前用户：<h3 id="userName"></h3>
+    <input id="inputSearch" placeholder="输入搜索" class="form-control">
+    <button id="search" value="搜索" class="btn btn-primary">搜素</button>
+    <hr>
+    <div class="categroy">
+
+        <ol>
+            <li>
+                <div class="active">
+                    <a class="categroyLink" href="#">精品特卖</a>
+                </div>
+            </li>
+
+            <li>
+                <div>
+                    <a class="categroyLink" href="#"></a>
+                </div>
+            </li>
+
+            <li>
+                <div>
+                    <a class="categroyLink" href="#"></a>
+                </div>
+            </li>
+
+            <li>
+                <div>
+                    <a class="categroyLink" href="#"></a>
+                </div>
+            </li>
+
+            <li>
+                <div>
+                    <a class="categroyLink" href="#"></a>
+                </div>
+            </li>
+
+            <li>
+                <div>
+                    <a class="categroyLink" href="#"></a>
+                </div>
+            </li>
+        </ol>
+    </div>
+    <div class="content">
+
+    </div>
+    <div class="pages">
+
+    </div>
+    <script src="../../js/jquery.js"></script>
+
+    <script>
+        $("#search").click(function() {
+            $.ajax({
+                type: 'POST',
+                url: "/home/queryGoods" ,
+                data:{goodsName:$("#inputSearch").val()},
+                success: function(msg) {
+                    if (msg.success) {
+                        $(".content").empty();
+                        for (let i = 0, len = msg.data.length; i < len; i++) {
+                            let ele = msg.data[i];
+                            let d = "<div class='disp'><img src='../" + ele["imgUrl"] + "'><span class='description'>" + ele["name"] + ele["description"] + "</span> <span class='price'>" + "￥" + ele["price"] + "</span><button>加入购物车</button></div>"
+                            $(".content").append(d);
+                        }
+                    }
+                }
+
+            });
+
+        });
+        //分页
+        function loadPageNumber(categroy) {
+            $.ajax({
+                type: 'GET',
+                url: "/home/queryGoodsNumber/" + categroy,
+                success: function(msg) {
+                    if (msg.success) {
+                        let pages = Math.ceil(msg.data / 8);
+                        $(".pages").empty();
+
+                        for (let i = 1; i <= pages; i++) {
+                            $(".pages").append("<span class='pageNumber'>" + i + "</span>");
+                            $(".pageNumber:eq(" + (i - 1) + ")").click(function() {
+                                getGoods(categroy + "/" + (i - 1));
+                                $(".pageNumber").removeClass("active");
+                                $(".pageNumber:eq(" + (i - 1) + ")").addClass("active");
+                            });
+                        }
+                    } else {
+                        $(".categroy.ol li:last").after('加载失败');
+                    }
+                }
+
+            });
+        }
+
+        function getGoods(categroy) {
+            $.ajax({
+                type: 'GET',
+                url: "/home/queryGoods/" + categroy,
+                success: function(msg) {
+                    if (msg.success) {
+                        $(".content").empty();
+                        for (let i = 0, len = msg.data.length; i < len; i++) {
+                            let ele = msg.data[i];
+                            let d = "<div class='disp'><img src='../" + ele["imgUrl"] + "'><span class='description'>" + ele["name"] + ele["description"] + "</span> <span class='price'>" + "￥" + ele["price"] + "</span><button>加入购物车</button></div>"
+                            $(".content").append(d);
+                        }
+                    }
+                }
+
+            });
+        }
+        window.onload = function() {
+            getGoods("all");
+            loadPageNumber("all");
+            for (let i = 0; i < 6; i++) {
+                $(".categroyLink:eq(" + (i) + ")").click(function() {
+                    $(".categroyLink").parent("div").removeClass("active");
+                    $(".categroyLink:eq(" + (i) + ")").parent("div").addClass("active");
+                    if (i > 0) {
+                        getGoods(this.text);
+                        loadPageNumber(this.text);
+
+                    } else {
+                        getGoods("all");
+                        loadPageNumber("all");
+
+                    }
+
+                });
+            }
+            //最后一个右边距0
+            for (let i = 0; i < 8; i++) {
+                if (i % 4 == 3) {
+                    $(".disp:eq(" + (i) + ")").addClass("last");
+
+                }
+            }
+        }
+        $.ajax({
+
+            type: 'GET',
+            url: "/home/queryName",
+            success: function(msg) {
+                if (msg.success) {
+                    $("#userName").text(msg.data);
+                } else {
+                    $("#userName").text('未登录');
+                }
+            }
+
+        });
+        $.ajax({
+            type: 'GET',
+            url: "/home/queryCategroy",
+            success: function(msg) {
+                if (msg.success) {
+                    let categroies = msg.data;
+                    for (let i = 0; i < 5; i++) {
+
+                        $(".categroyLink:eq(" + (i + 1) + ")").text(categroies[i]);
+                    }
+                } else {
+                    $(".categroy.ol li:last").after('加载失败');
+                }
+            }
+
+        });
+    </script>
 </body>
 
 </html>

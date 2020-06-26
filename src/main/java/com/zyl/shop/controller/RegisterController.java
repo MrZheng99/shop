@@ -113,8 +113,11 @@ public class RegisterController {
 			return map;
 		}
 		@GetMapping(value="/success")
-		public ModelAndView registerStepThree() {
+		public ModelAndView registerStepThree(HttpSession session) {
 			ModelAndView mav = new ModelAndView();
+			//成功之后清除session
+			session.removeAttribute("account");
+			session.removeAttribute("password");
 			mav.setViewName("/html/front/registerStep3.html");
 			return mav;
 		}

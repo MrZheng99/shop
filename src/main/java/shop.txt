@@ -61,7 +61,10 @@ CREATE TABLE `tb_goodsinfo` (
   `store` int(11) NOT NULL,
   `status` char(1) NOT NULL,
   `goodsdescription` text NOT NULL,
-  PRIMARY KEY (`gid`)
+  `goodstype` int(11) NOT NULL,
+  PRIMARY KEY (`gid`),
+  KEY `fk_goodsinfo_goodstype` (`goodstype`),
+  CONSTRAINT `fk_goodsinfo_goodstype` FOREIGN KEY (`goodstype`) REFERENCES `tb_goodstype` (`gtid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
 
 
@@ -75,6 +78,14 @@ CREATE TABLE `tb_goodsimages` (
   PRIMARY KEY (`giid`),
   KEY `fk_goodsimages_gid` (`gid`),
   CONSTRAINT `fk_goodsimages_gid` FOREIGN KEY (`gid`) REFERENCES `tb_goodsinfo` (`gid`)
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
+-- 商品类别表
+DROP TABLE IF EXISTS `tb_goodstype`;
+CREATE TABLE `tb_goodstype` (
+  `gtid` int(11) NOT NULL AUTO_INCREMENT,
+  `typename` varchar(255) NOT NULL,
+  `status` char(1) NOT NULL,
+  PRIMARY KEY (`giid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
 
 
@@ -141,5 +152,122 @@ CREATE TABLE `tb_shoppingcart` (
   CONSTRAINT `fk_shoppingcart_uid` FOREIGN KEY (`uid`) REFERENCES `tb_userinfo` (`uid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
 
+/***********test data*********/
+INSERT INTO `tb_goodstype` (`typename`, `status`) VALUES ('女装', '1');
+INSERT INTO `tb_goodstype` (`typename`, `status`) VALUES ('男装', '1');
+INSERT INTO `tb_goodstype` (`typename`, `status`) VALUES ('女鞋', '1');
+INSERT INTO `tb_goodstype` (`typename`, `status`) VALUES ('男鞋', '1');
+INSERT INTO `tb_goodstype` (`typename`, `status`) VALUES ('手机', '1');
 
 
+-- 商品
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚短袖女装上衣1', '200', '50', '1', '限量版', '101');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚短袖女装上衣2', '300', '50', '1', '限量版', '101');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚短袖女装上衣3', '200', '50', '1', '限量版', '101');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚短袖女装上衣4', '300', '50', '1', '限量版', '101');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚短袖女装上衣5', '200', '50', '1', '限量版', '101');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚短袖女装上衣6', '400', '50', '1', '限量版', '101');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚短袖女装上衣7', '800', '50', '1', '限量版', '101');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚短袖女装上衣8', '700', '50', '1', '限量版', '101');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚短袖女装上衣9', '600', '50', '1', '限量版', '101');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚短袖女装上衣10', '500', '50', '1', '限量版', '101');
+
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚短袖男装上衣1', '100', '50', '1', '限量版', '102');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚短袖男装上衣2', '200', '50', '1', '限量版', '102');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚短袖男装上衣3', '100', '50', '1', '限量版', '102');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚短袖男装上衣4', '300', '50', '1', '限量版', '102');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚短袖男装上衣5', '300', '50', '1', '限量版', '102');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚短袖男装上衣6', '300', '50', '1', '限量版', '102');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚短袖男装上衣7', '300', '50', '1', '限量版', '102');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚短袖男装上衣8', '300', '50', '1', '限量版', '102');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚短袖男装上衣9', '300', '50', '1', '限量版', '102');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚短袖男装上衣10', '300', '50', '1', '限量版', '102');
+
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚夏季女鞋1', '100', '50', '1', '限量版', '103');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚夏季女鞋2', '200', '50', '1', '限量版', '103');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚夏季女鞋3', '400', '50', '1', '限量版', '103');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚夏季女鞋4', '500', '50', '1', '限量版', '103');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚夏季女鞋5', '400', '50', '1', '限量版', '103');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚夏季女鞋6', '700', '50', '1', '限量版', '103');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚夏季女鞋7', '300', '50', '1', '限量版', '103');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚夏季女鞋8', '200', '50', '1', '限量版', '103');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚夏季女鞋9', '400', '50', '1', '限量版', '103');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚夏季女鞋10', '800', '50', '1', '限量版', '103');
+
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('商务男士皮鞋1', '500', '50', '1', '限量版', '104');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('商务男士皮鞋2', '500', '50', '1', '限量版', '104');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('商务男士皮鞋3', '500', '50', '1', '限量版', '104');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('商务男士皮鞋4', '500', '50', '1', '限量版', '104');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('商务男士皮鞋5', '500', '50', '1', '限量版', '104');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('商务男士皮鞋6', '500', '50', '1', '限量版', '104');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('商务男士皮鞋7', '500', '50', '1', '限量版', '104');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('商务男士皮鞋8', '500', '50', '1', '限量版', '104');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('商务男士皮鞋9', '500', '50', '1', '限量版', '104');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('商务男士皮鞋10', '500', '50', '1', '限量版', '104');
+
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚手机1', '1000', '50', '1', '高端版', '105');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚手机2', '1100', '50', '1', '限量版', '105');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚手机3', '1200', '50', '1', '限量版', '105');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚手机4', '1300', '50', '1', '限量版', '105');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚手机5', '1400', '50', '1', '限量版', '105');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚手机6', '1000', '50', '1', '高端版', '105');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚手机7', '1100', '50', '1', '限量版', '105');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚手机8', '1200', '50', '1', '限量版', '105');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚手机9', '1300', '50', '1', '限量版', '105');
+INSERT INTO `tb_goodsinfo` (`goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) VALUES ('时尚手机10', '1400', '50', '1', '限量版', '105'); 
+ -- 商品图片
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/clo_1.jpg', '101', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/clo_2.jpg', '102', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/clo_3.jpg', '103', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/clo_4.jpg', '104', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/clo_5.jpg', '105', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/clo_6.jpg', '106', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/clo_7.jpg', '107', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/clo_8.jpg', '108', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/clo_9.jpg', '109', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/clo_10.jpg', '110', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/shoes_1.jpg', '111', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/shoes_2.jpg', '112', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/shoes_3.jpg', '113', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/shoes_4.jpg', '114', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/shoes_5.jpg', '115', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/shoes_6.jpg', '116', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/shoes_7.jpg', '117', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/shoes_8.jpg', '118', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/shoes_9.jpg', '119', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/shoes_10.jpg', '120', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/iphone_1.jpg', '121', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/iphone_2.jpg', '122', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/iphone_3.jpg', '123', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/iphone_4.jpg', '124', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/iphone_5.jpg', '125', '1');
+
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/clo_11.jpg', '126', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/clo_12.jpg', '127', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/clo_13.jpg', '128', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/clo_14.jpg', '129', '1');
+
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/clo_15.jpg', '130', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/clo_16.jpg', '131', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/clo_17.jpg', '132', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/clo_18.jpg', '133', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/clo_19.jpg', '134', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/clo_20.jpg', '135', '1');
+
+
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/shoes_11.jpg', '136', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/shoes_12.jpg', '137', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/shoes_13.jpg', '138', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/shoes_14.jpg', '139', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/shoes_15.jpg', '140', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/shoes_16.jpg', '141', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/shoes_17.jpg', '142', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/shoes_18.jpg', '143', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/shoes_19.jpg', '144', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/shoes_20.jpg', '145', '1');
+
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/iphone_6.jpg', '146', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/iphone_7.jpg', '147', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/iphone_8.jpg', '148', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/iphone_9.jpg', '149', '1');
+INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/iphone_10.jpg', '150', '1');
