@@ -1,11 +1,15 @@
 package com.zyl.shop.service.impl;
 
-import java.util.List;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zyl.shop.dao.UserDao;
+
+import com.zyl.shop.entity.Address;
+import com.zyl.shop.entity.AddressItem;
 import com.zyl.shop.entity.User;
 import com.zyl.shop.service.UserService;
 @Service
@@ -25,7 +29,7 @@ public class UserServiceImpl implements UserService{
 	public Boolean register(String account, String password, String email) {
 		Integer row = userDao.register(account, password,email);
 		System.out.println(row);
-		if(row==null && row<=0) {
+		if(row==null||row<=0) {
 			return false;
 		}
 		return true;
@@ -61,11 +65,24 @@ public class UserServiceImpl implements UserService{
 	public Boolean updatePassword(String account, String password, String email) {
 		Integer row = userDao.update(account,email,password);
 		System.out.println(row);
-		if(row==null && row<=0) {
+		if(row==null || row<=0) {
 			return false;
 		}
 		return true;
 	}
 	
 
+	
+	@Override
+	public List<AddressItem> getAddresses(int userId) {
+		List<Address> addresses = userDao.getUserAddresses(userId);
+		List<AddressItem> addressItems = new ArrayList<>();
+		for(Address addr : addresses) {
+			AddressItem ai = new AddressItem();
+			ai.setAid(String.valueOf(addr.getAid()));
+			ai.setAddress(addr.getAddress());
+			addressItems.add(ai);
+		}
+		return addressItems;
+	}
 }

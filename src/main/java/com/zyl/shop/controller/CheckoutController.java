@@ -1,5 +1,7 @@
 package com.zyl.shop.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,8 +33,9 @@ public class CheckoutController {
 	
 	@RequestMapping(value="/pay/{orderId}", method=RequestMethod.POST)
 	@ResponseBody
-	public ResponseJson pay(@PathVariable String orderId) {
-		ResponseJson responseJson = new ResponseJson(orderService.pay(orderId));
+	public ResponseJson pay(HttpSession session, @PathVariable String orderId) {
+		int userId = (int)session.getAttribute("userID");
+		ResponseJson responseJson = new ResponseJson(orderService.pay(userId, orderId));
 		if(!responseJson.isSuccess()) {
 			responseJson.setMsg("请不要重复支付");
 		}

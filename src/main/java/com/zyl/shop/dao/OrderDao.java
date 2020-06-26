@@ -2,7 +2,9 @@ package com.zyl.shop.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -26,5 +28,16 @@ public interface OrderDao {
 	void decreaseStore(@Param("gid")int gid, @Param("number")int number);
 
 	@Select("SELECT * FROM tb_orderinfo where uid=#{uid}")
-	List<Order> getOrderByUserId(@Param("uid")String uid);
+	List<Order> getOrderByUserId(@Param("uid")int uid);
+
+	@Update("UPDATE tb_orderinfo SET aid=#{aid} WHERE oid=#{oid}")
+	void setAddress(@Param("oid")String orderId, @Param("aid")String aid);
+	
+	@Insert("INSERT INTO tb_orderinfo(uid, date, orderprogress, amount, status) VALUES(#{uid}, #{date}, #{orderprogress}, #{amount}, 1)")
+	@Options(useGeneratedKeys = true, keyProperty = "oid")
+	void addOrder(Order order);
+
+	@Insert("INSERT INTO tb_orderdetails(price, number, gid, oid, status) VALUES(#{price}, #{number}, #{gid}, #{oid}, 1)")
+	@Options(useGeneratedKeys = true, keyProperty = "odid")
+	void addOrderDetail(OrderDetail detail);
 }
