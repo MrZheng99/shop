@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.zyl.shop.entity.OrderDetailItem;
 import com.zyl.shop.entity.ResponseJson;
@@ -25,20 +25,24 @@ public class OrderController {
 	private OrderService orderService;
 	
 	@RequestMapping("/order/{orderId}")
-	public ModelAndView checkoutPage(@PathVariable String orderId) {
-		if(orderId == null) {
-			return null;
+	public String checkoutPage(@SessionAttribute(name="userID", required=false) Integer userId, @PathVariable String orderId) {
+		if(userId == null) {
+			return "redirect:/index";
 		}
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("/order.html");
-		return mav;
+		if(orderId == null) {
+			return "redirect:/orders.html";
+		}
+		return "/order.html";
 	}
 	
 	@RequestMapping(value="/order", method=RequestMethod.PUT)
 	@ResponseBody
-	public ResponseJson addOrder(HttpSession session, @RequestBody List<OrderDetailItem> items) {
-		int userId = (int)session.getAttribute("userID");
+	public ResponseJson addOrder(@SessionAttribute(name="userID", required=false) Integer userId, @RequestBody List<OrderDetailItem> items) {
 		ResponseJson responseJson = new ResponseJson();
+		if(userId == null) {
+			responseJson.setMsg("未登录");
+			return responseJson;
+		}
 		responseJson.setSuccess(orderService.addOrder(userId, items));
 		return responseJson;
 	}
@@ -99,7 +103,10 @@ public class OrderController {
 	}
 	
 	@RequestMapping("/orders")
-	public String ordersPage() {
+	public String ordersPage(@SessionAttribute(name="userID", required=false) Integer userId) {
+		if(userId == null) {
+			return "redirect:/index";
+		}
 		return "/orders.html";
 	}
 	

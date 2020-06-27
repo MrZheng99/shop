@@ -51,6 +51,18 @@ public class OrderControllerTest {
 		
 		Mockito.verify(orderService, Mockito.times(1)).addOrder(Mockito.eq(userId), Mockito.any());
 	}
+	
+	@Test
+	public void testAddOrderWithoutSession() throws Exception {
+		RequestBuilder requestBuilder = MockMvcRequestBuilders
+				.put("/order")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("[{\"gid\":\"123\", \"number\":10, \"price\":12.3}]");
+		
+		mockMvc.perform(requestBuilder)
+		.andExpect(MockMvcResultMatchers.status().isOk())
+		.andExpect(MockMvcResultMatchers.content().json("{\"success\":false,\"msg\":\"未登录\",\"data\":null}"));
+	}
 
 	@Test
 	public void testOrderHasten() throws Exception{
