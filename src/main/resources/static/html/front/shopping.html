@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>商品详情</title>
+<link href="../../css/bootstrap.css" rel="stylesheet">
+<link href="../../css/buy.css" rel="stylesheet">
+<link href="../../css/font-awesome.css" rel="stylesheet">
+
+</head>
+             
+<body>
+<div class="popover-header">
+<a class="text-primary" >当前用户:</a>
+<label class="float-right">
+<a href="cart.html"><input type="button" value="购物车"></a>
+</label>
+</div>
+<div class="bg-secondary">
+<br>
+
+</div>
+<div class="goods">
+<img  id="url" class="goods_img" >
+        <div class="goods_info">
+                <div class="goods_info_title">
+                    <h4 class="text-center"  ><span id="goodsname"></span>
+                     </h4>
+                </div>
+                <div class="goods_info_price">
+                      <h5 class="font-weight-bold">价格：<a id="goodsprice"></a></h5>
+                       <br><br>
+                     <h5 class="font-weight-bold"> 数量： <input id="store" onChange="check()" type="number" value="1" title="请输入购买数量"> </h5>   
+                     <label onClick="check">check</label>
+                     <a>(库存:</a><a id="store"></a><a>件)</a>
+                       <br><br><br>
+                       <input type="button"  class="text-dark"value="加入购物车">&nbsp;&nbsp;&nbsp;&nbsp;
+                       <a href="../../pay.html"><input type="button"  class="text-dark"value="立即购买" ></a>
+                </div>
+        </div>
+</div>
+
+//商品评价
+<div class="goods_correlation">
+            <div class="goods_correlation_main">
+            <a class="text-secondary" id="goodsdescrpition">
+                    商品描述:<br>
+                  </a>
+            </div>
+            <div class="goods_correlation_assess">
+                   <a class="text-center">
+                     评论：<br>
+                     </a>
+                      <a class="text-info">
+                      <br>
+
+              
+                    </a>
+            </div>
+</div>
+<div class="modal-footer">
+ Copyright&nbsp;&copy;&nbsp;2020&nbsp;&nbsp;ZYL团队&nbsp;版权所有
+</div>
+
+<script src="../../js/jquery.js"></script>
+
+
+<script>
+   //限制购买数量小于库存量
+	function check(){
+    var amount = document.getElementById('store').value;
+    if(amount>7){  //7为测试值，修改为库存量
+		document.getElementById('store').value=7;
+		alert("商品库存不足，无法增加数量");
+	}
+}
+	
+	function getGoods(gid) {
+        $.ajax({
+            type: 'GET',
+            url: "/shopping/queryGoodsById/" + gid,
+            success: function(msg) {
+                if (msg.success) {
+                    $(".content").empty();
+                        let ele = msg.data[0];
+                        let d = "<div class='disp'><img src='../" + ele["imgUrl"] + "'><span class='description'>" + ele["name"] + ele["description"] + "</span> <span class='price'>" + "￥" + ele["price"] + "</span><button>加入购物车</button></div>"
+                        $(".content").append(d);
+                    
+                }
+            }
+
+        });
+    }
+	
+	window.onload = function() {
+        getGoods(gid);
+      
+        }
+</script>
+</body>
+</html>

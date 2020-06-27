@@ -136,7 +136,21 @@ CREATE TABLE `tb_orderdetails` (
   CONSTRAINT `fk_orderdetails_oid` FOREIGN KEY (`oid`) REFERENCES `tb_orderinfo` (`oid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
 
-
+-- 商品评价表
+DROP TABLE IF EXISTS `tb_goodsassession`;
+CREATE TABLE `tb_goodsassession` (
+  `asid` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NOT NULL,
+  `gid` int(11) NOT NULL,
+  `assessiondetails` varchar(255) NOT NULL,
+  `date` datetime NOT NULL,
+  `status` char(1) NOT NULL,
+  PRIMARY KEY (`asid`),
+  KEY `tb_goodsassession_uid` (`uid`),
+  KEY `tb_goodsassession_gid` (`gid`),
+  CONSTRAINT `tb_goodsassession_gid` FOREIGN KEY (`gid`) REFERENCES `tb_goodsinfo` (`gid`),
+  CONSTRAINT `tb_goodsassession_uid` FOREIGN KEY (`uid`) REFERENCES `tb_userinfo` (`uid`)
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
 --购物车表
 
 DROP TABLE IF EXISTS `tb_shoppingcart`;
