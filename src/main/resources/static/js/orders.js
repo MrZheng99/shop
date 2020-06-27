@@ -29,19 +29,19 @@ class Order{
     }
 
     getOperation(){
-        let str = `<button class="btn btn-primary "`;
+        let str = `<button class="btn `;
         switch(this.orderprogress){
             case Order.unpaid:
-                str+= `onclick="return pay(${this.oid})">付款`;
+                str+= `btn-primary" onclick="return pay(${this.oid})">付款`;
                 break;
             case Order.paid:
-                str+= `onclick="return hasten(${this.oid})">催货`;
+                str+= `btn-secondary" onclick="return hasten(${this.oid})">催货`;
                 break;
             case Order.unshiped:
-                str+= `onclick="return receipt(${this.oid})">收货`;
+                str+= `btn-primary" onclick="return receipt(${this.oid})">收货`;
                 break;
             case Order.shiped:
-                str+= `onclick="return refund(${this.oid})">退货`;
+                str+= `btn-danger" onclick="return refund(${this.oid})">退货`;
                 break;
         }
         return str + "</button>";
