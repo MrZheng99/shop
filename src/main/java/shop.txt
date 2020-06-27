@@ -285,3 +285,8 @@ INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/ipho
 INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/iphone_8.jpg', '148', '1');
 INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/iphone_9.jpg', '149', '1');
 INSERT INTO `tb_goodsimages` (`url`, `gid`, `status`) VALUES ('images/goods/iphone_10.jpg', '150', '1');
+
+
+-- 评论
+INSERT INTO `tb_goodsassession` (`uid`, `gid`, `assessiondetails`, `date`, `status`) VALUES ('108', '101', '这个衣服好啊', '2020-06-09 20:49:15', '1');
+INSERT INTO `tb_goodsassession` (`uid`, `gid`, `assessiondetails`, `date`, `status`) VALUES ('109', '101', '这个衣服还行吧', '2019-06-05 20:49:15', '1');

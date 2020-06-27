@@ -84,6 +84,10 @@
             });
 
         });
+        //跳转到浏览商品详情界面
+        function goShopping(goodsId){
+        	window.location.href="../shopping/"+ goodsId;
+        }
         //分页
         function loadPageNumber(categroy) {
             $.ajax({
@@ -119,7 +123,7 @@
                         $(".content").empty();
                         for (let i = 0, len = msg.data.length; i < len; i++) {
                             let ele = msg.data[i];
-                            let d = "<div class='disp'><img src='../" + ele["imgUrl"] + "'><span class='description'>" + ele["name"] + ele["description"] + "</span> <span class='price'>" + "￥" + ele["price"] + "</span><button>加入购物车</button></div>"
+                            let d = "<div class='disp'><img src='../" + ele["imgUrl"] + "'><span class='description'>" + ele["name"] + ele["description"] + "</span> <span class='price'>" + "￥" + ele["price"] + "</span><button onclick='goShopping("+ele["id"]+")'>加入购物车</button></div>"
                             $(".content").append(d);
                         }
                     }

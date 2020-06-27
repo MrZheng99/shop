@@ -9,4 +9,5 @@ public interface GoodsService {
 	Integer queryRowsNumber(String categroy);
 	List<Goods> queryGoods(String categroy, Integer startNumber, Integer number);
 	List<Goods> queryGoodsByName(String goodsName, Integer startNumber, Integer number);
+	Goods queryGoodsById(Integer goodsId);
 }

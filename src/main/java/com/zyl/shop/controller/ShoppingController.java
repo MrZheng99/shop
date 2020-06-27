@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,23 +28,31 @@ import com.zyl.shop.service.impl.UserServiceImpl;
 public class ShoppingController {
 	@Autowired
 	GoodsServiceImpl goodsService;
-	@RequestMapping(value="/{userId}",method=RequestMethod.GET)
-	public ModelAndView home(@PathVariable("userId")Integer userId,HttpSession session) {
+	@RequestMapping(value="/{goodsId}",method=RequestMethod.GET)
+	public ModelAndView home(@PathVariable("goodsId")Integer goodsId) {
 		ModelAndView mav = new ModelAndView();
-		Integer userIdSession = (Integer) session.getAttribute("userID");
-		if(userIdSession==null||userId<=100||userIdSession<=100||userId!=userIdSession) {
-			mav.setViewName("redirect:../index");
-			return mav;
-		}
 		mav.setViewName("/html/front/shopping.html");
 		return mav;
 	}
-	@PostMapping(value= "/queryGoodsById")
-	public Map<String,Object> queryGoodsByName(@RequestParam("gid") Integer gid) {
+	@RequestMapping(value="/queryName",method=RequestMethod.GET)
+	public Map<String,Object> queryName(HttpSession session) {
 		Map<String,Object> map = new HashMap<String, Object>();
-		List<Goods> listGoods= new ArrayList<Goods>();
+		String userName = (String) session.getAttribute("userName");
+		if(userName==null||userName=="") {
+			map.put("success", false);
+			map.put("data", "未登录");
+			return map;
+		}
 		map.put("success", true);
-		map.put("data", listGoods);
+		map.put("data", userName);
+		return map;
+	}
+	@GetMapping(value= "/getGoodsDetails/{goodsId}")
+	public Map<String,Object> getGoodsDetails(@PathVariable("goodsId")Integer goodsId ) {
+		Map<String,Object> map = new HashMap<String, Object>();
+		Goods goods = goodsService.queryGoodsById(goodsId);
+		map.put("success", true);
+		map.put("data", goods);
 		return map;
 	}
 }

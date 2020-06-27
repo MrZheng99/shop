@@ -58,5 +58,11 @@ public class GoodsServiceImpl implements GoodsService {
 		}
 		return null;
 	}
+	@Override
+	public Goods queryGoodsById(Integer goodsId) {
+		Goods goods = goodsDao.queryGoodsById(goodsId);
+		goods.setComments(goodsDao.queryGoodsComments(goodsId));
+		return goods;
+	}
 
 }

@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 
+import com.zyl.shop.entity.Comments;
 import com.zyl.shop.entity.Goods;
 
 @Mapper
@@ -33,5 +34,21 @@ public interface GoodsDao {
 	@ResultMap("goodsResult")
 	@Select("select g.gid,g.goodsname,g.goodsprice,g.goodsdescription,t.url from tb_goodsinfo g,tb_goodsimages t where g.goodsname=#{goodsName} and t.gid=g.gid and t.status=1 and g.status=1 LIMIT #{startNumber},#{number}")
 	List<Goods> queryGoodsByName(@Param("goodsName")String goodsName, @Param("startNumber")Integer startNumber, @Param("number")Integer number);
-	
+	@Results( value = {
+			  @Result(property = "id", column = "gid", id = true),
+			  @Result(property = "name", column = "goodsname"),
+			  @Result(property = "price", column = "goodsprice"),
+			  @Result(property = "description", column = "goodsdescription"),
+			  @Result(property = "store", column = "store"),
+			  @Result(property = "imgUrl", column = "url")		 
+			})
+	@Select("select g.gid,g.goodsname,g.goodsprice,g.goodsdescription,g.store,t.url from tb_goodsinfo g,tb_goodsimages t where g.gid=#{goodsId} and t.gid=g.gid and t.status=1 and g.status=1")
+	Goods queryGoodsById(@Param("goodsId")Integer goodsId);
+	@Results(value= {
+			@Result(property = "person", column = "username"),
+			@Result(property = "details", column = "assessiondetails"),
+			@Result(property = "date", column = "date")
+	})
+	@Select("select u.name username,a.assessiondetails,a.date from tb_goodsassession a,tb_userinfo u where u.uid=a.uid and a.gid=#{goodsId} and a.status=1 and u.status=1")
+	List<Comments> queryGoodsComments(@Param("goodsId")Integer goodsId);
 }

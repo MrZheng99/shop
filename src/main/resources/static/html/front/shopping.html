@@ -11,9 +11,9 @@
              
 <body>
 <div class="popover-header">
-<a class="text-primary" >当前用户:</a>
+<a class="text-primary" id="userName">当前用户:</a>
 <label class="float-right">
-<a href="cart.html"><input type="button" value="购物车"></a>
+<a href="cart"><input type="button" value="购物车"></a>
 </label>
 </div>
 <div class="bg-secondary">
@@ -21,7 +21,7 @@
 
 </div>
 <div class="goods">
-<img  id="url" class="goods_img" >
+<img class="goods_img" id="goodsimg">
         <div class="goods_info">
                 <div class="goods_info_title">
                     <h4 class="text-center"  ><span id="goodsname"></span>
@@ -29,73 +29,74 @@
                 </div>
                 <div class="goods_info_price">
                       <h5 class="font-weight-bold">价格：<a id="goodsprice"></a></h5>
-                       <br><br>
-                     <h5 class="font-weight-bold"> 数量： <input id="store" onChange="check()" type="number" value="1" title="请输入购买数量"> </h5>   
+               
+                     <h5 class="font-weight-bold"> 数量： <input onChange="check()" type="number" value="1" title="请输入购买数量"> </h5>   
                      <label onClick="check">check</label>
-                     <a>(库存:</a><a id="store"></a><a>件)</a>
-                       <br><br><br>
+                     (库存:<span id="store"></span>件)
+                     
                        <input type="button"  class="text-dark"value="加入购物车">&nbsp;&nbsp;&nbsp;&nbsp;
-                       <a href="../../pay.html"><input type="button"  class="text-dark"value="立即购买" ></a>
+                       <a href="#"><input type="button"  class="text-dark"value="立即购买" ></a>
                 </div>
         </div>
 </div>
 
-//商品评价
-<div class="goods_correlation">
-            <div class="goods_correlation_main">
-            <a class="text-secondary" id="goodsdescrpition">
-                    商品描述:<br>
-                  </a>
-            </div>
-            <div class="goods_correlation_assess">
-                   <a class="text-center">
-                     评论：<br>
-                     </a>
-                      <a class="text-info">
-                      <br>
 
-              
-                    </a>
+
+            <div id="goodsDescription">
+       				
             </div>
-</div>
+            <div id="goodsComments" style="width:100%;height:300px">
+					
+            </div>
+
 <div class="modal-footer">
  Copyright&nbsp;&copy;&nbsp;2020&nbsp;&nbsp;ZYL团队&nbsp;版权所有
 </div>
 
+
+</body>
 <script src="../../js/jquery.js"></script>
 
 
 <script>
-   //限制购买数量小于库存量
-	function check(){
-    var amount = document.getElementById('store').value;
-    if(amount>7){  //7为测试值，修改为库存量
-		document.getElementById('store').value=7;
-		alert("商品库存不足，无法增加数量");
-	}
-}
-	
-	function getGoods(gid) {
-        $.ajax({
-            type: 'GET',
-            url: "/shopping/queryGoodsById/" + gid,
-            success: function(msg) {
-                if (msg.success) {
-                    $(".content").empty();
-                        let ele = msg.data[0];
-                        let d = "<div class='disp'><img src='../" + ele["imgUrl"] + "'><span class='description'>" + ele["name"] + ele["description"] + "</span> <span class='price'>" + "￥" + ele["price"] + "</span><button>加入购物车</button></div>"
-                        $(".content").append(d);
-                    
-                }
-            }
-
-        });
-    }
-	
-	window.onload = function() {
-        getGoods(gid);
-      
+$.ajax({
+    type: 'GET',
+    url: "queryName",
+    success: function(msg) {
+        if (msg.success) {
+            $("#userName").text("当前用户："+msg.data);
+        } else {
+            $("#userName").text('未登录');
         }
+    }
+
+});
+window.onload=function(){
+	let u = window.location.href;
+	$.ajax({
+	    type: 'GET',
+	    url: "getGoodsDetails"+u.substring(u.lastIndexOf("/")),
+	    success: function(msg) {
+	        if (msg.success) {
+	            $("#goodsimg").attr("src","../"+msg.data["imgUrl"]);
+	            $("#goodsprice").text(msg.data["price"]);
+	            $("#store").text(msg.data["store"]);
+	            $("#goodsDescription").text("描述："+msg.data["description"]);
+	            $("#goodsComments").empty();
+	            for(let i=0,len=msg.data["comments"].length;i<len;i++){
+	            	let comment = msg.data["comments"][i];
+	            	let s = "<span>评论人："+comment["person"]+"评论详情："+comment["details"]+"评论时间："+comment["dateTime"]+"</span><br>";
+	            	console.log(s);
+	            	$("#goodsComments").append(s);
+	            	
+	            }
+	            
+	        }
+	    }
+	});
+}
+
+
 </script>
-</body>
 </html>
+

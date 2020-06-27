@@ -1,5 +1,8 @@
 package com.zyl.shop.entity;
 
+import java.util.List;
+import java.util.Map;
+
 public class Goods {
 	private Integer id;
 	private Float price;
@@ -8,6 +11,7 @@ public class Goods {
 	private String imgUrl;
 	private Integer store;
 	private String type;
+	private List<Comments> comments;
 	public Integer getStore() {
 		return store;
 	}
@@ -54,6 +58,12 @@ public class Goods {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public List<Comments> getComments() {
+		return comments;
+	}
+	public void setComments(List<Comments> comments) {
+		this.comments = comments;
 	}
 	
 }
