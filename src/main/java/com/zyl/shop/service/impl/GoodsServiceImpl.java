@@ -67,6 +67,7 @@ public class GoodsServiceImpl implements GoodsService {
     public Goods queryGoodsById(Integer goodsId) {
         Goods goods = goodsDao.queryGoodsById(goodsId);
         goods.setComments(goodsDao.queryGoodsComments(goodsId));
+        goods.setImgUrls(goodsDao.queryGoodsImgs(goodsId));
         return goods;
     }
 

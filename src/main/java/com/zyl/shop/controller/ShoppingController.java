@@ -54,8 +54,13 @@ public class ShoppingController {
     public Map<String, Object> getGoodsDetails(@PathVariable("goodsId") Integer goodsId) {
         Map<String, Object> map = new HashMap<String, Object>();
         Goods goods = goodsService.queryGoodsById(goodsId);
-        map.put("success", true);
-        map.put("data", goods);
+        if(goods!=null){
+            map.put("success", true);
+            map.put("data", goods);
+        }else{
+            map.put("success", false);
+        }
+
         return map;
     }
 

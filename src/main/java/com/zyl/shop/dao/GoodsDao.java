@@ -34,10 +34,9 @@ public interface GoodsDao {
 			  @Result(property = "name", column = "goodsname"),
 			  @Result(property = "price", column = "goodsprice"),
 			  @Result(property = "description", column = "goodsdescription"),
-			  @Result(property = "store", column = "store"),
-			  @Result(property = "imgUrl", column = "url")		 
+			  @Result(property = "store", column = "store")
 			})
-	@Select("select g.gid,g.goodsname,g.goodsprice,g.goodsdescription,g.store,t.url from tb_goodsinfo g,tb_goodsimages t where g.gid=#{goodsId} and t.gid=g.gid and t.status=1 and g.status=1")
+	@Select("select g.gid,g.goodsname,g.goodsprice,g.goodsdescription,g.store from tb_goodsinfo g where g.gid=#{goodsId} and g.status=1")
 	Goods queryGoodsById(@Param("goodsId")Integer goodsId);
 	@Results(value= {
 			@Result(property = "person", column = "username"),
@@ -57,4 +56,12 @@ public interface GoodsDao {
 	Integer queryGoodsShoppingCart(@Param("userID")Integer userID,@Param("goodsId")Integer goodsId);
 	@Insert("insert into `tb_shoppingcart` (`uid`, `gid`, `number`, `status`) values (#{userID}, #{goodsId}, '1', '1')")
     Integer insert2ShoppingCart(@Param("userID")Integer userID,@Param("goodsId")Integer goodsId);
+
+	/**
+	 * 查询商品图片
+	 * @param goodsId
+	 * @return
+	 */
+	@Select("select t.url from tb_goodsimages t where t.gid=#{goodsId} and t.status=1")
+	List<String> queryGoodsImgs(Integer goodsId);
 }

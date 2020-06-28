@@ -1,52 +1,5 @@
 @charset "utf-8";
 /* CSS Document */
-
-.goods{
-	max-height:500px;
-	min-height:500px;
-	
-}
-
-.goods_img{
-	position:absolute;
-	left:100px;
-	width:400px;
-	height:350px;
-	max-height:400px;
-	max-width:400px;
-}
-
-.goods_info{
-	position:absolute;
-	left:600px;
-	width:400px;
-}
-
-.goods_info_title{
-	position:absolute;
-	top:20px;
-	min-height:40px;
-	max-height:60px;
-}
-
-.goods_info_price{
-	position:absolute;
-	top:140px;
-}
-
-.goods_correlation{
-	min-height:200px;
-}
-
-.goods_correlation_main{
-	position:absolute;
-	left:30px;
-	min-width:500px;
-	max-width:500px;
-}
-
-.goods_correlation_assess{
-	position:absolute;
-	left:550px;
-
+.goods_info *{
+	float: left;
 }

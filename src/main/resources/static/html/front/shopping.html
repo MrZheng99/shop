@@ -20,13 +20,15 @@
 
 </div>
 
-
+<div id="divimg">
+</div>
 <div class="goods_info">
-    <img class="goods_img" id="goodsimg">
+
     <h3 id="goodsname"></h3>
     价格：<span id="goodsprice"></span>
-    数量： <input onChange="check()" type="number" value="1" id="inputGoodsNumber">
+    数量： <input onChange="check(this.value)" type="number" value="1" id="inputGoodsNumber">
     库存:<span id="store"></span>件
+    总额:<span id="amount"></span>
     <button class="text-dark" id="btnJoinShoppingCart" onclick="joinShoppingCart()">加入购物车</button>
     <span id="shoppingTip" style="width: 100px;height: 30px"></span>
     <button class="text-dark" onclick="buyGoods()">立即购买</button>
@@ -52,7 +54,11 @@
 
 
 <script>
+
     const goodsId = window.location.href.substring(window.location.href.lastIndexOf("/") + 1);
+    /**
+     * 查询用户名
+     */
     $.ajax({
         type: 'GET',
         url: "queryName",
@@ -66,6 +72,29 @@
 
     });
 
+    /*
+    *   核对输入的值
+    * */
+    function check(num) {
+        let store = $("#store").text();
+        let price = $("#goodsprice").text();
+        if (num > store) {
+            $("#inputGoodsNumber").val(store);
+            $("#amount").text(store * price);
+            return;
+        }
+        if (num < 0) {
+            $("#inputGoodsNumber").val(0);
+            $("#amount").text(0);
+            return;
+        }
+        $("#amount").text(num * price);
+
+    }
+
+    /**
+     * 加入购物车
+     */
     function joinShoppingCart() {
         $.ajax({
             type: 'GET',
@@ -85,13 +114,16 @@
         });
     }
 
+    /**
+     * 购买商品
+     */
     function buyGoods() {
 
         $.ajax({
                 type: 'PUT',
                 url: "../order",
                 data: JSON.stringify([{
-                        gid: goodsId, number: $("#inputGoodsNumber").val(), price: $("#goodsprice").text()
+                        gid: goodsId, number: $("#inputGoodsNumber").val(), price: $("#amount").text()
                     }
                     ]
                 ),
@@ -117,13 +149,19 @@
     }
 
     window.onload = function () {
-
+        /**
+         * 加载数据
+         */
         $.ajax({
             type: 'GET',
             url: "getGoodsDetails/" + goodsId,
             success: function (msg) {
                 if (msg.success) {
-                    $("#goodsimg").attr("src", "../" + msg.data["imgUrl"]);
+                    $("#divimg").empty();
+                    for (let i = 0, len = msg.data["imgUrls"].length; i < len; i++) {
+                        let img = "<img class='goodsimg' src='../" + msg.data["imgUrls"][i] + "'>"
+                        $("#divimg").append(img);
+                    }
                     $("#goodsprice").text(msg.data["price"]);
                     $("#store").text(msg.data["store"]);
                     $("#goodsDescription").text("描述：" + msg.data["description"]);

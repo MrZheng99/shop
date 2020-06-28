@@ -1,13 +1,13 @@
 package com.zyl.shop.entity;
 
 import java.util.List;
-import java.util.Map;
 
 public class Goods {
 	private Integer id;
 	private Float price;
 	private String name;
 	private String description;
+	private List<String> imgUrls;
 	private String imgUrl;
 	private Integer store;
 	private String type;
@@ -42,11 +42,17 @@ public class Goods {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	public List<String> getImgUrls() {
+		return imgUrls;
+	}
+	public void setImgUrls(List<String> imgUrls) {
+		this.imgUrls = imgUrls;
+	}
 	public String getImgUrl() {
 		return imgUrl;
 	}
 	public void setImgUrl(String imgUrl) {
-		this.imgUrl = imgUrl;
+		this.imgUrl= imgUrl;
 	}
 	@Override
 	public String toString() {
@@ -65,5 +71,6 @@ public class Goods {
 	public void setComments(List<Comments> comments) {
 		this.comments = comments;
 	}
-	
+
+
 }
