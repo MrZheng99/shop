@@ -2,7 +2,7 @@ package com.zyl.shop.service.impl;
 
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,12 +71,10 @@ public class UserServiceImpl implements UserService{
 		return true;
 	}
 	
-
-	
 	@Override
 	public List<AddressItem> getAddresses(int userId) {
 		List<Address> addresses = userDao.getUserAddresses(userId);
-		List<AddressItem> addressItems = new ArrayList<>();
+		List<AddressItem> addressItems = new ArrayList<AddressItem>();
 		for(Address addr : addresses) {
 			AddressItem ai = new AddressItem();
 			ai.setAid(String.valueOf(addr.getAid()));
@@ -84,5 +82,11 @@ public class UserServiceImpl implements UserService{
 			addressItems.add(ai);
 		}
 		return addressItems;
+	}
+
+	@Override
+	public String getUserNameById(Integer userId) {
+		User user = userDao.getUserById(userId);
+		return user.getName();
 	}
 }

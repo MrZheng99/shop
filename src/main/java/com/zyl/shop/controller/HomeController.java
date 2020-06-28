@@ -6,9 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
-import javax.websocket.server.PathParam;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.zyl.shop.entity.Goods;
 import com.zyl.shop.service.impl.GoodsServiceImpl;
-import com.zyl.shop.service.impl.UserServiceImpl;
 
 @RestController
 @RequestMapping("/home")
