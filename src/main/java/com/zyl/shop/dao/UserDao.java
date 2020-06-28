@@ -32,4 +32,7 @@ public interface UserDao {
 	Integer update(@Param("account")String account, @Param("email") String email, @Param("password")String password);
 	@Select("select aid, address, uid, status from tb_address where uid=#{uid}")
 	List<Address> getUserAddresses(@Param("uid")int uid);
+	
+	@Select("select uid,name from tb_userinfo where uid=#{uid} and status=1;")
+	User getUserById(@Param("uid")int uid);
 }

@@ -1,22 +1,25 @@
 package com.zyl.shop.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 
 import com.zyl.shop.entity.Cart;
-import com.zyl.shop.entity.Goods;
 
 @Mapper
 public interface CartDao {
-	@Results(id = "cartResult", value = {
-			  @Result(property = "id", column = "gid", id = true)
-			})
-	@Select("select gid  from tb_userinfo u,tb_shoppingcart sc where u.uid=sc.uid and sc.status=1 and sc.uid=#{uid} ;")
-	Cart search(@Param("uid") Integer uid);
-	@Select("select  from tb_shoppingcart sc,tb_goodsimages img,tb_goodsinfo gi where sc.gid=gi.gid and gi.gid=img.gid and sc.status=1 and sc.gid=#{gid} ;")
-    Goods querry(@Param("gid") Integer gid);
+	@Select("select * from tb_shoppingcart sc where sc.status=1 and sc.uid=#{uid}")
+	List<Cart> getUserGoodsGid(@Param("uid") Integer uid);
+
+	@Insert("insert into tb_shoppingcart(scid, uid, gid, number, status) values(#{scid}, #{uid}, #{gid}, #{number}, #{status})")
+	@Options(useGeneratedKeys=true, keyProperty="scid")
+	void addGoodToUserCart(Cart cart);
+	
+	@Delete("delete from tb_shoppingcart where uid=#{uid} and gid=#{gid}")
+	void deleteUserGood(@Param("uid")int userId, @Param("gid")int gid);
 }
