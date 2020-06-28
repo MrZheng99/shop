@@ -26,33 +26,63 @@ import com.zyl.shop.service.impl.UserServiceImpl;
 @RestController
 @RequestMapping("/shopping")
 public class ShoppingController {
-	@Autowired
-	GoodsServiceImpl goodsService;
-	@RequestMapping(value="/{goodsId}",method=RequestMethod.GET)
-	public ModelAndView home(@PathVariable("goodsId")Integer goodsId) {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("/html/front/shopping.html");
-		return mav;
-	}
-	@RequestMapping(value="/queryName",method=RequestMethod.GET)
-	public Map<String,Object> queryName(HttpSession session) {
-		Map<String,Object> map = new HashMap<String, Object>();
-		String userName = (String) session.getAttribute("userName");
-		if(userName==null||userName=="") {
+    @Autowired
+    GoodsServiceImpl goodsService;
+
+    @RequestMapping(value = "/{goodsId}", method = RequestMethod.GET)
+    public ModelAndView home(@PathVariable("goodsId") Integer goodsId) {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("/html/front/shopping.html");
+        return mav;
+    }
+
+    @RequestMapping(value = "/queryName", method = RequestMethod.GET)
+    public Map<String, Object> queryName(HttpSession session) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        String userName = (String) session.getAttribute("userName");
+        if (userName == null || userName == "") {
+            map.put("success", false);
+            map.put("data", "未登录");
+            return map;
+        }
+        map.put("success", true);
+        map.put("data", userName);
+        return map;
+    }
+
+    @GetMapping(value = "/getGoodsDetails/{goodsId}")
+    public Map<String, Object> getGoodsDetails(@PathVariable("goodsId") Integer goodsId) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        Goods goods = goodsService.queryGoodsById(goodsId);
+        map.put("success", true);
+        map.put("data", goods);
+        return map;
+    }
+
+    @GetMapping(value = "/addGoods2ShoppingCart/{goodsId}")
+    public Map<String, Object> addGoods2ShoppingCart(@PathVariable("goodsId") Integer goodsId, HttpSession session) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        Integer userID = (Integer) session.getAttribute("userID");
+        if(userID==null){
 			map.put("success", false);
 			map.put("data", "未登录");
 			return map;
 		}
-		map.put("success", true);
-		map.put("data", userName);
-		return map;
-	}
-	@GetMapping(value= "/getGoodsDetails/{goodsId}")
-	public Map<String,Object> getGoodsDetails(@PathVariable("goodsId")Integer goodsId ) {
-		Map<String,Object> map = new HashMap<String, Object>();
-		Goods goods = goodsService.queryGoodsById(goodsId);
-		map.put("success", true);
-		map.put("data", goods);
-		return map;
-	}
+        Integer row = goodsService.insert2ShoppingCart(userID, goodsId);
+        if (row > 0) {
+            map.put("success", true);
+            map.put("data", "成功加入购物车");
+            return map;
+        }
+        if (row == 0) {
+            map.put("success", false);
+            map.put("data", "已在购物车之中");
+            return map;
+
+        }
+
+        map.put("success", false);
+        map.put("data", "加入购物车失败");
+        return map;
+    }
 }

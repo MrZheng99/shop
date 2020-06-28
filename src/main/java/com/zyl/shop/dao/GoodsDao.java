@@ -2,12 +2,7 @@ package com.zyl.shop.dao;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import com.zyl.shop.entity.Comments;
 import com.zyl.shop.entity.Goods;
@@ -51,4 +46,15 @@ public interface GoodsDao {
 	})
 	@Select("select u.name username,a.assessiondetails,a.date from tb_goodsassession a,tb_userinfo u where u.uid=a.uid and a.gid=#{goodsId} and a.status=1 and u.status=1")
 	List<Comments> queryGoodsComments(@Param("goodsId")Integer goodsId);
+
+	/**
+	 * 查询是否在用户的购物车里
+	 * @param userID
+	 * @param goodsId
+	 * @return
+	 */
+	@Select("SELECT number from tb_shoppingcart WHERE gid=#{goodsId} and uid= #{userID} and status=1")
+	Integer queryGoodsShoppingCart(@Param("userID")Integer userID,@Param("goodsId")Integer goodsId);
+	@Insert("insert into `tb_shoppingcart` (`uid`, `gid`, `number`, `status`) values (#{userID}, #{goodsId}, '1', '1')")
+    Integer insert2ShoppingCart(@Param("userID")Integer userID,@Param("goodsId")Integer goodsId);
 }
