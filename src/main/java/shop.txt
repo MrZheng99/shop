@@ -158,6 +158,7 @@ CREATE TABLE `tb_shoppingcart` (
   `scid` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) NOT NULL,
   `gid` int(11) NOT NULL,
+  `number` int(11) NOT NULL,
   `status` char(1) NOT NULL,
   PRIMARY KEY (`scid`),
   KEY `fk_shoppingcart_uid` (`uid`),
