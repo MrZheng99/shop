@@ -48,6 +48,7 @@
 
 </body>
 <script src="../../js/jquery.js"></script>
+<script src="../../js/order.js"></script>
 
 
 <script>
@@ -84,26 +85,36 @@
         });
     }
 
-    // TODO:购买商品
-    // function buyGoods() {
-    //     inputGoodsNumber
-    //     $.ajax({
-    //         type: 'GET',
-    //         url: "buyGoods/" + goodsId,
-    //         success: function (msg) {
-    //             if (msg.success) {
-    //                 $("#shoppingTip").text(msg.data);
-    //                 $("btnJoinShoppingCart").disable();
-    //             } else {
-    //                 if (msg.data === "未登录") {
-    //                     alert("请登录!!!");
-    //                     window.location.href = "../index";
-    //                 }
-    //             }
-    //         }
-    //
-    //     });
-    // }
+    function buyGoods() {
+
+        $.ajax({
+                type: 'PUT',
+                url: "../order",
+                data: JSON.stringify([{
+                        gid: goodsId, number: $("#inputGoodsNumber").val(), price: $("#goodsprice").text()
+                    }
+                    ]
+                ),
+                contentType: "application/json",
+                dataType:
+                    "json",
+                success:
+
+                    function (msg) {
+                        if (msg.success) {
+                            window.location.href = "/orders";
+                        } else {
+                            if (msg.msg === "未登录") {
+                                alert("请登录!!!");
+                                window.location.href = "../index";
+                            }
+                        }
+                    }
+
+            }
+        )
+        ;
+    }
 
     window.onload = function () {
 
