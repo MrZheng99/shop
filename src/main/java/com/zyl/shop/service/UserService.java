@@ -2,6 +2,7 @@ package com.zyl.shop.service;
 
 import java.util.List;
 
+import com.zyl.shop.entity.ResponseJson;
 import com.zyl.shop.entity.User;
 import com.zyl.shop.entity.AddressItem;
 
@@ -26,4 +27,21 @@ public interface UserService {
 	  * @return 用户名
 	  */
 	String getUserNameById(Integer userId);
+
+	/**
+	 * 冻结或者解冻用户或者重置密码
+	 * @param userId
+	 * @param data 密码或者状态值
+	 * @param type 重置密码或者解冻冻结账户区分
+	 * @return
+	 */
+    ResponseJson updateUser(Integer userId, String data,String type);
+
+	/**
+	 * 获取用户
+	 * @param userName
+	 * @param email
+	 * @return
+	 */
+	ResponseJson getUserByNameEmail(String userName, String email);
 }

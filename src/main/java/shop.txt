@@ -47,6 +47,7 @@ CREATE TABLE `tb_admininfo` (
   `password` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `status` char(1) NOT NULL,
+  `tel` varchar(255),
   PRIMARY KEY (`aid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
 

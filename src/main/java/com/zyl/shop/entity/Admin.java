@@ -3,6 +3,16 @@ package com.zyl.shop.entity;
 public class Admin {
     private Integer id;
     private String name;
+    private String tel;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public Integer getId() {
         return id;
@@ -18,6 +28,14 @@ public class Admin {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
     }
 
     @Override

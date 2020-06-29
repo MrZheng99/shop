@@ -2,21 +2,15 @@ package com.zyl.shop.dao;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import com.zyl.shop.entity.Admin;
+import org.apache.ibatis.annotations.*;
 
 import com.zyl.shop.entity.Address;
 import com.zyl.shop.entity.User;
 @Mapper
 public interface UserDao {
 	@Results(id = "userResult", value = {
-			  @Result(property = "id", column = "uid", id = true),
-			  @Result(property = "name", column = "name")
+			  @Result(property = "id", column = "uid", id = true)
 			})
 	@Select("select uid,name from tb_userinfo where name = #{account} and password=#{password} and status=1;")
 	User login(@Param("account")String account, @Param("password")String password);
@@ -27,12 +21,45 @@ public interface UserDao {
 
 	@Insert("insert into `tb_userinfo` (`name`, `email`, `password`, `status`) values (#{account}, #{email}, #{password}, '1')")
 	Integer register(@Param("account")String account, @Param("password")String password, @Param("email") String email);
-	
+
+	/**
+	 * 用户忘记密码设置
+	 * @param account
+	 * @param email
+	 * @param password
+	 * @return
+	 */
 	@Update("update tb_userinfo set `password`=#{password} where name = #{account} and email = #{email} and status=1;")
 	Integer update(@Param("account")String account, @Param("email") String email, @Param("password")String password);
+
+	/**
+	 * 重置用户密码
+	 * @param userId
+	 * @param password
+	 * @return
+	 */
+	@Update("update tb_userinfo set `password`=#{password} where uid = #{userId};")
+	Integer updatePassword(@Param("userId")Integer userId,@Param("password")String password);
+
+	/**
+	 * 更改用户状态
+	 * @param userId
+	 * @param status
+	 * @return
+	 */
+	@Update("update tb_userinfo set `status`=#{status} where uid = #{userId};")
+	Integer updateStatus(@Param("userId")Integer userId,  @Param("status")String status);
+
 	@Select("select aid, address, uid, status from tb_address where uid=#{uid}")
 	List<Address> getUserAddresses(@Param("uid")int uid);
 	
 	@Select("select uid,name from tb_userinfo where uid=#{uid} and status=1;")
 	User getUserById(@Param("uid")int uid);
+	@ResultMap("userResult")
+	@Select("select uid,name,tel,email,status from tb_userinfo;")
+	List<User> queryAllUser();
+	@ResultMap("userResult")
+	@Select("select uid,name,tel,email,status from tb_userinfo where email=#{email} and name=#{account};")
+	List<User> queryAllUserByNameEmail(@Param("account")String account, @Param("email") String email);
+
 }

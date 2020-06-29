@@ -7,8 +7,10 @@ package com.zyl.shop.entity;
 public class User {
 	private Integer id;
 	private String name;
-	private String telNumber;
+	private String tel;
 	private String sex;
+	private String email;
+	private String status;
 	public Integer getId() {
 		return id;
 	}
@@ -21,11 +23,11 @@ public class User {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getTelNumber() {
-		return telNumber;
+	public String getTel() {
+		return tel;
 	}
-	public void setTelNumber(String telNumber) {
-		this.telNumber = telNumber;
+	public void setTel(String tel) {
+		this.tel= tel;
 	}
 	public String getSex() {
 		return sex;
@@ -33,9 +35,33 @@ public class User {
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", telNumber=" + telNumber + ", sex=" + sex + "]";
+		return "User{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", tel='" + tel + '\'' +
+				", sex='" + sex + '\'' +
+				", email='" + email + '\'' +
+				", status='" + status + '\'' +
+				'}';
 	}
-	
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 }

@@ -2,9 +2,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="../css/common.css">
-<link rel="stylesheet" href="../css/main.css">
-<script type="text/javascript" src="../../js/jquery-3.4.1.min.js"></script>
+<link rel="stylesheet" href="/back/css/common.css">
+<link rel="stylesheet" href="/back/css/main.css">
+	<script type="text/javascript" src="/back/js/jquery.min.js"></script>
+
 </head>
 <body>
 <div id="forms" class="mt10">
@@ -14,8 +15,8 @@
 				<form id="myform">
 				姓名：<input type="text" id="tname" class="input-text lh30" size="40"/>&nbsp;&nbsp;
 				密码：<input type="password" id="pwd" class="input-text lh30" size="40"/>&nbsp;&nbsp;
-				手机号码：<input type="tel" id="tel"class="input-text lh30" size="40"/>&nbsp;&nbsp;
-				<input type="button" name="button" class="btn btn82 btn_save2" onclick="addNewsTypeInfo()" value="添加"/>&nbsp;&nbsp;
+				手机号码：<input type="tel" id="tel" class="input-text lh30" size="40"/>&nbsp;&nbsp;
+				<input type="button" name="button" class="btn btn82 btn_save2" onclick="addAdmin()" value="添加"/>&nbsp;&nbsp;
 				</form>
 			</div>
 		</div>
@@ -35,23 +36,79 @@
                 </tr>
             </thead>
             <tbody id="admin_info" align="center">
-				<tr>
-					<td>101</td>
-					<td>navy</td>
-					<td>15096098088</td>
-					<td><font color="green">正常</font></td>
-					<td><a href="javascript:void(0)">[冻结]</a></td>
-				</tr>
-             	<tr>
-             		<td>102</td>
-             		<td>yc</td>
-             		<td>15096098011</td>
-             		<td><font color="red">冻结</font></td>
-             		<td><a href="javascript:void(0)">[解冻]</a></td>
-             	</tr>
+
+
             </tbody>
 		</table>
 	</div>
 </div>
 </body>
+<script>
+	function addAdmin(){
+		$.ajax({
+			url:"/manager/addAdmin",
+			type:"POST",
+			data:{
+				name:$("#tname").val().trim(),
+				password:$("#pwd").val().trim(),
+				tel:$("#tel").val().trim()
+			},
+			success:function (o) {
+				if(o.success){
+					updateTable();
+
+				}else {
+					alert("添加失败");
+				}
+			}
+		});
+	}
+	function updateAdmin(t,adminid) {
+		console.log(t.textContent);
+		let flag=1;
+		if(t.textContent=="冻结"){
+			flag = 0;
+		}
+		$.ajax({
+			url:"/manager/updateAdmin",
+			type:"POST",
+			data:{
+				status:flag,
+				aid:adminid
+			},
+			success:function (o) {
+				if(o.success){
+					updateTable();
+				}else {
+					alert("更新失败");
+				}
+			}
+		})
+	}
+	function updateTable(){
+		$.ajax({
+			url:"/manager/getAllAdminInfo",
+			success:function (o) {
+				let tr;
+				let ele;
+				$("#admin_info").empty();
+				for(let i=0,len=o.data.length;i<len;i++){
+					ele = o.data[i];
+					tr = "<tr>" +
+							"<td>"+ele["id"]+"</td>" +
+							"<td>"+ele["name"]+"</td>" +
+							"<td>"+ele["tel"]+"</td>" +
+							"<td><font color=\"green\">"+(ele["status"]==1?"正常":"冻结")+"</font></td>" +
+							"<td><a href=\"javascript:void(0)\" onclick='updateAdmin(this,"+ele["id"]+")'>"+(ele["status"]==1?"冻结":"解冻")+"</a></td>" +
+							"</tr>";
+					console.log(tr);
+					$("#admin_info").append(tr);
+				}
+			}
+		});
+	}
+	window.onload=function () {
+		updateTable();
+	}
+</script>
 </html>
