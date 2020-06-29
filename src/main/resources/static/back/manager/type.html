@@ -6,9 +6,66 @@
 <link rel="shortcut icon" href="../../images/yc.png" type="image/x-icon" />
 <link rel="stylesheet" href="../css/common.css">
 <link rel="stylesheet" href="../css/main.css">
-<script type="text/javascript" src="../js/jquery.min.js"></script>
+<!-- <script type="text/javascript" src="../js/jquery.min.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
 <script type="text/javascript">
+function addGoodsType(){
+	var tname = $.trim($("#tname").val());
+	if(tname == ""){
+		alert("请输入您要添加的商品类型名称");
+		return;
+	}
+	$.ajax({
+		url:"../../type",
+		method: "PUT",
+		data:{
+			tname:tname
+		},
+		dataType: "text",
+		success: result=>{
+			let data = parseInt(result);
+			if(data == -1){
+				alert("商品类型不能为空...");
+			} else if(result > 0){
+				$("#tname").val("");
+				showType();
+			} else {
+				alert("商品类型添加失败");
+			}
+		}
+	});
+}
 
+function showType(){
+	$.get("../../types", result=>{
+		let str = "";
+		$.each(result, function(index, item){
+			str += `<tr><td>${item.gtid}</td><td>${item.typename}</td>`;
+			if(item.status == 0){
+				str += `<td class='red'> 已下架</td><td><a href='javascript:updateStatus(${item.gtid}, 1)' class='green'>[上架]</a></td>`;
+			} else {
+				str += `<td class='green'> 已上架</td><td><a href='javascript:updateStatus(${item.gtid}, 0)' class='red'>[下架]</a></td>`;
+			}
+			str += "</tr>";
+		});
+		$("#goodstype_info").html("").append($(str));
+	}, "json");
+}
+
+$(function(){
+	showType();
+});
+
+function updateStatus(tid, status){
+	$.post("../../type", {tid:tid, status:status}, (result)=>{
+		let data = parseInt(result);
+		if(result > 0){
+			showType();
+		} else {
+			alert("商品状态修改失败");
+		}
+	}, "text");
+}
 </script>
 </head>
 <body>

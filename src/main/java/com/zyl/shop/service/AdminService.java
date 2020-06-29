@@ -35,4 +35,19 @@ public interface AdminService {
      * @return
      */
     ResponseJson updateAdmin(String aid, String status);
+    
+    /**
+     * 修改密码
+     * @param aid
+     * @param oldPassword
+     * @param newPassword
+     */
+    void changePassword(int aid, String oldPassword, String newPassword);
+
+    /**
+     * 获取管理员信息
+     * @param aid
+     * @return
+     */
+	Admin getInfo(int aid);
 }

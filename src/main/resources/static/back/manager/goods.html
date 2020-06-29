@@ -11,7 +11,15 @@
 <script type="text/javascript" src="../js/ajaxfileupload.js"></script>
 <script src="../../ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
-
+	$(function(){
+		$.get("../../types", function(result){
+			let str = "";
+			$.each(result, function(index, item){
+				str += `<option value="${item.gtid}">${item.typename}</option>`;
+			});
+			$("#goodsType").append($(str));
+		}, "json");
+	});
 </script>
 </head>
 <body>
@@ -45,20 +53,8 @@
 							<td>
 								<input type="number" id="balance" name="balance" class="input-text lh30" size="40"  placeholder="库存"/>
 							</td>
-							<td class="td_right">商品单位：</td>
-							<td>
-								<input type="text" id="unit" name="unit" class="input-text lh30" size="40" placeholder="单位"/>
-							</td>
-							<td class="td_right">保质期：</td>
-							<td>
-								<input type="text" id="qperied" name="qperied" class="input-text lh30" size="40"  placeholder="保质期"/>
-							</td>
 						</tr>
 						<tr>
-							<td class="td_right">商品净重：</td>
-							<td>
-								<input type="text" id="weight" name="weight" class="input-text lh30" size="40" placeholder="净重" >
-							</td>
 							<td class="td_right">商品图片：</td>
 							<td>
 								<input type="file" id="pic" name="pic" class="input-text lh30" size="40" multiple="multiple" onchange="setImagePreviews(this,'showPics')">
@@ -106,18 +102,16 @@ function addGoodsInfo() {
 	var gname = $.trim($("#gname").val());
 	var price = $.trim($("#price").val());
 	var balance = $.trim($("#balance").val());
-	var unit = $.trim($("#unit").val());
-	var qperied = $.trim($("#qperied").val());
-	var weight = $.trim($("#weight").val());
 	var intro = $.trim($("#intro").val());
-	var descr = CKEDITOR.instances.editor1.getData();
+	// var descr = CKEDITOR.instances.editor1.getData();
+	var descr = CKEDITOR.instances.editor1.document.$.body.textContent;
 	
 	$.ajaxFileUpload({
-		url:'../../goods/addGood',
+		url:'../../good',
 		secureuri: false,
 		fileElementId:"pic",
 		dataType:"json",
-		data:{tno:tno, gname:gname,price:price,balance:balance,unit:unit,qperied:qperied,weight:weight,intro:intro,descr:descr},
+		data:{tid:tno, gname:gname,price:price,balance:balance,intro:intro,descr:descr},
 		success:function(data, stuts) {
 			data = parseInt($.trim(data));
 			if (data == 1) {

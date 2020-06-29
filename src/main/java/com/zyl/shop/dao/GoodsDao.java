@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.*;
 
 import com.zyl.shop.entity.Comments;
 import com.zyl.shop.entity.Goods;
+import com.zyl.shop.entity.GoodsImage;
+import com.zyl.shop.entity.GoodsInfo;
 
 @Mapper
 public interface GoodsDao {
@@ -64,4 +66,32 @@ public interface GoodsDao {
 	 */
 	@Select("select t.url from tb_goodsimages t where t.gid=#{goodsId} and t.status=1")
 	List<String> queryGoodsImgs(Integer goodsId);
+	
+	/**
+	 * 添加商品
+	 * @param goodsInfo
+	 */
+	@Insert("insert into `tb_goodsinfo`(`gid`, `goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) values(#{gid}, #{goodsname}, #{goodsprice}, #{store}, #{status}, #{goodsdescription}, #{goodstype})")
+	@Options(useGeneratedKeys=true, keyProperty="gid")
+	void addGood(GoodsInfo goodsInfo);
+	
+	/**
+	 * 添加商品图片
+	 * @param goodsImage
+	 */
+	@Insert("insert into `tb_goodsimages`(giid, url, gid, status) values(#{giid}, #{url}, #{gid}, #{status})")
+	@Options(useGeneratedKeys=true, keyProperty="giid")
+	void addGoodImage(GoodsImage goodsImage);
+	
+	/**
+	 * 搜索指定类别下的符合条件的商品
+	 * @param gtid 类别ID
+	 * @param gname like字符串
+	 * @return
+	 */
+	@Select("select * from tb_goodsinfo where (isnull(#{gtid}) or goodstype=#{gtid}) and goodsname like #{gname}")
+	List<GoodsInfo> searchGoodByTypeAndName(@Param("gtid")Integer gtid, @Param("gname")String gname);
+	
+	@Update("update tb_goodsinfo set status=#{status} where gid=#{gid}")
+	void updateGoodStatus(@Param("gid")int goodId, @Param("status")String status);
 }

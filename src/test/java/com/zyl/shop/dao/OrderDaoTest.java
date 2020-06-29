@@ -3,6 +3,7 @@ package com.zyl.shop.dao;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Date;
+import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -42,7 +43,7 @@ public class OrderDaoTest {
 		Order insertedOrder = new Order();
 		insertedOrder.setUid(userId);
 		insertedOrder.setOrderprogress(OrderService.OrderProgress.unpaid);
-		insertedOrder.setAmount(0);
+		insertedOrder.setAmount(new Random().nextDouble()*100);
 		insertedOrder.setDate(new Date());
 		insertedOrder.setStatus("1");
 		
@@ -54,7 +55,7 @@ public class OrderDaoTest {
 	@Rollback
 	public void testAddOrder() {
 		Order queryedOrder = orderDao.getOrderById(String.valueOf(order.getOid()));
-		assertEquals(order.toString(), queryedOrder.toString());
+		assertEquals(order.getAmount(), queryedOrder.getAmount());
 	}
 	
 	@Test

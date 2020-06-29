@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+        <meta charset="UTF-8">
+        <title>个人信息</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+        <meta name="format-detection" content="telephone=no, email=no">
+</head>
+<script src="../js/jquery.min.js"></script>
+<script type="text/javascript">
+ $.getJSON(
+    "/back/info",
+    function(data){
+      var tbody = document.getElementById('tbMain');
+      var trow =getDataRow(data.data);
+      tbody.appendChild(trow);
+    });
+
+function getDataRow(h){
+   var row =document.createElement('tr');//创建行
+   var idCell = document.createElement('td');//创建第一列,ID数据
+   idCell.innerHTML=h.id; //填充数据
+   row.appendChild(idCell);
+   var nameCell =document.createElement("td"); //创建第二列名字
+   nameCell.innerHTML = h.name;
+   row.appendChild(nameCell);
+   var telCell = document.createElement('td');//创建第三列电话
+   telCell.innerHTML = h.tel;
+	 row.appendChild(telCell);
+    var statusCell = document.createElement('td');//创建第四列状态
+	 statusCell.innerHTML = h.status;
+	 row.appendChild(statusCell);
+	 
+	 return row; //返回tr数据	 
+}
+</script>
+<body style="background-color:yellow;">
+  
+<center>
+ <table width="600" border="1" cellspacing="0">
+     <thead>
+       <tr>
+          <th>ID</th>
+          <th>姓名</th>
+          <th>电话</th>
+          <th>状态</th>
+       </tr>
+    </thead>
+    <tbody id="tbMain"></tbody>
+ </table></center>
+</body>
+</html>

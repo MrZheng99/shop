@@ -7,14 +7,14 @@ public class Admin {
     private String status;
 
     public String getStatus() {
-        return status;
-    }
+		return status;
+	}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
-    public Integer getId() {
+	public Integer getId() {
         return id;
     }
 

@@ -35,9 +35,6 @@
 					<th width="10%">类型</th>
 					<th width="10%">商品价格</th>
 					<th width="10%">库存</th>
-					<th width="8%">单位</th>
-					<th width="8%">净重</th>
-					<th width="8%">保质期</th>
 					<th width="8%">状态</th>
 					<th>操作</th>
 				</tr>
@@ -69,21 +66,59 @@
 				</tr>
 			</tbody>
 		</table>
-		<div class="page mt10">
-			<div class="pagination">
-				<ul id ="pagination_info">
-					<li class="first-child active"><a href="javascript:void()" onclick=" ">首页</a></li>
-					<li class="active"><a href="javascript:void()" onclick=" ">1</a></li>
-					<li><a href="javascript:void()" onclick=" ">2</a></li>
-					<li class="last-child"><a href="javascript:void()" onclick="">末页</a></li>
-				</ul>
-			</div>
-		</div>
 	</div>
 </div>
 <script type="text/javascript" src="../js/jquery.min.js"></script>
 <script type="text/javascript">
+var goodsType = {};
+$.get("../../types", function(result){
+	let str = "";
+	$.each(result, function(index, item){
+		goodsType[item.gtid] = item.typename;
+		str += `<option value="${item.gtid}">${item.typename}</option>`;
+	});
+	str = `<option value="">全部</option>`+str;
+	$("#goodsType").append($(str));
+	searchGoods();
+}, "json");
 
+function searchGoods(){
+	const gtid = $("#goodsType").val();
+	const gname = $("#gname").val();
+	console.log(gtid, gname)
+	$.get("/goods", {tid:gtid, gname:gname}, function(data){
+		console.log(data)
+		let content = '';
+		for(let item of data){
+			content += /*html*/`<tr>
+				<td>${item.gid}</td>
+				<td>${item.goodsname}</td>
+				<td>${goodsType[item.goodstype]}</td>
+				<td>${item.goodsprice}</td>
+				<td>${item.store}</td>`;
+			if(item.status == "1"){
+				content += /*html*/`<td class="green">已上架</td>
+					<td><a href='javascript:changeStatus(${item.gid}, 0)' class='red'>[下架]</a>&nbsp;&nbsp;<a href='/shopping/${item.gid}' target="_blank">[详细]</a></td>
+				</tr>`
+			}else{
+				content += /*html*/`<td class="red">已下架</td>
+					<td><a href='javascript:changeStatus(${item.gid}, 1)' class='green'>[上架]</a>&nbsp;&nbsp;<a href='/shopping/${item.gid}' target="_blank">[详细]</a></td>
+				</tr>`
+			}
+		}
+		$("#goods_info").html("").append($(content));
+	})
+}
+
+function changeStatus(gid, status){
+	$.post(`/good/${gid}`, {status:status}, function(result){
+		if(result.success){
+			searchGoods();
+		}else{
+			alert("失败");
+		}
+	})
+}
 </script>
 </body>
 </html>
