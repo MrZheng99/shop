@@ -93,18 +93,19 @@ function checkout(gid, number){
 	$.ajax({
 		type: 'PUT',
 		url: "/order",
-		data: [
+		data: JSON.stringify([
 			{
 				gid: gid,
 				number: number,
-				price: null
+				price: 0
 			}
-		],
+		]),
 		contentType: "application/json",
 		dataType: "json",
 		success:
 		function (msg) {
 			if (msg.success) {
+				deleteGood(gid);
 				window.location.href = "/orders";
 			} else {
 				if (msg.msg === "未登录") {
@@ -120,14 +121,12 @@ function deleteGood(gid){
 	$.ajax({
 		type: 'DELETE',
 		url: "/cart/good",
-		data: [
-			{
-				scid: null,
-				gid: gid,
-				number:0,
-				status:1
-			}
-		],
+		data: JSON.stringify({
+			scid: 0,
+			gid: gid,
+			number:0,
+			status:1
+		}),
 		contentType: "application/json",
 		dataType: "json",
 		success:
@@ -135,10 +134,8 @@ function deleteGood(gid){
 			if (msg.success) {
 				window.location.reload();
 			} else {
-				if (msg.msg === "未登录") {
-					alert("请登录!!!");
-					window.location.href = "/index";
-				}
+				alert("请登录!!!");
+				window.location.href = "/index";
 			}
 		}
 	});

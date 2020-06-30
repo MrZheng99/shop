@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.zyl.shop.dao.GoodsDao;
 import com.zyl.shop.dao.OrderDao;
+import com.zyl.shop.entity.Goods;
 import com.zyl.shop.entity.Order;
 import com.zyl.shop.entity.OrderDetail;
 import com.zyl.shop.entity.OrderDetailItem;
@@ -23,6 +25,9 @@ public class OrderServiceImpl implements OrderService{
 	
 	@Autowired
 	private OrderDao orderDao;
+	
+	@Autowired
+	private GoodsDao goodsDao;
 
 	@Override
 	public List<OrderDetailItem> getOrderGoods(int userId, String oid) {
@@ -132,7 +137,8 @@ public class OrderServiceImpl implements OrderService{
 		
 		
 		for(OrderDetailItem item : items) {
-			amount += item.getPrice() * item.getNumber();
+			Goods good = goodsDao.queryGoodsById(Integer.parseInt(item.getGid()));
+			amount += good.getPrice() * item.getNumber();
 		}
 		order.setAmount(amount);
 		orderDao.addOrder(order);

@@ -18,39 +18,44 @@ import com.zyl.shop.entity.ResponseJson;
 import com.zyl.shop.service.CartService;
 
 @RestController
-@RequestMapping("/cart")
 public class CartController {
 
 	@Autowired
 	CartService cartService;
 	
-	@RequestMapping(value="/{userId}",method=RequestMethod.GET)
-	public ModelAndView home(@PathVariable("userId")Integer userId,HttpSession session) {
+	@RequestMapping(value="/cart",method=RequestMethod.GET)
+	public ModelAndView home(HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		Integer userIdSession = (Integer) session.getAttribute("userID");
-		if(userIdSession==null||userId<=100||userIdSession<=100||userId!=userIdSession) {
-			mav.setViewName("redirect:../index");
+		if(userIdSession==null||userIdSession<=100) {
+			mav.setViewName("redirect:/index");
 			return mav;
 		}
 		mav.setViewName("/html/front/cart.html");
 		return mav;
 	}
 
-	@RequestMapping("/goods")
+	@RequestMapping("/cart/goods")
 	public List<CartItem> getCartGoodsGid(@SessionAttribute("userID")int userId){
 		return cartService.getGoods(userId);
 	}
 	
-	@RequestMapping(value="/good", method=RequestMethod.PUT)
-	public ResponseJson addGood(@PathVariable(name="userID", required=false)Integer userId, @RequestBody CartItem cartItem) {
+	@RequestMapping(value="/cart/good", method=RequestMethod.PUT)
+	public ResponseJson addGood(@SessionAttribute(name="userID", required=false)Integer userId, @RequestBody CartItem cartItem) {
 		ResponseJson responseJson = new ResponseJson();
+		if(userId == null) {
+			return responseJson;
+		}
 		responseJson.setSuccess(cartService.addGood(userId, cartItem));
 		return responseJson;
 	}
 	
-	@RequestMapping(value="/good", method=RequestMethod.DELETE)
-	public ResponseJson deleteGood(@PathVariable(name="userID", required=false)Integer userId, @RequestBody CartItem cartItem) {
+	@RequestMapping(value="/cart/good", method=RequestMethod.DELETE)
+	public ResponseJson deleteGood(@SessionAttribute(name="userID", required=false)Integer userId, @RequestBody CartItem cartItem) {
 		ResponseJson responseJson = new ResponseJson();
+		if(userId == null) {
+			return responseJson;
+		}
 		responseJson.setSuccess(cartService.deleteGood(userId, cartItem));
 		return responseJson;
 	}
