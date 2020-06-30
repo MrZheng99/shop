@@ -3,7 +3,8 @@
 .goods_info{
 	float: left;
 	width:60%;
-	height:300px;
+	height:500px;
+	border:1px solid green;
 }
 
 .goods_div{
@@ -27,6 +28,26 @@
     left: 0;
     float: left;
     list-style: none;                                                                               
+}
+
+.goods_cho{
+	width:100%;
+	float:left;
+	background:#CCC;
+	text-align:center;
+	line-height:30px;
+	border-right:1px solid #fff;
+}
+
+.cho_des{
+	float:left;
+	margin-left:40%;
+	width:90px;
+}
+.cho_com{
+	float:left;
+	margin-left:10px;
+	
 }
 .goodsimg{
 	float:left;
@@ -53,6 +74,10 @@
 	margin-left:180px;
 	margin-top:50px;
 	width:100%;
+	color:red;
+	font-size:24px;
+	font-family:"微软雅黑";
+	
 }
 
 .goods_amount{
@@ -60,13 +85,12 @@
 	margin-left:180px;
 	margin-top:30px;
 	width:100%;
-
+	font-size:24px;
 }
 .goods_store{
 	float:left;
 	margin-left:180px;
 	width:100%;
-
 }
 
 .goods_money{
@@ -74,6 +98,7 @@
 	margin-left:180px;
 	margin-top:30px;
 	width:100%;
+	font-size:24px;
 }
 
 .goods_pay{
@@ -85,19 +110,24 @@
 .others{
 	width:100%;
 	height:300px;
+	background:#F6EFA8;
 }
 .goods_des{
 	float:left;
 	width:20%;
-	margin-left:100px;
 	height:300px;
+	font-size:24px;
+	margin-top:30px;
+	color:#091371;
 }
 
 .goods_Com{
 	float:left;
 	width:60%;
-	margin-left:20px;
 	height:300px;
+	font-size:18px;
+	margin-top:30px;
+	color:#00F5FF;
 }
 .head-cart{
 	float:right;

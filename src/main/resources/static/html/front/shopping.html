@@ -6,8 +6,10 @@
     <link href="../../css/bootstrap.css" rel="stylesheet">
     <link href="../../css/buy.css" rel="stylesheet">
     <link href="../../css/font-awesome.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <link rel="stylesheet" href="../../css/bootstrap-3.3.7-dist/css/bootstrap.min.css">
-
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </head>
 
@@ -26,9 +28,9 @@
        
     </ul>
      <ol id="button_list"> <!-- 轮播按钮 -->
-                <li class="first-li" id="olli1">1</li>
-                <li id="olli2">2</li>
-                <li id="olli3">3</li>
+                <li class="first-li" id="olli1">0</li>
+                <li id="olli2">1</li>
+                <li id="olli3">2</li>
             </ol>
     </div>
     <div class="goods_info">
@@ -46,12 +48,29 @@
 </div>
 
 <div class="others">
-    <div id="goodsDescription" class="goods_des">
+<ul id="myTab" class="nav nav-tabs">
+	<li class="active">
+		<a href="#home" data-toggle="tab">
+			 商品详情
+		</a>
+	</li>
+	<li><a href="#ios" data-toggle="tab">商品评价</a></li>
 
+</ul>
+<div id="myTabContent" class="tab-content">
+	<div class="tab-pane fade in active" id="home">
+		<div id="goodsDescription" class="goods_des">
+		
+         </div>
+	</div>
+	<div class="tab-pane fade" id="ios">
+		   <div id="goodsComments" class="goods_Com" >
+ 
     </div>
-    <div id="goodsComments" class="goods_Com" >
-    
-    </div>
+	</div>
+</div>
+
+   
 </div>
 
 <div class="modal-footer" >
@@ -170,7 +189,8 @@
                 if (msg.success) {
                     $("#divimg").empty();
                     for (let i = 0, len = msg.data["imgUrls"].length; i < len; i++) {
-                        let img = "<li><img class='goodsimg' src='../" + msg.data["imgUrls"][i] + "'></li>"
+                    	let alt = i;
+                        let img = "<li ><img class='goodsimg'  src='../"  + msg.data["imgUrls"][i] + "' alt=" + (i) + "></li>"
                         $("#divimg").append(img);
                     }
                     $("#goodsprice").text(msg.data["price"]);
@@ -192,7 +212,7 @@
     }
 
     function auto() {
-        var goods_div = document.getElementById("goods_div"),
+        var goods_div = document.getElementById("divimg"),
             img_list = document.getElementById("img_list"),
             button_list = document.getElementById("button_list").getElementsByTagName("li"),
             index = 0,
@@ -205,7 +225,7 @@
     		
        
             // 自动切换
-            timer = setInterval(autoPlay, 3000);
+            timer = setInterval(autoPlay, 1000);
        
             // 调用自动播放函数
         function autoPlay() {
