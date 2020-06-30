@@ -13,7 +13,7 @@
 
 <body>
 <div class="popover-header" style="height:40px;">
-    <a class="text-primary" id="userName" style="font-size:16px">当前用户:</a>
+    <a class="text-primary" id="userName" style="font-size:16px"></a>
     <a href="cart" class="head-cart"><button id="search" value="购物车" class="btn btn-primary">购物车</button></a>
 </div>
 <div class="bg-secondary">
@@ -22,7 +22,14 @@
 
 <div class="goods">
     <div id="divimg" class='goods_div' >
-        <img class='goodsimg' >
+    <ul id="img_list">
+       
+    </ul>
+     <ol id="button_list"> <!-- 轮播按钮 -->
+                <li class="first-li" id="olli1">1</li>
+                <li id="olli2">2</li>
+                <li id="olli3">3</li>
+            </ol>
     </div>
     <div class="goods_info">
             <h3 id="goodsname" class="goods_name"></h3>
@@ -163,7 +170,7 @@
                 if (msg.success) {
                     $("#divimg").empty();
                     for (let i = 0, len = msg.data["imgUrls"].length; i < len; i++) {
-                        let img = "<img class='goodsimg' src='../" + msg.data["imgUrls"][i] + "'>"
+                        let img = "<li><img class='goodsimg' src='../" + msg.data["imgUrls"][i] + "'></li>"
                         $("#divimg").append(img);
                     }
                     $("#goodsprice").text(msg.data["price"]);
@@ -181,9 +188,47 @@
                 }
             }
         });
+        auto();
     }
 
-
+    function auto() {
+        var goods_div = document.getElementById("goods_div"),
+            img_list = document.getElementById("img_list"),
+            button_list = document.getElementById("button_list").getElementsByTagName("li"),
+            index = 0,
+            timer = null;
+            //初始化
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            }
+    		
+       
+            // 自动切换
+            timer = setInterval(autoPlay, 3000);
+       
+            // 调用自动播放函数
+        function autoPlay() {
+                index++;
+                if (index >= button_list.length) {
+                    index = 0;
+                }
+                imgChange(index);
+         }
+        
+        function imgChange(buttonIndex) {
+            for (let i = 0; i < button_list.length; i++) {
+                button_list[i].className="";
+            }
+            button_list[buttonIndex].className = "first-li";//按钮样式切换
+            img_list.style.marginLeft = -1000 * buttonIndex + "px";
+            index = buttonIndex;
+        }
+        //鼠标接触div
+      
+       
+        
+    }
 </script>
 </html>
 

@@ -11,9 +11,23 @@
 	margin-left:100px;
 	margin-top:80px;
 	width:28%;
-	height:300px
+	height:300px;
+	overflow:hidden;
 }
-
+.goods_div ul{
+    width: 400%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    padding: 0;
+    list-style: none;
+    
+}
+.goods_div li{
+    left: 0;
+    float: left;
+    list-style: none;                                                                               
+}
 .goodsimg{
 	float:left;
 	min-height:300px;
@@ -81,7 +95,7 @@
 
 .goods_Com{
 	float:left;
-	width:0px;
+	width:60%;
 	margin-left:20px;
 	height:300px;
 }

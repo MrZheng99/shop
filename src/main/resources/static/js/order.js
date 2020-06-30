@@ -7,30 +7,13 @@ class Good{
         this.price = price || 0;
     }
 
-    getGoodInfo(){
-		$.ajax({
-			url:`/shopping/getGoodsDetails/${this.gid}`, 
-			method:"GET",
-			dataType:"json",
-			async: false,
-			success: (data)=>{
-				console.log(data)
-				this.name = data.data.name;
-                this.imgUrl = data.data.imgUrls[0];
-			}
-		})
-	}
-
-
     render(parent){
-        this.getGoodInfo();
-
         const cssClass = "list-group-item d-flex";
 
         let li = document.createElement("li");
         li.className = cssClass;
         li.innerHTML = /*html*/`
-            <img src="/${this.imgUrl}" class="h-100" style="max-height:200px">
+            <img src=${this.imgUrl} class="h-100">
             <div class="flex-grow-1 d-flex flex-column">
                 <a href="#" target="_blank" class="flex-grow-1"><h4>${this.name}</h4></a>
                 <h6>
@@ -65,4 +48,4 @@ class GoodList{
     }
 }
 
-const orderId = location.pathname.match(/\/(order)\/(.*?)$/)[2];
+const orderId = location.pathname.match(/\/(order|checkout)\/(.*?)$/)[2];
