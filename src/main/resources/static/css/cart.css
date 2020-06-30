@@ -4,10 +4,11 @@
 .sec{
 	width: 100%;
 	height: 150px;
+	background:#ACFFFF;
 }
 .sec_img{
-	position:absolute;
-	left:50px;
+	float:left;
+	margin-left:50px;
 	min-height:150px;
 	max-height:150px;
 	max-width:250px;
@@ -21,8 +22,8 @@
 }
 
 .tit{
-	position:absolute;
-	left:115px;
+	float:left;
+	margin-left:115px;
 }
 
 .pay_right{
@@ -36,34 +37,38 @@
 .cart{
 	min-height:100px;
 	max-height:100px;
-	border:20px;
-	border-color:#999;
-	background-color:#CFF;
+	border:1px solid #CCFFE6;
 	margin-bottom: 5px;
 }
 
 .cart_index{
 	height:50px;
+	width:100%;
 }
 
 .cart_index_1{
-	position:absolute;
-	left:200px;
+	float:left;
+	margin-left:200px;
 }
 
 .cart_index_2{
-	position:absolute;
-	right:450px;
+	float:left;
+	margin-left:300px;
+}
+
+.cart_index_3_s{
+	float:left;
+	margin-left:320px;
 }
 
 .cart_index_3{
-	position:absolute;
-	right:330px;
+	float:left;
+	margin-left:300px;
 }
 
 .cart_img{
-	position:absolute;
-	left:200px;
+	float:left;
+	margin-left:200px;
 	min-height:80px;
 	max-height:80px;
 	max-width:80px;
@@ -71,7 +76,7 @@
 }
 
 .cart_de{
-	position:absolute;
-	right:150px;
+	float:right;
+	margin-right:100px;
 }
 

@@ -1,7 +1,7 @@
-        body {
-            padding: 0px;
-            margin: 0px auto;
-        }
+ body {
+     padding: 0px;
+    margin: 0px auto;
+}
                * {
             padding: 0px;
             margin: 0px auto;
@@ -102,3 +102,62 @@
         .pages span.active {
             background-color: gray;
         }
+		
+.header{
+	background-color:#EAEAEA;
+
+}
+
+.header_right{
+	float:right;
+	margin-right:50px;
+}
+		
+.search{
+	float:right;
+	margin-right:50px;
+	}		
+
+.domes{
+	overflow:hidden;
+	width:330px;
+	margin-right:650px;
+	line-height:20px;
+
+	}
+#dome{
+	overflow:hidden; 
+	height:10px;
+	padding:5px;
+}
+.warp{
+    margin-top:20px;
+    margin-left: 200px; 
+    width: 1000px;
+    height: 300px;
+    overflow: hidden;
+}
+.broadcast{
+    margin:15px; 
+    width: 1000px;
+    height: 300px;
+    overflow: hidden;
+}
+.broadcast ul{
+    width: 400%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    padding: 0;
+    list-style: none;
+    
+}
+.broadcast li{
+    left: 0;
+    float: left;
+    list-style: none;                                                                               
+}
+.broadcast img{
+    width: 1000px;
+    height: 300px;
+}

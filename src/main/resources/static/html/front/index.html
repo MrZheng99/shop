@@ -6,26 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZYL商城登录</title>
     <link type="image/x-icon" rel="shortcut icon" href="../../images/logo1.png">
-    <link href="../../css/index.css" type="text/css" rel="stylesheet"> </head>
+    <link href="../../css/index.css" type="text/css" rel="stylesheet"> 
+    <link href="../../css/bootstrap.css" type="text/css" rel="stylesheet">
+    </head>
 
 <body>
     <header>
         <a href="#" target="_blank" style="text-decoration: none;">
-            <font size="12px">欢迎来到ZYL商城</font>
         </a>
+        <div class="top">
+             <label class="top_wel"><font size="6">欢迎登陆 </font> </label>
+            <div class="top_war">
+              <label><img src="../../images/login_war.png">依据《网络安全法》，为保障您的账户安全和正常使用，请尽快完成手机号验证！ 新版《京东隐私政策》已上线，将更有利于保护您的个人隐私。</label>
+            </div>
+        </div>
     </header>
-    <article>
+    <article>        
+        <div class="main">
+            <div class="img">
+                <img src="../../images/login_pic.png">
+            </div>
         <div class="login">
             <div style="display:inline;line-height:16px;">
                 <h3 style="float: left; margin-top: 30px;margin-left: 5%;">ZYL会员</h3>
-                <label style="float: right;margin-top: 30px;margin-right: 5%;color: red;background: url(../images/icon5.jpg) no-repeat left center;width: 90px; height: 16px;">
-                 <a href="register"><font size="2px" >我要注册</font></a></label>
+                <label style="float: right;margin-top: 30px;margin-right: 5%;color: red;background: url(../../images/icon5.jpg) no-repeat left center;width: 90px; height: 16px;">
+                 <a href="register"><font size="2px" color="#FF0000"  >我要注册</font></a></label>
             </div>
             <p id="error" style="color: red;width: 100%;float: left; height: 20px;margin-top: 10px;"></p>
             <form action="login" method="post" id="mform">
              <div class="item" style="margin-top: 10px;">
 
-                <input id="account" name="account" type="text" onblur="checkAccount(this.value)" onfocus="clearError();" style="background: url(../images/icon1.jpg) no-repeat;" placeholder="用户名" />
+                <input id="account" name="account" type="text" onblur="checkAccount(this.value)" onfocus="clearError();" style="background: url(../../images/icon1.jpg) no-repeat;" placeholder="用户名" />
                 <label class="clearLabel" onclick="clearInput('account')"></label>
             </div>
             <div class=" item  " style="margin-top: 15px;">
@@ -38,11 +49,8 @@
            
             <span style="float: left; margin: 10px 5% 10px 5%;padding-right: 50px;"><input type="checkbox">&nbsp;&nbsp;自动登录</span>
             <a style="float: right; margin: 10px 5% 10px 5%; text-decoration: none;" href="/forgetPassword">忘记密码</a>
-            <span style="float:left;background:  url(../../images/QQ-weixin.png) no-repeat 0 0px; width: 20px; height: 18px;margin: 10px 10px 10px 5% ;">
-            </span>
-
-            <span style="float:left;background:  url(../../images/QQ-weixin.png) no-repeat -20px 0px; width: 20px; height: 18px;margin: 10px 0px 10px 0px ;">
-            </span>
+  
+        </div>
         </div>
     </article>
     <footer>
