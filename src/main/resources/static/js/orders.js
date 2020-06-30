@@ -91,7 +91,7 @@ class OrderList{
 }
 
 function pay(oid){
-    window.open(`/pay/${oid}`, "_blank")
+    window.open(`/checkout/${oid}`, "_blank")
     return false;
 }
 

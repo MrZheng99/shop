@@ -1,12 +1,11 @@
 class Good{
-    constructor(gid, name, number, imgUrl, price){
-        this.gid = gid;
-        this.name = name || "goodName";
-        this.number = number || 0;
-        this.imgUrl = imgUrl || "#";
-        this.price = price || 0;
+	constructor(gid, number){
+		this.gid = gid;
+		this.number = number;
+		this.name = "0";
+        this.imgUrl = "0";
+        this.price = 0;
     }
-
     getGoodInfo(){
 		$.ajax({
 			url:`/shopping/getGoodsDetails/${this.gid}`, 
@@ -17,20 +16,20 @@ class Good{
 				console.log(data)
 				this.name = data.data.name;
                 this.imgUrl = data.data.imgUrls[0];
+                this.price = data.data.price;
 			}
 		})
 	}
 
+	render(parent){	
+		this.getGoodInfo();
 
-    render(parent){
-        this.getGoodInfo();
-
-        const cssClass = "list-group-item d-flex";
+		const cssClass = "list-group-item d-flex";
 
         let li = document.createElement("li");
         li.className = cssClass;
         li.innerHTML = /*html*/`
-            <img src="/${this.imgUrl}" class="h-100" style="max-height:200px">
+            <img src="/${this.imgUrl}" class="h-100"  style="max-height:200px">
             <div class="flex-grow-1 d-flex flex-column">
                 <a href="#" target="_blank" class="flex-grow-1"><h4>${this.name}</h4></a>
                 <h6>
@@ -44,25 +43,27 @@ class Good{
             </div>
         `;
         parent.appendChild(li);
-    }
+        return this.price;
+	}
 }
 
-class GoodList{
-
-    constructor(){
-        this.goods = [];
-    }
-
-    render(parent){
-        const cssClass = "list-group";
+class Checkout{
+	constructor(){
+		this.goods = [];
+	}
+	
+	render(parent){
+		const cssClass = "list-group";
         let ul = document.createElement("ul");
         ul.className = cssClass;
-
+        let totalPrice = 0;
         for(let good of this.goods){
-            good.render(ul);
+            const price = good.render(ul);
+            totalPrice += good.number * price;
         }
         parent.appendChild(ul);
-    }
+        $("#total-price").text(totalPrice);
+	}
 }
 
-const orderId = location.pathname.match(/\/(order)\/(.*?)$/)[2];
+const orderId = location.pathname.match(/\/(checkout)\/(.*?)$/)[2];

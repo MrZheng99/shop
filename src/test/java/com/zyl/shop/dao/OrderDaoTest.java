@@ -43,7 +43,7 @@ public class OrderDaoTest {
 		Order insertedOrder = new Order();
 		insertedOrder.setUid(userId);
 		insertedOrder.setOrderprogress(OrderService.OrderProgress.unpaid);
-		insertedOrder.setAmount(new Random().nextDouble()*100);
+		insertedOrder.setAmount(Math.round(new Random().nextDouble()*100));
 		insertedOrder.setDate(new Date());
 		insertedOrder.setStatus("1");
 		
