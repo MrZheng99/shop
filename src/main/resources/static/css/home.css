@@ -1,6 +1,7 @@
  body {
      padding: 0px;
     margin: 0px auto;
+    font-size:18px;
 }
                * {
             padding: 0px;
@@ -43,6 +44,8 @@
             text-align: center;
             margin-bottom: 15px;
             font-weight: bold;
+            font-size:12px;
+            
         }
 		
 		.description:hover {
@@ -54,6 +57,7 @@
             font-weight: bold;
 			color:#F00;
 			cursor:pointer;
+			font-size:15px;
 			text-decoration:underline;
         }
         
@@ -76,6 +80,7 @@
         .categroy{
         	width:80%;
         	height:50px;
+        	font-size:18px;
         }
         .categroy ol li{
         list-style:none;
@@ -123,11 +128,13 @@
 .header_right{
 	float:right;
 	margin-right:50px;
+	font-size:18px;
 }
 		
 .search{
 	float:right;
 	margin-right:50px;
+	font-size:18px;
 	}		
 
 .domes{
@@ -135,7 +142,7 @@
 	width:330px;
 	margin-right:650px;
 	line-height:20px;
-
+font-size:18px;
 	}
 #dome{
 	overflow:hidden; 
@@ -154,6 +161,7 @@
     width: 1000px;
     height: 300px;
     overflow: hidden;
+    
 }
 .broadcast ul{
     width: 400%;
