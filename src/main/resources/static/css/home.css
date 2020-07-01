@@ -3,12 +3,20 @@
     margin: 0px auto;
     font-size:18px;
 }
+footer {
+    height: 100px;
+    width:100%;
+    background-color: white;
+    margin-top: 20px;
+    text-align: center;
+    font-size:16px;
+}
                * {
             padding: 0px;
             margin: 0px auto;
         }
         .disp {
-            width: 21%;
+            width: 18%;
             height: 280px;
             float: left;
             margin-right: 2%;
@@ -79,7 +87,7 @@
         	text-decoration: none;
         }
         .categroy{
-        	width:90%;
+        	width:80%;
         	height:50px;
         	font-size:18px;
         }
@@ -95,9 +103,9 @@
     			border-bottom: 2px solid #ff4700;
         }
         .content{
-        width: 80%;
+        width: 90%;
         height:650px;
-        margin: 0px 10% 0px 11%;
+        margin: 0px 10% 0px 8%;
         }
           .pages {
             margin-top: 30px;
