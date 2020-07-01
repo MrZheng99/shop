@@ -42,6 +42,7 @@ class CartGood{
 				console.log(data)
 				this.name = data.data.name;
 				this.imgUrl = data.data.imgUrls[0];
+				this.price = data.data.price;
 			}
 		})
 	}
@@ -66,7 +67,9 @@ class CartGood{
 		       <input type="button" value="移除该商品" onclick="deleteGood(${this.gid})">
 		    </div>
 		`;
-        parent.appendChild(div);
+		parent.appendChild(div);
+		
+		return this.price * this.number;
 	}
 }
 
@@ -81,9 +84,14 @@ class Cart{
         div.className = cssClass;
 
 		parent.appendChild(div);
+
+		let totalPrice = 0;
         for(let good of this.goods){
-            good.render(div);
-        }
+            totalPrice += good.render(div);
+		}
+		
+		// 计算总价
+		$(".pay1>em").text(totalPrice);
 		
 		CartGood.checkListener();
 	}
@@ -136,6 +144,38 @@ function deleteGood(gid){
 			} else {
 				alert("请登录!!!");
 				window.location.href = "/index";
+			}
+		}
+	});
+}
+
+function payAll(){
+	let datas = [];
+	for(let good of cart){
+		datas.push({
+			gid: good.gid,
+			number: good.number,
+			price: 0
+		})
+	}
+	$.ajax({
+		type: 'PUT',
+		url: "/order",
+		data: JSON.stringify(datas),
+		contentType: "application/json",
+		dataType: "json",
+		success:
+		function (msg) {
+			if (msg.success) {
+				for(let good of cart){
+					deleteGood(good.gid);
+				}
+				window.location.href = "/orders";
+			} else {
+				if (msg.msg === "未登录") {
+					alert("请登录!!!");
+					window.location.href = "/index";
+				}
 			}
 		}
 	});
