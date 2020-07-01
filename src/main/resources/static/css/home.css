@@ -11,7 +11,8 @@
             width: 20%;
             height: 270px;
             float: left;
-            margin-right: 4%;
+            margin-right: 2%;
+            margin-left: 3%;
             margin-top: 30px;
             padding: 0px 10xp;
             border-width: thin;
@@ -84,7 +85,7 @@
         }
         .categroy ol li{
         list-style:none;
-        	width:18%;
+        	width:20%;
         	height:50px;
         	float:left;
         	text-align: center;
@@ -151,7 +152,6 @@ font-size:18px;
 }
 .warp{
     margin-top:20px;
-    margin-left: 200px; 
     width: 1000px;
     height: 300px;
     overflow: hidden;

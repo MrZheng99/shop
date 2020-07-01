@@ -1,3 +1,13 @@
+const userName = $("#userName");
+
+$.get("/user/name", function(data){
+	if(data.success){
+		userName.text(data.data);
+	} else {
+		location.href = "/index";
+	}
+}, "json")
+
 class Order{
     static unpaid = "未付款";
     static paid = "已付款";
