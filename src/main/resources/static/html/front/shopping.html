@@ -66,8 +66,8 @@
 
 <div class="others">
 <ul id="myTab" class="nav nav-tabs">
-	<li class="active">
-		<a href="#home" data-toggle="tab">
+	<li class="active" >
+		<a href="#home" data-toggle="tab" >
 			 商品详情
 		</a>
 	</li>
@@ -205,14 +205,20 @@
             success: function (msg) {
                 if (msg.success) {
                     $("#divimg").empty();
-                    for (let i = 0, len = msg.data["imgUrls"].length; i < len; i++) {
+                    for (let i = 0, len = msg.data["imgUrls"].length; i < 4; i++) {
+                    	let n=len-1;
                     	if(i ==0){
                         let img = "<img class='goodsimg'  src='../"  + msg.data["imgUrls"][i] + "' >"
                         $("#divimg1").append(img);
-                    	}else{
+                    	}else if(i<len){
                             let img = "<img class='goodsimg'  src='../"  + msg.data["imgUrls"][i] + "' >"
                             $("#divimg" + (i + 1) + "").append(img);
                         	}
+                    	else{
+                    		let img = "<img class='goodsimg'  src='../"  + msg.data["imgUrls"][0] + "' >"
+                            $("#divimg" + (i + 1) + "").append(img);
+                    	}
+                    	
                     }
                     $("#goodsprice").text(msg.data["price"]);
                     $("#store").text(msg.data["store"]);
