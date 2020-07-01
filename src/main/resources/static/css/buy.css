@@ -101,7 +101,6 @@
 	margin-left:180px;
 	margin-top:50px;
 	width:100%;
-	color:red;
 	font-size:24px;
 	font-family:"微软雅黑";
 	
@@ -117,6 +116,9 @@
 .goods_store{
 	float:left;
 	margin-left:180px;
+	margin-top:30px;
+	font-size:24px;
+
 	width:100%;
 }
 
@@ -126,7 +128,7 @@
 	margin-top:30px;
 	width:100%;
 	font-size:24px;
-    color:#589CCF;
+    color:red;
 
 }
 
@@ -157,7 +159,7 @@
 	height:300px;
 	font-size:18px;
 	margin-top:30px;
-	color:#00F5FF;
+	color:#091371;
 }
 .head-cart{
 	float:right;
