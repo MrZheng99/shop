@@ -51,14 +51,20 @@
 	margin-left:200px;
 }
 
-.cart_index_2{
+.cart_index_2_s{
 	float:left;
 	margin-left:300px;
+	width:105px;
+}
+.cart_index_2{
+	float:left;
+	margin-left:280px;
+	width:105px;
 }
 
 .cart_index_3_s{
 	float:left;
-	margin-left:320px;
+	margin-left:300px;
 }
 
 .cart_index_3{
@@ -80,3 +86,11 @@
 	margin-right:100px;
 }
 
+footer {
+    height: 100px;
+    width:100%;
+    background-color: white;
+    margin-top: 20px;
+    text-align: center;
+    font-size:16px;
+}

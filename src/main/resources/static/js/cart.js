@@ -63,8 +63,8 @@ class CartGood{
 		       ${this.number}
 		    </div>
 		    <div class="cart_de">
-		       <input type="button" value="结算" onclick="checkout(${this.gid}, ${this.number})"><br><br>
-		       <input type="button" value="移除该商品" onclick="deleteGood(${this.gid})">
+		       <input type="button" value="结算" onclick="checkout(${this.gid}, ${this.number})" class="btn-primary"><br><br>
+		       <input type="button" value="移除该商品" onclick="deleteGood(${this.gid})" class="btn-danger">
 		    </div>
 		`;
 		parent.appendChild(div);

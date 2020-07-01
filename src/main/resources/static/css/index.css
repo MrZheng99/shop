@@ -52,7 +52,7 @@ footer {
 .item {
     float: left;
     width: 90%;
-    height: 38px;
+    height: 40px;
     margin: 30px 5% 10px 5%;
     border: 1px solid;
 }
@@ -60,7 +60,7 @@ footer {
 .item input {
     float: left;
     border: none;
-    width: 70%;
+    width: 82%;
     height: 38px;
     padding: 0 0 0 40px;
 }

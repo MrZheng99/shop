@@ -27,7 +27,8 @@
     </div>
     <div align="right" class="pay_right">
     <label  class="pay1" > 当前金额(不含运费): <em></em> 元
-    <input  type="button" value="结算" onclick="payAll()">
+    <input  type="button" value="结算" class="btn-info" onclick="payAll()">
+
     </label>
     </div>
 </div>
@@ -38,7 +39,7 @@
     <div class="cart_index_1">
     商品信息
     </div>
-    <div class="cart_index_2">
+    <div class="cart_index_2_s">
     商品名
     </div>
     <div class="cart_index_3">
@@ -56,8 +57,8 @@
 	      
 	    </div>
 	    <div class="cart_de">
-	       <input type="button" value="结算"><br><br>
-	       <input type="button" value="移除该商品">
+	       <input type="button" value="结算" class="btn-primary"><br><br>
+	       <input type="button" value="移除该商品" class="btn-danger">
 	    </div>
 	</div>
 </div>
@@ -66,9 +67,11 @@
 
 <br>
 
-<div class="modal-footer">
- Copyright&nbsp;&copy;&nbsp;2020&nbsp;&nbsp;ZYL团队&nbsp;版权所有
+  <footer>
+<div >
+    Copyright&nbsp;&copy;&nbsp;2020&nbsp;&nbsp;ZYL团队&nbsp;版权所有
 </div>
+</footer>
 <!-- JS, Popper.js, and jQuery -->
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

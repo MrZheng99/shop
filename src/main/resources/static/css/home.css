@@ -3,13 +3,21 @@
     margin: 0px auto;
     font-size:18px;
 }
+footer {
+    height: 100px;
+    width:100%;
+    background-color: white;
+    margin-top: 20px;
+    text-align: center;
+    font-size:16px;
+}
                * {
             padding: 0px;
             margin: 0px auto;
         }
         .disp {
-            width: 20%;
-            height: 270px;
+            width: 18%;
+            height: 280px;
             float: left;
             margin-right: 2%;
             margin-left: 3%;
@@ -95,8 +103,9 @@
     			border-bottom: 2px solid #ff4700;
         }
         .content{
-        width: 80%;
-        margin: 0px 10% 0px 10%;
+        width: 90%;
+        height:650px;
+        margin: 0px 10% 0px 8%;
         }
           .pages {
             margin-top: 30px;
@@ -180,4 +189,12 @@ font-size:18px;
 .broadcast img{
     width: 1000px;
     height: 300px;
+}
+footer {
+    height: 100px;
+    width:100%;
+    background-color: white;
+    margin-top: 20px;
+    text-align: center;
+    font-size:16px;
 }
