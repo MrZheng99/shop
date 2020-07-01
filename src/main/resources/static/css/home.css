@@ -8,8 +8,8 @@
             margin: 0px auto;
         }
         .disp {
-            width: 20%;
-            height: 270px;
+            width: 21%;
+            height: 280px;
             float: left;
             margin-right: 4%;
             margin-top: 30px;
@@ -84,7 +84,7 @@
         }
         .categroy ol li{
         list-style:none;
-        	width:18%;
+        	width:20%;
         	height:50px;
         	float:left;
         	text-align: center;
@@ -95,7 +95,7 @@
         }
         .content{
         width: 80%;
-        margin: 0px 10% 0px 10%;
+        margin: 0px 10% 0px 11%;
         }
           .pages {
             margin-top: 30px;
