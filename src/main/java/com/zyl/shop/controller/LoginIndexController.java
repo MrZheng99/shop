@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import com.zyl.shop.entity.ResponseJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,6 +22,10 @@ public class LoginIndexController {
 	@Autowired
 	UserServiceImpl userService;
 
+	/**
+	 * 跳转到首页
+	 * @return
+	 */
 	@RequestMapping(value="/index", method=RequestMethod.GET)
 	public ModelAndView index() {
 		ModelAndView mav = new ModelAndView();
@@ -28,24 +33,29 @@ public class LoginIndexController {
 		return mav;
 	}
 
-
+	/**
+	 * 登录，如果成功则将账号密码写到session中，并返回用户id。如果失败返回-1
+	 * @param account
+	 * @param password
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(value="/login", method=RequestMethod.POST)
-	public Map<String,Object> login(@RequestParam String account,@RequestParam String password,HttpSession session) {
+	public ResponseJson login(@RequestParam String account,@RequestParam String password,HttpSession session) {
 		User user= userService.login(account, password);
-		Map<String,Object> map = new HashMap<String,Object>();
+		ResponseJson responseJson = new ResponseJson();
 		if(user!=null) {
 			session.setAttribute("userID", user.getId());
+			System.out.println(user.getId());
 			session.setAttribute("userName", user.getName());
-			session.setMaxInactiveInterval(30*60);
-			map.put("success", true);
-			map.put("data", user.getId());
-			return map;
-		}	
-		map.put("success", false);
-		map.put("data", -1);
-		return map;
+			session.setMaxInactiveInterval(30 * 60);
+			responseJson.setSuccess(true);
+			responseJson.setData(user.getId());
+			return responseJson;
+		}
+		responseJson.setSuccess(false);
+		responseJson.setData(-1);
+		return responseJson;
 	}
 
-
-	
 }

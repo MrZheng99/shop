@@ -13,7 +13,6 @@
 				return;
         	}
             document.getElementById('codeError').textContent = '';
-            setTimeOut();
             $.ajax({
                 type: 'POST',
                 url: "/register/getCode",
@@ -24,7 +23,7 @@
 
                 success: function(rs) {
                     if (rs.success) {
-                      
+                        setTimeOut();
 
                     }
 
@@ -81,7 +80,7 @@
 </head>
 
 <body>
-    <form action="#" class="mform" role="form">
+    <form action="#" class="mform" role="form" onsubmit="return false">
         <div class="form-line">
             <span class="msg">邮箱：</span>
             <input id="email" name="email" type="text" class="form-control" onfocus="document.getElementById('emailError').textContent = '';" onblur="checkMail(this.value.trim())">

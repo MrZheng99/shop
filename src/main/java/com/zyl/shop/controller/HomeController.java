@@ -28,7 +28,8 @@ public class HomeController {
 	public ModelAndView home(@PathVariable("userId")Integer userId,HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		Integer userIdSession = (Integer) session.getAttribute("userID");
-		if(userIdSession==null||userId<=100||userIdSession<=100||userId!=userIdSession) {
+//记录一下!userId.equals(userIdSession)和userId！=userIdSession不一样
+		if(userIdSession==null||userId<=100||userIdSession<=100||!userId.equals(userIdSession)) {
 			mav.setViewName("redirect:../index");
 			return mav;
 		}

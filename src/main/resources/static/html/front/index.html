@@ -86,7 +86,7 @@
                             password: hex_md5($("#password").val())
                         },
                         success:function(msg){
-                        	if(msg.success){
+                            if(msg.success){
                         		location.href="/home/"+msg.data;
                         	}else{
                                 document.getElementById('error').textContent = '账户密码不匹配';
