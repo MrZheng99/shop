@@ -16,7 +16,7 @@
 	height:300px;
     overflow: hidden;
 }
-#demo{
+#carousel{
 	margin-left:100px;
 	margin-top:100px;
 	min-height:350px;
@@ -29,18 +29,13 @@
 #myTab{
 	font-size:18px;
 }
-#divimg1{
+#imgs{
 	min-height:350px;
 	max-height:350px;
 	min-width:350px;
 	max-width:350px;
 }
-#divimg2{
-	min-height:350px;
-	max-height:350px;
-	min-width:350px;
-	max-width:350px;
-}
+
 .goods_div ul{
     width: 400%;
     height: 100%;

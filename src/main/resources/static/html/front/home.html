@@ -6,26 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZYL商城主页</title>
     <link rel="stylesheet" type="text/css" href="../../css/home.css">
-    <link rel="stylesheet" href="../../css/bootstrap-3.3.7-dist/css/bootstrap.min.css">
-    <link href="../../css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
 </head>
 
 <body>
-<div class="header" style="height: 30px;">
-    <font class="text-primary" style="font-size:16px;margin-left: 5px">当前用户:&nbsp;</font><a class="text-primary" id="userName"
-                                                                     style="font-size:16px"></a>
+
+<header>
+    <font class="text-primary">当前用户:&nbsp;</font>
+    <a class="text-primary" id="userName"></a>
     <div class="header_right">
-
-        <a href="/orders" class="btn btn-primary">订单</a>
-        <a href="/cart" class="btn btn-primary">购物车</a>
-
-    </div>
-    <div class="search">
         <input id="inputSearch" placeholder="输入搜索" maxlength="30" class="form-control"
                style="display: inline-block; width: 150px;">
-        <button id="search" value="搜索" class="btn btn-primary">搜索</button>
+        <a href="/orders" class="btn btn-link">订单</a>
+        <a href="/cart" class="btn btn-link">购物车</a>
     </div>
-</div>
+</header>
 <div class="container" style="min-width: 100%;">
 
     <div>
@@ -57,38 +53,12 @@
     </div>
     <hr>
     <div class="categroy">
-
         <ol>
             <li>
                 <div class="active">
                     <a class="categroyLink" href="#">精品特卖</a>
                 </div>
             </li>
-
-            <li>
-                <div>
-                    <a class="categroyLink" href="#"></a>
-                </div>
-            </li>
-
-            <li>
-                <div>
-                    <a class="categroyLink" href="#"></a>
-                </div>
-            </li>
-
-            <li>
-                <div>
-                    <a class="categroyLink" href="#"></a>
-                </div>
-            </li>
-
-            <li>
-                <div>
-                    <a class="categroyLink" href="#"></a>
-                </div>
-            </li>
-
         </ol>
     </div>
     <div class="content">
@@ -103,27 +73,17 @@
         Copyright&nbsp;&copy;&nbsp;2020&nbsp;&nbsp;ZYL团队&nbsp;版权所有
     </div>
 </footer>
-<script src="../../js/jquery.js"></script>
+<!--<script src="../../js/jquery.js"></script>-->
+<!-- JS, Popper.js, and jQuery -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<
 <script src="../../js/showPages.js"></script>
 <script>
-    $("#search").click(function () {
-        $.ajax({
-            type: 'POST',
-            url: "/home/queryGoods",
-            data: { goodsName: $("#inputSearch").val() },
-            success: function (msg) {
-                if (msg.success) {
-                    $(".content").empty();
-                    for (let i = 0, len = msg.data.length; i < len; i++) {
-                        let ele = msg.data[i];
-                        let d = "<div class='disp'><img src='../" + ele["imgUrl"] + "'><span class='description'>" + ele["name"] + "</span> <span class='price'>" + "￥" + ele["price"] + "</span><button>加入购物车</button></div>"
-                        $(".content").append(d);
-                    }
-                }
-            }
-
-        });
-
+    $("#inputSearch").keyup(function (e) {
+        if(e.keyCode==13){
+            window.location.href = "../search?goodsName="+$(this).val().trim(); }
     });
 
     //跳转到浏览商品详情界面
@@ -140,16 +100,6 @@
                 if (msg.success) {
                     let pages = Math.ceil(msg.data / 8);
                     $("#pagination").showPage(pages,categroy);
-                    // $(".pages").empty();
-                    //
-                    // for (let i = 1; i <= pages; i++) {
-                    //     $(".pages").append("<span class='pageNumber'>" + i + "</span>");
-                    //     $(".pageNumber:eq(" + (i - 1) + ")").click(function () {
-                    //         getGoods(categroy + "/" + (i - 1));
-                    //         $(".pageNumber").removeClass("active");
-                    //         $(".pageNumber:eq(" + (i - 1) + ")").addClass("active");
-                    //     });
-                    // }
                 } else {
                     $(".categroy.ol li:last").after('加载失败');
                 }
@@ -165,9 +115,10 @@
             success: function (msg) {
                 if (msg.success) {
                     $(".content").empty();
+                    let ele;
                     for (let i = 0, len = msg.data.length; i < len; i++) {
-                        let ele = msg.data[i];
-                        let d = "<div class='disp'><img src='../" + ele["imgUrl"] + "'><span class='description' onclick='goShopping(" + ele["id"] + ")'>" + ele["name"] + ele["description"] + "</span> <span class='price'>" + "￥" + ele["price"] + "</span><button id='btn" + ele["id"] + "' onclick='joinShoppingCart(" + ele["id"] + ")'>加入购物车</button></div>"
+                        ele = msg.data[i];
+                        let d = "<div class='disp'><img src='../" + ele["images"].split(",")[0] + "'><span class='description' onclick='goShopping(" + ele["id"] + ")'>" + ele["name"] + ele["description"] + "</span> <span class='price'>" + "￥" + ele["price"] + "</span><button id='btn" + ele["id"] + "' onclick='joinShoppingCart(" + ele["id"] + ")'>加入购物车</button></div>"
                         $(".content").append(d);
                     }
                 }
@@ -197,89 +148,27 @@
 
         });
     }
-    window.onload = function () {
-        auto();
-        getGoods("all");
-        loadPageNumber("all");
-        for (let i = 0; i < 6; i++) {
-            $(".categroyLink:eq(" + (i) + ")").click(function () {
-                $(".categroyLink").parent("div").removeClass("active");
-                $(".categroyLink:eq(" + (i) + ")").parent("div").addClass("active");
-                if (i > 0) {
-                    getGoods(this.text);
-                    loadPageNumber(this.text);
-
-                } else {
-                    getGoods("all");
-                    loadPageNumber("all");
-
-                }
-
-            });
-        }
-        //最后一个右边距0
-        for (let i = 0; i < 8; i++) {
-            if (i % 4 == 3) {
-                $(".disp:eq(" + (i) + ")").addClass("last");
-
-            }
-        }
-    }
-    $.ajax({
-
-        type: 'GET',
-        url: "/home/queryName",
-        success: function (msg) {
-            if (msg.success) {
-                $("#userName").text(msg.data);
-            } else {
-                $("#userName").text('未登录');
-            }
-        }
-
-    });
-    $.ajax({
-        type: 'GET',
-        url: "/home/queryCategroy",
-        success: function (msg) {
-            if (msg.success) {
-                let categroies = msg.data;
-                for (let i = 0; i < 5; i++) {
-
-                    $(".categroyLink:eq(" + (i + 1) + ")").text(categroies[i]);
-                }
-            } else {
-                $(".categroy.ol li:last").after('加载失败');
-            }
-        }
-
-    });
-
-
     /**
      * 标语
      */
     function changeTitle(){
-        let height = "-50px";
-        $("#demoLi").animate({top:height}).animate({top:0},0,function(){
+        $("#demoLi").animate({top:"-50px"}).animate({top:0},0,function(){
             let liFirst=$("#demoLi>li:first");
 
             $("#demoLi").append(liFirst.clone());
             liFirst.remove();
         });
     }
-    setInterval(changeTitle,3000);
 
     /**
      * 图片轮播
      */
     function auto() {
-        var broadcast = $("#broadcast"),
+        let broadcast = $("#broadcast"),
             img_list = $("#img_list"),
             button_list = $("#button_list li"),
             index = 0,
             timer = null;
-        console.log(button_list)
         //初始化
         if (timer) {
             clearInterval(timer);
@@ -311,6 +200,60 @@
         //鼠标离开div
         broadcast.onmouseout = function () {
             timer = setInterval(autoPlay, 2000);
+        }
+    }
+    $.ajax({
+
+        type: 'GET',
+        url: "/home/queryName",
+        success: function (msg) {
+            if (msg.success) {
+                $("#userName").text(msg.data);
+            } else {
+                $("#userName").text(msg.msg);
+            }
+        }
+
+    });
+    $.ajax({
+        type: 'GET',
+        url: "/home/queryCategroy",
+        success: function (msg) {
+            if (msg.success) {
+                let categroies = msg.data;
+                for (let i = 0,len=msg.data.length; i <len ; i++) {
+                    $(".categroy ol").append("<li><div><a class='categroyLink'" +
+                        " href='javascript:void(0);'>"+categroies[i]+"</a></div></li>");
+                }
+                for (let i = 0,len=$(".categroyLink").length; i < len; i++) {
+                    $(".categroyLink:eq(" + (i) + ")").click(function () {
+                        $(".categroyLink").parent("div").removeClass("active");
+                        $(".categroyLink:eq(" + (i) + ")").parent("div").addClass("active");
+                        if (i > 0) {
+                            getGoods(this.text);
+                            loadPageNumber(this.text);
+                        } else {
+                            getGoods("hot");
+                            loadPageNumber("hot");
+                        }
+                    });
+                }
+            } else {
+                $(".categroy.ol li:last").after( msg.msg);
+            }
+        }
+
+    });
+    window.onload = function () {
+        auto();
+        setInterval(changeTitle,2000);
+        getGoods("hot");
+        loadPageNumber("hot");
+        //最后一个右边距0
+        for (let i = 0; i < 8; i++) {
+            if (i % 4 == 3) {
+                $(".disp:eq(" + (i) + ")").addClass("last");
+            }
         }
     }
 </script>

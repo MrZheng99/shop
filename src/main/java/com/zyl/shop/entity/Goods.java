@@ -7,8 +7,7 @@ public class Goods {
 	private Float price;
 	private String name;
 	private String description;
-	private List<String> imgUrls;
-	private String imgUrl;
+	private String images;
 	private Integer store;
 	private String type;
 	private List<Comments> comments;
@@ -42,21 +41,15 @@ public class Goods {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public List<String> getImgUrls() {
-		return imgUrls;
+	public String getImages() {
+		return images;
 	}
-	public void setImgUrls(List<String> imgUrls) {
-		this.imgUrls = imgUrls;
-	}
-	public String getImgUrl() {
-		return imgUrl;
-	}
-	public void setImgUrl(String imgUrl) {
-		this.imgUrl= imgUrl;
+	public void setImages(String images) {
+		this.images= images;
 	}
 	@Override
 	public String toString() {
-		return "Goods [id=" + id + ", price=" + price + ", description=" + description + ", imgUrl=" + imgUrl
+		return "Goods [id=" + id + ", price=" + price + ", description=" + description + ", images=" + images
 				+ ", store=" + store + ", type=" + type + "]";
 	}
 	public String getName() {

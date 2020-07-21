@@ -5,15 +5,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 
+import com.zyl.shop.entity.ResponseJson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.annotation.ApplicationScope;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.zyl.shop.entity.Goods;
@@ -21,9 +25,16 @@ import com.zyl.shop.service.impl.GoodsServiceImpl;
 
 @RestController
 @RequestMapping("/home")
+@Scope("singleton")
 public class HomeController {
 	@Autowired
 	GoodsServiceImpl goodsService;
+	//存储种类名称到全局变量避免重复查询
+	private List<String> listCategory=null;
+	@PostConstruct
+	private void init(){
+		listCategory =goodsService.queryCategroy();
+	}
 	@RequestMapping(value="/{userId}",method=RequestMethod.GET)
 	public ModelAndView home(@PathVariable("userId")Integer userId,HttpSession session) {
 		ModelAndView mav = new ModelAndView();
@@ -43,74 +54,43 @@ public class HomeController {
 		return mav;
 	}
 	@RequestMapping(value="/queryName",method=RequestMethod.GET)
-	public Map<String,Object> queryName(HttpSession session) {
-		Map<String,Object> map = new HashMap<String, Object>();
+	public ResponseJson queryName(HttpSession session) {
 		String userName = (String) session.getAttribute("userName");
 		if(userName==null||userName=="") {
-			map.put("success", false);
-			map.put("data", "未登录");
-			return map;
+			return  new ResponseJson(false,"未登录",null);
 		}
-		map.put("success", true);
-		map.put("data", userName);
-		return map;
+		return  new ResponseJson(true,"登录成功",userName);
 	}
 	@RequestMapping(value="/queryCategroy",method=RequestMethod.GET)
-	public Map<String,Object> queryCategroy() {
-		Map<String,Object> map = new HashMap<String, Object>();
-		List<String> names =goodsService.queryCategroy();
-		if(names==null) {
-			map.put("success", false);
-			map.put("data", "类别获取失败");
-			return map;
+	public ResponseJson queryCategroy() {
+		ResponseJson responseJson =new ResponseJson();
+		if(listCategory==null){
+			init();
 		}
-		map.put("success", true);
-		map.put("data", names);
-		return map;
+		if(listCategory==null) {
+			responseJson.setSuccess(false);
+			responseJson.setMsg("类别获取失败");
+			return responseJson;
+		}
+		responseJson.setSuccess(true);
+		responseJson.setData(listCategory);
+		return responseJson;
 	}
 	@RequestMapping(value="/queryGoodsNumber/{categroy}",method=RequestMethod.GET)
-	public Map<String,Object> queryGoodsNumber(@PathVariable("categroy") String categroy) {
-		Map<String,Object> map = new HashMap<String, Object>();
-		Integer rows = goodsService.queryRowsNumber(categroy);
-		map.put("success", true);
-		map.put("data", rows);
-		return map;
+	public ResponseJson queryGoodsNumber(@PathVariable("categroy") String categroy) {
+		return new ResponseJson(true,null,goodsService.queryRowsNumber(categroy));
 	}
 	@RequestMapping(value= {"/queryGoods/{categroy}","/queryGoods/{categroy}/{pageNum}"})
-	public Map<String,Object> queryGoods(@PathVariable("categroy") String categroy,@PathVariable(value = "pageNum",required = false) Integer pageNum) {
-		Map<String,Object> map = new HashMap<String, Object>();
-		List<Goods> listGoods= new ArrayList<Goods>();
+	public ResponseJson queryGoods(@PathVariable("categroy") String categroy,@PathVariable(value = "pageNum",required = false) Integer pageNum) {
+		List<Goods> listGoods=null;
 		if(pageNum==null) {
 			listGoods=goodsService.queryGoods(categroy,0,8);
 		}else {
 			listGoods=goodsService.queryGoods(categroy,pageNum*8,8);
 		}
 		if(listGoods==null) {
-			map.put("success", false);
-			map.put("data", "数据获取失败");
-			return map;
+			return new ResponseJson(false,"数据获取失败",null);
 		}
-		map.put("success", true);
-		map.put("data", listGoods);
-		return map;
-	}
-	@PostMapping(value= {"/queryGoods","/queryGoods/{pageNum}"})
-	public Map<String,Object> queryGoodsByName(@RequestParam("goodsName") String goodsName,@PathVariable(value = "pageNum",required = false) Integer pageNum) {
-		Map<String,Object> map = new HashMap<String, Object>();
-		List<Goods> listGoods= new ArrayList<Goods>();
-		goodsName = goodsName.trim();
-		if(pageNum==null) {
-			listGoods=goodsService.queryGoodsByName(goodsName,0,8);
-		}else {
-			listGoods=goodsService.queryGoodsByName(goodsName,pageNum*8,8);
-		}
-		if(listGoods==null) {
-			map.put("success", false);
-			map.put("data", "数据获取失败");
-			return map;
-		}
-		map.put("success", true);
-		map.put("data", listGoods);
-		return map;
+		return new ResponseJson(true,"数据获取成功",listGoods);
 	}
 }

@@ -11,35 +11,83 @@ import com.zyl.shop.entity.GoodsInfo;
 
 @Mapper
 public interface GoodsDao {
-	
+	/**
+	 * 查询商品类别
+	 * @return
+	 */
 	@Select("select typename from tb_goodstype where status=1")
 	List<String> queryCategroy();
+
+	/**
+	 * 根据商品类别分页查询商品
+	 * @param categroy
+	 * @param startNumber
+	 * @param number
+	 * @return
+	 */
 	@Results(id = "goodsResult", value = {
-			  @Result(property = "id", column = "gid", id = true),
-			  @Result(property = "name", column = "goodsname"),
-			  @Result(property = "price", column = "goodsprice"),
-			  @Result(property = "description", column = "goodsdescription"),
-			  @Result(property = "imgUrl", column = "url")
-			})
-	@Select("select g.gid,g.goodsname,g.goodsprice,g.goodsdescription,t.url from tb_goodsinfo g LEFT JOIN tb_goodsimages t on t.giid=g.gid and t.status=1 and g.status=1 order by RAND() LIMIT #{startNumber},#{number}")
-	List<Goods> queryLimit(@Param("startNumber")Integer startNumber,@Param("number") Integer number);
-	@ResultMap("goodsResult")
-	@Select("select g.gid,g.goodsname,g.goodsprice,g.goodsdescription,t.url from tb_goodsinfo g,tb_goodstype s,tb_goodsimages t where s.typename=#{categroy} and s.gtid=g.goodstype and t.gid=g.gid and t.status=1 and g.status=1 and s.status=1 LIMIT #{startNumber},#{number}")
+			@Result(property = "id", column = "gid", id = true),
+			@Result(property = "name", column = "goodsname"),
+			@Result(property = "price", column = "goodsprice"),
+			@Result(property = "description", column = "goodsdescription"),
+			@Result(property = "images", column = "images")
+	})
+	@Select("select g.gid,g.goodsname,g.goodsprice,g.goodsdescription,g.images from tb_goodsinfo g,tb_goodstype s where s.typename=#{categroy} and s.gtid=g.goodstype and g.status=1 and s.status=1 LIMIT #{startNumber},#{number}")
+	//@Select("select g.gid,g.goodsname,g.goodsprice,g.goodsdescription,t.url from tb_goodsinfo g,tb_goodstype s,tb_goodsimages t where s.typename=#{categroy} and s.gtid=g.goodstype and t.gid=g.gid and t.status=1 and g.status=1 and s.status=1 LIMIT #{startNumber},#{number}")
 	List<Goods> queryGoodsByCategroy(@Param("categroy")String categroy,@Param("startNumber") Integer startNumber,@Param("number") Integer number);
+
+	/**
+	 * 查询热门商品
+	 * @param startNumber
+	 * @param number
+	 * @return
+	 */
+	@ResultMap("goodsResult")
+	@Select("select g.gid,g.goodsname,g.goodsprice,g.goodsdescription,g.images from tb_goodsinfo g,tb_goodstype s where g.hot=1 and s.gtid=g.goodstype and g.status=1 and s.status=1 LIMIT #{startNumber},#{number}")
+	List<Goods> queryHotGoods(@Param("startNumber") Integer startNumber,@Param("number") Integer number);
+
+	/**
+	 * 根据商品名称查询商品
+	 * @param goodsName
+	 * @param startNumber
+	 * @param number
+	 * @return
+	 */
+	@ResultMap("goodsResult")
+	@Select("select g.gid,g.goodsname,g.goodsprice,g.goodsdescription,g.images from tb_goodsinfo g where g.goodsname like concat('%',#{goodsName},'%') and g.status=1 LIMIT #{startNumber},#{number}")
+	List<Goods> queryGoodsByName(@Param("goodsName")String goodsName, @Param("startNumber")Integer startNumber, @Param("number")Integer number);
+
+	/**
+	 * 根据商品id查询商品
+	 * @param goodsId
+	 * @return
+	 */
+
+	@Results( value = {
+			@Result(property = "store", column = "store"),
+	})
+	@ResultMap("goodsResult")
+	@Select("select g.gid,g.goodsname,g.goodsprice,g.goodsdescription,g.store,g.images from tb_goodsinfo g where g.gid=#{goodsId} and g.status=1")
+	Goods queryGoodsById(@Param("goodsId")Integer goodsId);
+	/**
+	 * 查询某类别商品的数量
+	 * @param categroy
+	 * @return
+	 */
 	@Select("select count(*) from tb_goodsinfo g,tb_goodstype s where s.typename=#{categroy} and s.gtid=g.goodstype and g.status=1 and s.status=1")
 	Integer queryGoodsNumberByCategroy(String categroy);
-	@ResultMap("goodsResult")
-	@Select("select g.gid,g.goodsname,g.goodsprice,g.goodsdescription,t.url from tb_goodsinfo g,tb_goodsimages t where g.goodsname=#{goodsName} and t.gid=g.gid and t.status=1 and g.status=1 LIMIT #{startNumber},#{number}")
-	List<Goods> queryGoodsByName(@Param("goodsName")String goodsName, @Param("startNumber")Integer startNumber, @Param("number")Integer number);
-	@Results( value = {
-			  @Result(property = "id", column = "gid", id = true),
-			  @Result(property = "name", column = "goodsname"),
-			  @Result(property = "price", column = "goodsprice"),
-			  @Result(property = "description", column = "goodsdescription"),
-			  @Result(property = "store", column = "store")
-			})
-	@Select("select g.gid,g.goodsname,g.goodsprice,g.goodsdescription,g.store from tb_goodsinfo g where g.gid=#{goodsId} and g.status=1")
-	Goods queryGoodsById(@Param("goodsId")Integer goodsId);
+	/**
+	 * 查询热卖商品的数量
+	 * @return
+	 */
+	@Select("select count(gid) from tb_goodsinfo where hot=1 and status=1")
+	Integer queryHotGoodsNum();
+
+	/**
+	 * 查询商品评论
+	 * @param goodsId
+	 * @return
+	 */
 	@Results(value= {
 			@Result(property = "person", column = "username"),
 			@Result(property = "details", column = "assessiondetails"),
@@ -47,7 +95,13 @@ public interface GoodsDao {
 	})
 	@Select("select u.name username,a.assessiondetails,a.date from tb_goodsassession a,tb_userinfo u where u.uid=a.uid and a.gid=#{goodsId} and a.status=1 and u.status=1")
 	List<Comments> queryGoodsComments(@Param("goodsId")Integer goodsId);
-
+	/**
+	 * 查询商品图片
+	 * @param goodsId
+	 * @return
+	 */
+	@Select("select t.url from tb_goodsimages t where t.gid=#{goodsId} and t.status=1")
+	List<String> queryGoodsImgs(Integer goodsId);
 	/**
 	 * 查询是否在用户的购物车里
 	 * @param userID
@@ -57,16 +111,9 @@ public interface GoodsDao {
 	@Select("SELECT number from tb_shoppingcart WHERE gid=#{goodsId} and uid= #{userID} and status=1")
 	Integer queryGoodsShoppingCart(@Param("userID")Integer userID,@Param("goodsId")Integer goodsId);
 	@Insert("insert into `tb_shoppingcart` (`uid`, `gid`, `number`, `status`) values (#{userID}, #{goodsId}, '1', '1')")
-    Integer insert2ShoppingCart(@Param("userID")Integer userID,@Param("goodsId")Integer goodsId);
+	Integer insert2ShoppingCart(@Param("userID")Integer userID,@Param("goodsId")Integer goodsId);
 
-	/**
-	 * 查询商品图片
-	 * @param goodsId
-	 * @return
-	 */
-	@Select("select t.url from tb_goodsimages t where t.gid=#{goodsId} and t.status=1")
-	List<String> queryGoodsImgs(Integer goodsId);
-	
+
 	/**
 	 * 添加商品
 	 * @param goodsInfo
@@ -74,7 +121,7 @@ public interface GoodsDao {
 	@Insert("insert into `tb_goodsinfo`(`gid`, `goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) values(#{gid}, #{goodsname}, #{goodsprice}, #{store}, #{status}, #{goodsdescription}, #{goodstype})")
 	@Options(useGeneratedKeys=true, keyProperty="gid")
 	void addGood(GoodsInfo goodsInfo);
-	
+
 	/**
 	 * 添加商品图片
 	 * @param goodsImage
@@ -82,7 +129,7 @@ public interface GoodsDao {
 	@Insert("insert into `tb_goodsimages`(giid, url, gid, status) values(#{giid}, #{url}, #{gid}, #{status})")
 	@Options(useGeneratedKeys=true, keyProperty="giid")
 	void addGoodImage(GoodsImage goodsImage);
-	
+
 	/**
 	 * 搜索指定类别下的符合条件的商品
 	 * @param gtid 类别ID
@@ -91,7 +138,12 @@ public interface GoodsDao {
 	 */
 	@Select("select * from tb_goodsinfo where (isnull(#{gtid}) or goodstype=#{gtid}) and goodsname like #{gname}")
 	List<GoodsInfo> searchGoodByTypeAndName(@Param("gtid")Integer gtid, @Param("gname")String gname);
-	
+
+	/**
+	 * 上下架商品
+	 * @param goodId
+	 * @param status
+	 */
 	@Update("update tb_goodsinfo set status=#{status} where gid=#{gid}")
 	void updateGoodStatus(@Param("gid")int goodId, @Param("status")String status);
 }

@@ -1,7 +1,6 @@
 body {
     padding: 0px;
     margin: 0px auto;
-    font-size:16px;
 }
 *{
     padding: 0px;
@@ -15,9 +14,23 @@ footer {
     text-align: center;
     font-size:16px;
 }
-* {
-    padding: 0px;
-    margin: 0px auto;
+header{
+    background-color:#EAEAEA;
+    height: 36px;
+}
+
+a{
+    text-decoration: none;
+}
+.header_right{
+    float:right;
+    margin-right:5px;
+}
+.header_right .btn{
+    font-size: 14px;
+}
+.header_right .form-control{
+    font-size: 14px;
 }
 .disp {
     width: 18%;
@@ -87,9 +100,7 @@ footer {
     background-color: rgb(94, 211, 200);
     height: 28px;
 }
-a{
-    text-decoration: none;
-}
+
 .categroy{
     width:80%;
     height:50px;
@@ -111,46 +122,13 @@ a{
     height:650px;
     margin: 0px 10% 0px 8%;
 }
-.pages {
-    margin-top: 30px;
-    margin-bottom: 20px;
-    float: left;
-    width: 100%;
-    text-align: center;
-}
 
-.pages span {
-    display: inline-block;
-    height: 20px;
-    width: 20px;
-    text-align: center;
-    background-color: rgb(94, 211, 200);
-    margin-right: 15px;
-}
-.pages span:hover {
-    background-color: red;
-}
-.pages span.active {
-    background-color: gray;
-}
 
-.header{
-    background-color:#EAEAEA;
 
-}
 
-.header_right{
-    float:right;
-    margin-right:5px;
-    font-size:18px;
-}
-
-.search{
-    float:right;
-    margin-right:50px;
-    font-size:18px;
-}
-
+/**
+图片轮播和标语轮播
+ */
 
 .dome{
     text-align: center;
@@ -210,14 +188,7 @@ a{
     width: 1000px;
     height: 300px;
 }
-footer {
-    height: 100px;
-    width:100%;
-    background-color: white;
-    margin-top: 20px;
-    text-align: center;
-    font-size:16px;
-}
+
 /*页码标签*/
 #pagination {
     margin-top: 20px;

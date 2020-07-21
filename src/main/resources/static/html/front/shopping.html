@@ -6,45 +6,28 @@
     <link href="../../css/bootstrap.css" rel="stylesheet">
     <link href="../../css/buy.css" rel="stylesheet">
     <link href="../../css/font-awesome.css" rel="stylesheet">
-    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="../../css/bootstrap-3.3.7-dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
-    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 </head>
 
 <body>
 <div class="popover-header" style="height:40px;">
     <a class="text-primary" id="userName" style="font-size:16px"></a>
-    <a href="/cart" class="head-cart"><button id="search" value="购物车" class="btn btn-primary">购物车</button></a>
-    <a href="/orders" class="head-cart"><button id="search" value="订单" class="btn btn-primary">订单</button></a>
-</div>
+    <a href="/orders" class="btn btn-primary">订单</a>
+    <a href="/cart" class="btn btn-primary">购物车</a></div>
 <div class="bg-secondary">
 
 </div>
 
 <div class="goods">
-<div id="demo" class="carousel slide" data-ride="carousel">
+<div id="carousel" class="carousel slide" data-ride="carousel">
  
   <!-- 轮播图片 限制最多四张图片 -->
-  <div class="carousel-inner">
-    <div class="carousel-item active" id="divimg1">
-    </div>
-    <div class="carousel-item" id="divimg2">
-    </div>
-    <div class="carousel-item" id="divimg3">
-    </div>
-    <div class="carousel-item" id="divimg4">
-    </div>
-  
+  <div class="carousel-inner" id="imgs">
   </div>
-   <a class="carousel-control-prev" href="#demo" data-slide="prev">
+   <a class="carousel-control-prev" href="#carousel" data-slide="prev">
     <span class="carousel-control-prev-icon"></span>
   </a>
-  <a class="carousel-control-next" href="#demo" data-slide="next">
+  <a class="carousel-control-next" href="#carousel" data-slide="next">
     <span class="carousel-control-next-icon"></span>
   </a>
  
@@ -206,22 +189,13 @@
             url: "getGoodsDetails/" + goodsId,
             success: function (msg) {
                 if (msg.success) {
-                    $("#divimg").empty();
-                    for (let i = 0, len = msg.data["imgUrls"].length; i < 4; i++) {
-                    	let n=len-1;
-                    	if(i ==0){
-                        let img = "<img class='goodsimg'  src='../"  + msg.data["imgUrls"][i] + "' >"
-                        $("#divimg1").append(img);
-                    	}else if(i<len){
-                            let img = "<img class='goodsimg'  src='../"  + msg.data["imgUrls"][i] + "' >"
-                            $("#divimg" + (i + 1) + "").append(img);
-                        	}
-                    	else{
-                    		let img = "<img class='goodsimg'  src='../"  + msg.data["imgUrls"][0] + "' >"
-                            $("#divimg" + (i + 1) + "").append(img);
-                    	}
-                    	
+                    $("#imgs").empty();
+                    let images = msg.data["images"].split(",");
+                    for (let i = 0, len = images.length; i < len; i++) {
+                        $("#imgs").append("<div class='item'><img class='goodsimg'  src='../"  + images[i] + "' ></div>");
                     }
+                    console.log($("#imgs .item:first"));
+                    $("#imgs .item:first").addClass('active');
                     $("#goodsprice").text(msg.data["price"]);
                     $("#store").text(msg.data["store"]);
                     $("#goodsDescription").text("描述：" + msg.data["description"]);
