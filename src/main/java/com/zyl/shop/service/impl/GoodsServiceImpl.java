@@ -5,10 +5,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.zyl.shop.entity.ResponseJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.zyl.shop.dao.GoodsDao;
@@ -16,6 +18,8 @@ import com.zyl.shop.entity.Goods;
 import com.zyl.shop.entity.GoodsImage;
 import com.zyl.shop.entity.GoodsInfo;
 import com.zyl.shop.service.GoodsService;
+
+import javax.servlet.http.HttpSession;
 
 @Service
 @Transactional
@@ -37,30 +41,39 @@ public class GoodsServiceImpl implements GoodsService {
 	}
 
 	/*
-	 * 查询指定数目的条数，如果为all则查询随机数据，否则查询指定类别的数据
+	 * 查询指定数目的条数，如果为hot则查询热卖，否则查询指定类别的数据
 	 */
 	@Override
-	public List<Goods> queryGoods(String categroy, Integer startNumber, Integer number) {
+	public ResponseJson queryGoodsByType(String categroy, Integer pageNum) {
 		List<Goods> listGoods = null;
-
+		int startNumber=0;
+		int number=8;
+		if(pageNum!=null) {
+			startNumber = pageNum*8;
+		}
 		if ("hot".equals(categroy)) {
 			listGoods = goodsDao.queryHotGoods(startNumber, number);}
-else{
+		else{
 			listGoods = goodsDao.queryGoodsByCategroy(categroy, startNumber, number);
 		}
-		if (listGoods != null && !listGoods.isEmpty()) {
-			return listGoods;
+		if (listGoods == null || listGoods.isEmpty()) {
+			return new ResponseJson(false,"数据获取失败",null);
 		}
-		return null;
+		return new ResponseJson(true,"数据获取成功",listGoods);
 	}
-
-	public Integer queryRowsNumber(String categroy) {
+	@Override
+	public Integer queryRowsNumber(String categroy,String option) {
 		Integer row=null;
-		if ("hot".equals(categroy)) {
-			row = goodsDao.queryHotGoodsNum();
-		} else{
-			row = goodsDao.queryGoodsNumberByCategroy(categroy);
+		if("name".equals(option)){
+			row = goodsDao.queryGoodsNumberByName(categroy);
+		}else if("type".equals(option)){
+			if ("hot".equals(categroy)) {
+				row = goodsDao.queryHotGoodsNum();
+			} else{
+				row = goodsDao.queryGoodsNumberByCategroy(categroy);
+			}
 		}
+
 		if (row != null && row > 0) {
 			return row;
 		}
@@ -68,12 +81,17 @@ else{
 	}
 
 	@Override
-	public List<Goods> queryGoodsByName(String goodsName, Integer startNumber, Integer number) {
-		List<Goods> listGoods = goodsDao.queryGoodsByName(goodsName, startNumber, number);
-		if (listGoods != null && !listGoods.isEmpty()) {
-			return listGoods;
+	public ResponseJson queryGoodsByName(String goodsName, Integer pageNum) {
+		List<Goods> listGoods = null;
+		if(pageNum==null) {
+			listGoods=goodsDao.queryGoodsByName(goodsName,0,8);
+		}else {
+			listGoods=goodsDao.queryGoodsByName(goodsName,pageNum*8,8);
 		}
-		return null;
+		if(listGoods==null) {
+			return new ResponseJson(false,"暂无结果",null);
+		}
+		return new ResponseJson(true,"数据获取成功",listGoods);
 	}
 
 	@Override

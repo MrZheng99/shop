@@ -43,56 +43,33 @@
 <
 <script src="../../js/showPages.js"></script>
 <script>
-    $("#inputSearch").keyup(function (e) {
-        if(e.keyCode==13){
-            console.log(this);
-            $.ajax({
-                type: 'POST',
-                url: "/search/queryGoods",
-                data: { goodsName: "%"+$(this).val().trim()+"%" },
-                success: function (msg) {
-                    if (msg.success) {
-                        $(".content").empty();
-                        for (let i = 0, len = msg.data.length; i < len; i++) {
-                            let ele = msg.data[i];
-                            let d = "<div class='disp'><img src='../" + ele["images"].split(",")[0] + "'><span class='description'>" + ele["name"] + "</span> <span class='price'>" + "￥" + ele["price"] + "</span><button>加入购物车</button></div>"
-                            $(".content").append(d);
-                        }
-                    }
-                }
-
-            });
-        }
-
-
-    });
-
     //跳转到浏览商品详情界面
     function goShopping(goodsId) {
-        window.location.href = "../shopping/" + goodsId;
+        window.location.href = "/shopping/" + goodsId;
     }
-
     //分页
-    function loadPageNumber(categroy) {
+    function loadPageNumber(goodsName) {
         $.ajax({
             type: 'GET',
-            url: "/home/queryGoodsNumber/" + categroy,
+            url: "/goods/number/name/" + goodsName,
             success: function (msg) {
                 if (msg.success) {
                     let pages = Math.ceil(msg.data / 8);
-                    $("#pagination").showPage(pages,categroy);
-                } else {
-                    $(".categroy.ol li:last").after('加载失败');
+                    $("#pagination").showPage(pages,goodsName);
                 }
             }
-
         });
     }
 
-    function getGoods(categroy) {
+    function getGoods(goodsName) {
+        if(goodsName==null||goodsName==""){
+            alert("请输入需要搜索的商品");
+            return;
+        }
+        loadPageNumber(goodsName);
         $.ajax({
             type: 'GET',
-            url: "/home/queryGoods/" + categroy,
+            url: "/goods/name/" + goodsName,
             success: function (msg) {
                 if (msg.success) {
                     $(".content").empty();
@@ -110,12 +87,11 @@
     function joinShoppingCart(goodsId) {
         $.ajax({
             type: 'GET',
-            url: "../shopping/addGoods2ShoppingCart/" + goodsId,
+            url: "/shopping/addGoods2ShoppingCart/" + goodsId,
             success: function (msg) {
                 if (msg.success) {
                     $("#btn" + goodsId).text("已在购物车");
                     $("#btn" + goodsId).attr("disabled", "disabled");
-
                 } else {
                     if (msg.data === "未登录") {
                         alert("请登录!!!");
@@ -129,23 +105,44 @@
 
         });
     }
-
-    $.ajax({
-
-        type: 'GET',
-        url: "/home/queryName",
-        success: function (msg) {
-            if (msg.success) {
-                $("#userName").text(msg.data);
-            } else {
-                $("#userName").text(msg.msg);
+    function getUserName(){
+        $.ajax({
+            type: 'GET',
+            url: "/user/name",
+            success: function (msg) {
+                if (msg.success) {
+                    $("#userName").text(msg.data);
+                } else {
+                    $("#userName").text(msg.msg);
+                }
             }
-        }
+        });
+    }
 
-    });
-
+    function getKeyWord(){
+        $.ajax({
+            type: 'GET',
+            url: "/search/getKeyWord",
+            success: function (msg) {
+                if (msg.success) {
+                   getGoods(msg.data);
+                } else {
+                    alert("重新输入搜索");
+                }
+            }
+        });
+    }
+    function addSearch(){
+        $("#inputSearch").keyup(function (e) {
+            if(e.keyCode==13){
+                getGoods($(this).val().trim());
+            }
+        });
+    }
     window.onload = function () {
-
+        addSearch();
+        getUserName();
+        let goodsName = getKeyWord();
         //最后一个右边距0
         for (let i = 0; i < 8; i++) {
             if (i % 4 == 3) {

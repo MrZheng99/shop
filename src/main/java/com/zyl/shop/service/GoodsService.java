@@ -3,16 +3,20 @@ package com.zyl.shop.service;
 import java.io.IOException;
 import java.util.List;
 
+import com.zyl.shop.entity.ResponseJson;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.zyl.shop.entity.Goods;
 import com.zyl.shop.entity.GoodsInfo;
 
+import javax.servlet.http.HttpSession;
+
 public interface GoodsService {
 	List<String> queryCategroy(); 
-	Integer queryRowsNumber(String categroy);
-	List<Goods> queryGoods(String categroy, Integer startNumber, Integer number);
-	List<Goods> queryGoodsByName(String goodsName, Integer startNumber, Integer number);
+	Integer queryRowsNumber(String type,String option);
+	ResponseJson queryGoodsByType(String type, Integer pageNum);
+	ResponseJson queryGoodsByName(String goodsName, Integer pageNum) ;
 	Goods queryGoodsById(Integer goodsId);
 
 	/**

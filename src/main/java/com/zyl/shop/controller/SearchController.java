@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -16,20 +18,23 @@ import java.util.List;
 public class SearchController {
     @Autowired
     GoodsServiceImpl goodsService;
-    @GetMapping(value= {"","{pageNum}"})
-    public ResponseJson queryGoodsByName(@RequestParam("goodsName") String goodsName, @PathVariable(value = "pageNum",required = false) Integer pageNum) {
-        List<Goods> listGoods=null;
-        goodsName = goodsName.trim();
-        if(pageNum==null) {
-            listGoods=goodsService.queryGoodsByName(goodsName,0,8);
-        }else {
-            listGoods=goodsService.queryGoodsByName(goodsName,pageNum*8,8);
+    @GetMapping("")
+    public ModelAndView jump2Search() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("/html/front/search.html");
+        return mav;
+    }
+    @RequestMapping("/getKeyWord")
+    public ResponseJson saveKeyWords(HttpSession session) {
+        try{
+            String keyWord = (String) session.getAttribute("keyWord");
+            if(keyWord!=null){
+                session.removeAttribute("keyWord");
+                return new ResponseJson(true,"获取关键字成功",keyWord);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        if(listGoods==null) {
-            return new ResponseJson(false,"数据获取失败",null);
-
-        }
-        return new ResponseJson(true,"数据获取成功",listGoods);
-
+        return new ResponseJson(false,"获取关键字失败");
     }
 }

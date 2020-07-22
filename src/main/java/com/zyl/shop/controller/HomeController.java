@@ -11,12 +11,7 @@ import javax.servlet.http.HttpSession;
 import com.zyl.shop.entity.ResponseJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.ApplicationScope;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -53,14 +48,6 @@ public class HomeController {
 		mav.setViewName("/html/front/home.html");
 		return mav;
 	}
-	@RequestMapping(value="/queryName",method=RequestMethod.GET)
-	public ResponseJson queryName(HttpSession session) {
-		String userName = (String) session.getAttribute("userName");
-		if(userName==null||userName=="") {
-			return  new ResponseJson(false,"未登录",null);
-		}
-		return  new ResponseJson(true,"登录成功",userName);
-	}
 	@RequestMapping(value="/queryCategroy",method=RequestMethod.GET)
 	public ResponseJson queryCategroy() {
 		ResponseJson responseJson =new ResponseJson();
@@ -76,21 +63,14 @@ public class HomeController {
 		responseJson.setData(listCategory);
 		return responseJson;
 	}
-	@RequestMapping(value="/queryGoodsNumber/{categroy}",method=RequestMethod.GET)
-	public ResponseJson queryGoodsNumber(@PathVariable("categroy") String categroy) {
-		return new ResponseJson(true,null,goodsService.queryRowsNumber(categroy));
-	}
-	@RequestMapping(value= {"/queryGoods/{categroy}","/queryGoods/{categroy}/{pageNum}"})
-	public ResponseJson queryGoods(@PathVariable("categroy") String categroy,@PathVariable(value = "pageNum",required = false) Integer pageNum) {
-		List<Goods> listGoods=null;
-		if(pageNum==null) {
-			listGoods=goodsService.queryGoods(categroy,0,8);
-		}else {
-			listGoods=goodsService.queryGoods(categroy,pageNum*8,8);
+    @RequestMapping("/saveKeyWord/{keyWord}")
+    public ResponseJson saveKeyWords(@PathVariable("keyWord") String keyWord,HttpSession session) {
+        try{
+			session.setAttribute("keyWord",keyWord);
+			return new ResponseJson(true,"关键字设置成功");
+		}catch (Exception e){
+			e.printStackTrace();
 		}
-		if(listGoods==null) {
-			return new ResponseJson(false,"数据获取失败",null);
-		}
-		return new ResponseJson(true,"数据获取成功",listGoods);
-	}
+		return new ResponseJson(false,"关键字设置失败");
+    }
 }

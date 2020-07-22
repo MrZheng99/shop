@@ -74,8 +74,16 @@ public interface GoodsDao {
 	 * @param categroy
 	 * @return
 	 */
-	@Select("select count(*) from tb_goodsinfo g,tb_goodstype s where s.typename=#{categroy} and s.gtid=g.goodstype and g.status=1 and s.status=1")
+	@Select("select count(g.gid) from tb_goodsinfo g,tb_goodstype s where s.typename=#{categroy} and s.gtid=g.goodstype and g.status=1 and s.status=1")
 	Integer queryGoodsNumberByCategroy(String categroy);
+
+	/**
+	 * 模糊查询该名称的商品数量
+	 * @param name
+	 * @return
+	 */
+	@Select("select count(g.gid) from tb_goodsinfo g,tb_goodstype s where g.goodsname like concat('%',#{name},'%') and s.gtid=g.goodstype and g.status=1 and s.status=1")
+	Integer queryGoodsNumberByName(String name);
 	/**
 	 * 查询热卖商品的数量
 	 * @return
