@@ -1,0 +1,29 @@
+/*页码标签*/
+#pagination {
+    margin-top: 20px;
+    text-align:center
+}
+
+#pagination a {
+    padding: 4px 8px;
+    margin: 4px;
+    border: 1px solid #aaaadd;
+    text-decoration: none;
+    color: #006699;
+    display: inline-block;
+}
+
+#pagination a:hover {
+    border: 1px solid #FF0000;
+    color: #000;
+}
+
+#pagination .current {
+    font-weight: bold;
+    background-color: red;
+    color: #FFF;
+}
+
+#pagination .show {
+    display: none;
+}

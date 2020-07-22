@@ -3,8 +3,7 @@
  * @param count
  * @param categroy
  */
-$.fn.showPage = function(count,categroy) {
-    $("#pagination").html("");
+$.fn.showPage = function(count,value,op) {
     var str = "<a href='javascript:void(0)' class='current'>1</a>";
     for (var i = 2; i <= count; i++) {
         str += "<a href='javascript:void(0)'>" + i + "</a>";
@@ -25,7 +24,7 @@ $.fn.showPage = function(count,categroy) {
         //当前对象选中
         let num = $(obj).index() + 1;
         // findByPage(num,obj);//调用外部函数按页查询
-        getGoods(categroy + "/" + (num-1));
+        getGoods(value + "/" + (num-1),op);
         $(obj).addClass("current"); //给当前点击的这个页码添加样式
         if (num < 5 || num > pageCount - 5) {
             return;

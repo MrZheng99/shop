@@ -29,7 +29,6 @@ public class SearchController {
         try{
             String keyWord = (String) session.getAttribute("keyWord");
             if(keyWord!=null){
-                session.removeAttribute("keyWord");
                 return new ResponseJson(true,"获取关键字成功",keyWord);
             }
         }catch (Exception e){

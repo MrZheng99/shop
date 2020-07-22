@@ -1,0 +1,40 @@
+body {
+    padding: 0px;
+    margin: 0px auto;
+}
+*{
+    padding: 0px;
+    margin: 0px auto;
+}
+/**
+头部
+ */
+header{
+    background-color:#EAEAEA;
+    height: 36px;
+}
+
+a{
+    text-decoration: none;
+}
+.header_right{
+    float:right;
+    margin-right:5px;
+}
+.header_right .btn{
+    font-size: 14px;
+}
+.header_right .form-control{
+    font-size: 14px;
+}
+/**
+底部
+ */
+footer {
+    height: 100px;
+    width:100%;
+    background-color: white;
+    margin-top: 20px;
+    text-align: center;
+    font-size:16px;
+}
