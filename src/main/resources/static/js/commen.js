@@ -92,18 +92,26 @@ function getGoods(value,op) {
  * @param goodsId
  */
 function joinShoppingCart(goodsId) {
+    console.log(goodsId)
     $.ajax({
         type: 'GET',
         url: "../shopping/addGoods2ShoppingCart/" + goodsId,
         success: function (msg) {
             if (msg.success) {
-                $("#btn" + goodsId).text("已在购物车");
-                $("#btn" + goodsId).attr("disabled", "disabled");
+                alert("添加成功");
+                $("#btnJoinShoppingCart").text("已在购物车");
+                $("#btnJoinShoppingCart").attr("disabled", false);
 
             } else {
                 if (msg.data === "未登录") {
                     alert("请登录!!!");
                     window.location.href = "../index";
+                }
+
+                if (msg.data === "已在购物车之中") {
+                    alert("已在购物车之中!!!");
+                    $("#btnJoinShoppingCart").val("已在购物车");
+                    $("#btnJoinShoppingCart").attr("disabled", true);
                 }
                 if (msg.data === "加入购物车失败") {
                     alert("加入购物车失败!!!");

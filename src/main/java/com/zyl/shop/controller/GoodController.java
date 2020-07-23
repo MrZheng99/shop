@@ -1,7 +1,10 @@
 package com.zyl.shop.controller;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.zyl.shop.entity.Goods;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +21,38 @@ import javax.servlet.http.HttpSession;
 public class GoodController {
 	@Autowired
 	private GoodsService goodsService;
+	@PostMapping(value="/goods/uploadImage")
+	public Map<String,Object> uploadImage(@RequestParam("upload") MultipartFile file) {
+
+		System.out.println(file.getOriginalFilename());
+		try {
+			Map<String, Object> rs = goodsService.uploadImage(file);
+
+			Map<String, Object> map = new HashMap<String, Object>();
+			if (rs != null) {
+				map.put("fileName", rs.get("fileName"));
+				map.put("url", "..\\..\\" + rs.getOrDefault("upload", ""));
+				map.put("uploaded", 1);
+				System.out.println(map.get("url"));
+				return map;
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return new HashMap<String,Object>();
+	}
 
 	@RequestMapping(value="/good", method=RequestMethod.POST)
 	public int addGood(@RequestParam("pic") MultipartFile[] file, @RequestParam int tid,
 			@RequestParam String gname, @RequestParam double price, @RequestParam int balance,
-			@RequestParam String intro, @RequestParam String descr) {
+			 @RequestParam String descr) {
 		
 		System.out.println(file[0].getOriginalFilename());
-
+System.out.println(descr);
 		try {
-			goodsService.addGood(file, tid, gname, price, balance, intro, descr);
+			goodsService.addGood(file, tid, gname, price, balance, descr);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return 0;

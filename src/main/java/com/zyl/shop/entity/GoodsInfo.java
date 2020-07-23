@@ -8,7 +8,17 @@ public class GoodsInfo {
 	private String status;
 	private String goodsdescription;
 	private int goodstype;
-	public int getGid() {
+	private String images;
+
+    public String getImages() {
+        return images;
+    }
+
+    public void setImages(String images) {
+        this.images = images;
+    }
+
+    public int getGid() {
 		return gid;
 	}
 	public void setGid(int gid) {
@@ -50,9 +60,18 @@ public class GoodsInfo {
 	public void setGoodstype(int goodstype) {
 		this.goodstype = goodstype;
 	}
-	@Override
-	public String toString() {
-		return "GoodsInfo [gid=" + gid + ", goodsname=" + goodsname + ", goodsprice=" + goodsprice + ", store=" + store
-				+ ", status=" + status + ", goodsdescription=" + goodsdescription + ", goodstype=" + goodstype + "]";
-	}
+
+    @Override
+    public String toString() {
+        return "GoodsInfo{" +
+                "gid=" + gid +
+                ", goodsname='" + goodsname + '\'' +
+                ", goodsprice=" + goodsprice +
+                ", store=" + store +
+                ", status='" + status + '\'' +
+                ", goodsdescription='" + goodsdescription + '\'' +
+                ", goodstype=" + goodstype +
+                ", images='" + images + '\'' +
+                '}';
+    }
 }

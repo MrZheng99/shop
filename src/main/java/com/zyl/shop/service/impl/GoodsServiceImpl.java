@@ -1,9 +1,12 @@
 package com.zyl.shop.service.impl;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.zyl.shop.entity.ResponseJson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,7 +126,7 @@ public class GoodsServiceImpl implements GoodsService {
 	}
 
 	@Override
-	public void addGood(MultipartFile[] files, int tid, String gname, double price, int balance,String intro, String descr) throws IOException {
+	public void addGood(MultipartFile[] files, int tid, String gname, double price, int balance, String descr) throws IOException {
 		GoodsInfo goodsInfo = new GoodsInfo();
 		goodsInfo.setGid(0);
 		goodsInfo.setGoodsname(gname);
@@ -132,25 +135,39 @@ public class GoodsServiceImpl implements GoodsService {
 		goodsInfo.setStore(balance);
 		goodsInfo.setGoodsdescription(descr);
 		goodsInfo.setStatus("1");
-		goodsDao.addGood(goodsInfo);
+		List<String> listImage = new ArrayList<String>();
 		for(MultipartFile file : files) {
-			this.addImage(file, goodsInfo.getGid());
+			listImage.add(this.addImage(file));
 		}
+		goodsInfo.setImages(String.join(",",listImage));
+		goodsDao.addGood(goodsInfo);
+
 	}
 
-	private void addImage(MultipartFile file, int gid) throws IOException{
-		GoodsImage goodsImage = new GoodsImage();
-		goodsImage.setGiid(0);
-		goodsImage.setGid(gid);
-		String fileName = ""+gid+"_"+System.currentTimeMillis()+"."+file.getOriginalFilename().split("\\.", 2)[1];
-		goodsImage.setUrl("/images/goods/"+fileName);
-		goodsImage.setStatus("1");
-		goodsDao.addGoodImage(goodsImage);
+	@Override
+	public Map<String, Object> uploadImage(MultipartFile file) throws IOException {
+		String fileName = "_"+System.currentTimeMillis()+"."+file.getOriginalFilename().split("\\.", 2)[1];
+
+		File dest = new File(ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + "static/images/goods"),
+				fileName);
+System.out.println(dest.getAbsolutePath());
+		file.transferTo(dest);
+		Map<String, Object> rs = new HashMap<String, Object>();
+		rs.put("fileName", fileName);
+		rs.put("upload", "images\\goods\\" + fileName);
+		return 	rs;
+	}
+
+	private String addImage(MultipartFile file) throws IOException {
+
+		String fileName = "_"+System.currentTimeMillis()+"."+file.getOriginalFilename().split("\\.", 2)[1];
 
 		File dest = new File(ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + "static/images/goods"),
 				fileName);
 
 		file.transferTo(dest);
+		return 	"images/goods/"+fileName;
+
 	}
 
 	@Override

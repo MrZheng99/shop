@@ -126,7 +126,7 @@ public interface GoodsDao {
 	 * 添加商品
 	 * @param goodsInfo
 	 */
-	@Insert("insert into `tb_goodsinfo`(`gid`, `goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `goodstype`) values(#{gid}, #{goodsname}, #{goodsprice}, #{store}, #{status}, #{goodsdescription}, #{goodstype})")
+	@Insert("insert into `tb_goodsinfo`(`gid`, `goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `images`,`goodstype`) values(#{gid}, #{goodsname}, #{goodsprice}, #{store}, #{status}, #{goodsdescription},#{images}, #{goodstype})")
 	@Options(useGeneratedKeys=true, keyProperty="gid")
 	void addGood(GoodsInfo goodsInfo);
 

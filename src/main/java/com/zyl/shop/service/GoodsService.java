@@ -1,7 +1,9 @@
 package com.zyl.shop.service;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import com.zyl.shop.entity.ResponseJson;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -32,14 +34,18 @@ public interface GoodsService {
 	 * @param file
 	 * @param tid
 	 * @param gname
-	 * @param price
+	 * @param price 封面图片
 	 * @param balance
-	 * @param intro
 	 * @param descr
 	 * @return
 	 */
-	void addGood(MultipartFile[] file, int tid, String gname, double price, int balance,String intro, String descr) throws IOException;
-	
+	void addGood(MultipartFile[] file, int tid, String gname, double price, int balance,String descr) throws IOException;
+
+	/**
+	 * 上传商品描述的图片
+	 * @param file
+	 */
+	Map<String,Object> uploadImage(MultipartFile file) throws IOException;
 	/**
 	 * 模糊搜索指定类别下的商品
 	 * @param tid 类别ID, 为null时返回所有类别

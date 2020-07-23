@@ -70,12 +70,12 @@
 								</div>
 							</td>
 						</tr>
-						<tr>
-							<td class="td_right">商品简介：</td>
-							<td colspan="5">
-								 <textarea name="intro" id="intro" rows="3" cols="100"></textarea>
-							</td>
-						</tr>
+<!--						<tr>-->
+<!--							<td class="td_right">商品简介：</td>-->
+<!--							<td colspan="5">-->
+<!--								 <textarea name="intro" id="intro" rows="3" cols="100"></textarea>-->
+<!--							</td>-->
+<!--						</tr>-->
 						<tr>
 							<td class="td_right">商品描述：</td>
 							<td colspan="5">
@@ -102,16 +102,16 @@ function addGoodsInfo() {
 	var gname = $.trim($("#gname").val());
 	var price = $.trim($("#price").val());
 	var balance = $.trim($("#balance").val());
-	var intro = $.trim($("#intro").val());
-	// var descr = CKEDITOR.instances.editor1.getData();
-	var descr = CKEDITOR.instances.editor1.document.$.body.textContent;
+	//var intro = $.trim($("#intro").val());
+	var descr = CKEDITOR.instances.editor1.getData();
+	//var descr = CKEDITOR.instances.editor1.document.$.body.textContent;
 	
 	$.ajaxFileUpload({
 		url:'../../good',
 		secureuri: false,
 		fileElementId:"pic",
 		dataType:"json",
-		data:{tid:tno, gname:gname,price:price,balance:balance,intro:intro,descr:descr},
+		data:{tid:tno, gname:gname,price:price,balance:balance,descr:descr},
 		success:function(data, stuts) {
 			data = parseInt($.trim(data));
 			if (data == 1) {

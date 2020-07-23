@@ -41,7 +41,8 @@ class CartGood{
 			success: (data)=>{
 				console.log(data)
 				this.name = data.data.name;
-				this.imgUrl = data.data.imgUrls[0];
+
+				this.imgUrl = data.data.images.split(",")[0];
 				this.price = data.data.price;
 			}
 		})
