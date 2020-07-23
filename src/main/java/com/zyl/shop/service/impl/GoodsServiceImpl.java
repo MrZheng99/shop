@@ -150,7 +150,7 @@ public class GoodsServiceImpl implements GoodsService {
 
 		File dest = new File(ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + "static/images/goods"),
 				fileName);
-System.out.println(dest.getAbsolutePath());
+		System.out.println(dest.getAbsolutePath());
 		file.transferTo(dest);
 		Map<String, Object> rs = new HashMap<String, Object>();
 		rs.put("fileName", fileName);

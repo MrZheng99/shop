@@ -23,8 +23,6 @@ public class GoodController {
 	private GoodsService goodsService;
 	@PostMapping(value="/goods/uploadImage")
 	public Map<String,Object> uploadImage(@RequestParam("upload") MultipartFile file) {
-
-		System.out.println(file.getOriginalFilename());
 		try {
 			Map<String, Object> rs = goodsService.uploadImage(file);
 
@@ -46,11 +44,11 @@ public class GoodController {
 
 	@RequestMapping(value="/good", method=RequestMethod.POST)
 	public int addGood(@RequestParam("pic") MultipartFile[] file, @RequestParam int tid,
-			@RequestParam String gname, @RequestParam double price, @RequestParam int balance,
-			 @RequestParam String descr) {
-		
+					   @RequestParam String gname, @RequestParam double price, @RequestParam int balance,
+					   @RequestParam String descr) {
+
 		System.out.println(file[0].getOriginalFilename());
-System.out.println(descr);
+		System.out.println(descr);
 		try {
 			goodsService.addGood(file, tid, gname, price, balance, descr);
 		} catch (IOException e) {
@@ -59,12 +57,12 @@ System.out.println(descr);
 		}
 		return 1;
 	}
-	
+
 	@RequestMapping("/goods")
 	public List<GoodsInfo> searchGoodsByTypeAndName(@RequestParam Integer tid, @RequestParam String gname){
 		return goodsService.searchGoodByTypeAndName(tid, gname);
 	}
-	
+
 	@RequestMapping(value="/good/{goodId}", method=RequestMethod.POST)
 	public ResponseJson updateGoodStatus(@PathVariable("goodId")int goodId, @RequestParam String status) {
 		goodsService.updateGoodStatus(goodId, status);

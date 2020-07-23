@@ -56,16 +56,18 @@ class CartGood{
         let div = document.createElement("div");
         div.className = cssClass;
         div.innerHTML = /*html*/`
-		    <img  class="cart_img" src="/${this.imgUrl}">
-		    <div class="cart_index_2">
+		    <div>
+		        <img  class="cart_img" src="/${this.imgUrl}">
+		    </div>
+		    <div>
 		       <a href="/shopping/${this.gid}">${this.name}</a>
 		    </div>
-		    <div class="cart_index_3">
-		       ${this.number}
+		    <div>
+		      <input type="number" class="cart_number" value= ${this.number}>
 		    </div>
-		    <div class="cart_de">
-		       <input type="button" value="结算" onclick="checkout(${this.gid}, ${this.number})" class="btn btn-primary"><br><br>
-		       <input type="button" value="移除该商品" onclick="deleteGood(${this.gid})" class="btn btn-danger">
+		    <div>
+		       <input type="button" value="结算" onclick="checkout(${this.gid}, ${this.number})" class="btn btn-primary">
+		       <input type="button" value="移除" onclick="deleteGood(${this.gid})" class="btn btn-danger">
 		    </div>
 		`;
 		parent.appendChild(div);

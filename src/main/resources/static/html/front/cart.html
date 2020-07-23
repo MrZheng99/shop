@@ -1,81 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>购物车</title>
-<link href="../../css/cart.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-<link href="../../css/font-awesome.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <title>购物车</title>
+    <link href="../../css/cart.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../../css/common.css">
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
+
 </head>
 
 <body >
-<div class="popover-header" style="height: 60px; line-height: 40px;">
-    <a class="text-primary" >当前用户:<span id="userName"></span></a>
-    <label class="float-right">
-        <a href="/orders" class="btn btn-primary">订单</a>
-        <a href="/cart" class="btn btn-primary">购物车</a>
-    </label>
-</div>
+<header>
+    <font class="text-primary">当前用户:&nbsp;</font>
+    <a class="text-primary" id="userName"></a>
+    <div class="header_right">
+        <input id="inputSearch" placeholder="输入搜索" maxlength="30" class="form-control"
+               style="display: inline-block; width: 150px;">
+        <a href="/orders" class="btn btn-link">订单</a>
+        <a href="/cart" class="btn btn-link">购物车</a>
+    </div>
+</header>
 <div class="sec">
-        <img class="sec_img" src="../../images/goods_test.jpg">
-        <h1 class="sec_title"><font class="font-italic" color="#CC3333"> 购物车</font></h1>
+    <img class="sec_img" src="../../images/goods_test.jpg">
+    <h1 class="sec_title"><font class="font-italic" color="#CC3333"> 购物车</font></h1>
 </div><br>
 
 <div >
-    <div  class="tit">
-        <h4 class="text-capitalize"> 商品 </h4>
-    </div>
-    <div align="right" class="pay_right">
-    <label  class="pay1" > 当前金额(不含运费): <em></em> 元
-    <input  type="button" value="结算" class="btn btn-info" onclick="payAll()">
 
-    </label>
+    <div align="right" class="pay_right">
+        <label  class="pay1" > 当前金额(不含运费): <em></em> 元
+            <input  type="button" value="结算" class="btn btn-info" onclick="payAll()">
+
+        </label>
     </div>
 </div>
 
 <hr class="justify-content-center" width=90%>
 
 <div class="cart_index">
-    <div class="cart_index_1">
-    商品信息
+    <div >
+        商品信息
     </div>
-    <div class="cart_index_2_s">
-    商品名
+    <div>
+        商品名
     </div>
-    <div class="cart_index_3">
-    数量
+    <div >
+        数量
     </div>
 </div>
 <div id="cart-goods">
-
-	<div class="cart">
-	    <img  class="cart_img" >
-	     <div class="cart_index_2">
-	       
-	    </div>
-	    <div class="cart_index_3_s">
-	      
-	    </div>
-	    <div class="cart_de">
-	       <input type="button" value="结算" class="btn btn-primary"><br><br>
-	       <input type="button" value="移除该商品" class="btn btn-danger">
-	    </div>
-	</div>
 </div>
-<br>
 
-
-<br>
-
-  <footer>
-<div >
+<footer>
     Copyright&nbsp;&copy;&nbsp;2020&nbsp;&nbsp;ZYL团队&nbsp;版权所有
-</div>
 </footer>
 <!-- JS, Popper.js, and jQuery -->
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src="../../js/commen.js"></script>
 <script type="text/javascript" src="/js/cart.js"></script>
 <script>
     let cart = new Cart();
