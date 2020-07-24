@@ -20,15 +20,15 @@
             <div class="form_item">
                 <span class="mspan1">真实姓名：</span>
                 <input type="text" name="realName" id="realName" class="minput">
-                <span class="mspan" id="unameTip"></span>
+                <span class="mspan" id="realNameTip"></span>
             </div>
             <div class="form_item">
                 <span class="mspan1">性别：</span>
                 <span class="mradio">
-                        <label ><input type="radio"  name="sexType">男</label>
-                        <label ><input type="radio" name="sexType"  >女</label>
+                        <label ><input type="radio"  name="sexType" value="男">男</label>
+                        <label ><input type="radio" name="sexType" value="女" >女</label>
                     </span>
-                <span class="mspan"></span>
+                <span class="mspan" id="sexTypeTip"></span>
             </div>
             <div class="form_item">
                 <span class="mspan1">E-mail：</span>
@@ -47,16 +47,51 @@
 <script src="../../js/checkUtil.js"></script>
 <script src="../../js/userInfo.js"></script>
 <script>
-    function updateInfo(){
-        $.ajax({type:"post",url:"/user/updateUserInfo",success:function(data){
 
+    function updateInfo(){
+        let realName = $.trim($("#realName").val());
+        let email = $.trim($("#memail").val());
+        let tel = $.trim($("#tel").val());
+        let sex =  $("input[name='sexType']:checked").val();
+        if(sex==null){
+            fnError("sexTypeTip", "请选择性别");
+            return;
+        }else{
+            fnSuccess("sexTypeTip");
+        }
+        if (checkTel(tel)) {
+            fnSuccess("telTip");
+        } else {
+            fnError("telTip", "请输入您的常用联系方式");
+            return;
+        }
+        if (checkName(realName)) {
+            fnSuccess("realNameTip");
+        } else {
+            fnError("realNameTip", "请输入您的真实姓名");
+            return;
+        }
+        if (checkEmail(email)) {
+            fnSuccess("memailTip");
+        } else {
+            fnError("memailTip", "请填写常用电子邮件");
+            return;
+        }
+
+        $.ajax({type:"post",url:"/user/updateUserInfo",
+            data:{realName:realName,email:email,tel:tel,sex:sex},
+            success:function(data){
+                alert("修改成功");
+                getUserInfoPage();
+                flushUserInfo();
             },
             error:function(data){
 
             },
             dataType:"json"});
+
     }
-    $(function () {
+    function flushUserInfo(){
         $.ajax({url:"/user/getUserInfo",success:function(data){
                 $("#tel").val(data.data.tel);
                 $("#tel").val(data.data.tel);
@@ -65,9 +100,9 @@
                 $("#aname").val(data.data.name);
                 if(data.data.sex!=null){
                     if(data.data.sex=="男"){
-                        $(".mradio input:first").checked(true);
+                        $("input[name='sexType']:first").attr('checked', 'checked');
                     }else{
-                        $(".mradio input:last").checked(true);
+                        $("input[name='sexType']:last").attr('checked', 'checked');
 
                     }
                 }
@@ -76,6 +111,9 @@
 
             },
             dataType:"json"});
+    }
+    $(function () {
+      flushUserInfo();
     })
 </script>
 </body>

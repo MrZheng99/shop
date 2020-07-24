@@ -141,5 +141,18 @@ public class UserServiceImpl implements UserService {
        return userDao.queryAllUserById(userId);
     }
 
+    @Override
+    public Integer updateUserInfo(Integer userId, String realName, String tel, String email, String sex) {
+        User user = new User();
+        user.setId(userId);
+        user.setSex(sex);
+        user.setRealName(realName);
+        user.setEmail(email);
+        user.setTel(tel);
+System.out.println(user);
+        return userDao.updateUserInfo(user);
+    }
+
+
 
 }

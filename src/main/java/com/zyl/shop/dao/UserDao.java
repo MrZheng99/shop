@@ -2,7 +2,6 @@ package com.zyl.shop.dao;
 
 import java.util.List;
 
-import com.zyl.shop.entity.Admin;
 import org.apache.ibatis.annotations.*;
 
 import com.zyl.shop.entity.Address;
@@ -63,6 +62,8 @@ public interface UserDao {
 	@Select("select uid,name,tel,email,status from tb_userinfo where email=#{email} and name=#{account};")
 	List<User> queryAllUserByNameEmail(@Param("account")String account, @Param("email") String email);
 	@ResultMap("userResult")
-	@Select("select uid,name,tel,email,status from tb_userinfo where uid=#{userId};")
+	@Select("select uid,name,tel,email,realname,sex,status from tb_userinfo where uid=#{userId};")
     User queryAllUserById(Integer userId);
+	@Update("update tb_userinfo set `email`=#{user.email},`sex`=#{user.sex},`tel`=#{user.tel},`realname`=#{user.realName} where uid = #{user.id};")
+    Integer updateUserInfo(@Param("user")User user);
 }

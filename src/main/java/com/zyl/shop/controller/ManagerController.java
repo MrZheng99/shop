@@ -2,6 +2,7 @@ package com.zyl.shop.controller;
 
 import com.zyl.shop.entity.Admin;
 import com.zyl.shop.entity.ResponseJson;
+import com.zyl.shop.entity.User;
 import com.zyl.shop.service.impl.AdminServiceImpl;
 import com.zyl.shop.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +65,6 @@ UserServiceImpl userService;
     @RequestMapping(value="/updateUser",method=RequestMethod.POST)
     public ResponseJson updateUserStatus(@RequestParam("userId")Integer userId,@RequestParam("data")String data,@RequestParam("type")String type) {
         ResponseJson responseJson =userService.updateUser(userId,data,type);
-
         System.out.println(responseJson);
         return responseJson;
     }

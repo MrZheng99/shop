@@ -31,12 +31,6 @@ public class User {
 	public void setTel(String tel) {
 		this.tel= tel;
 	}
-	public String getSex() {
-		return sex;
-	}
-	public void setSex(String sex) {
-		this.sex = sex;
-	}
 
 	public String getRealName() {
 		return realName;
@@ -44,6 +38,14 @@ public class User {
 
 	public void setRealName(String realName) {
 		this.realName = realName;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
 	}
 
 	public String getEmail() {
@@ -63,6 +65,7 @@ public class User {
 		return "User{" +
 				"id=" + id +
 				", name='" + name + '\'' +
+				", realName='" + realName + '\'' +
 				", tel='" + tel + '\'' +
 				", sex='" + sex + '\'' +
 				", email='" + email + '\'' +

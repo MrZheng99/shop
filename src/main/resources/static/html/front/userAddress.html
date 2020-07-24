@@ -5,12 +5,14 @@
     <meta charset="UTF-8">
     <title>表单验证</title>
     <link rel="stylesheet" href="../../css/userInfo.css">
+    <link rel="stylesheet" href="../../css/address.css">
+
 </head>
 
 <body>
 <div class="main">
     <div class="center">
-        <span class="spanTop">地址信息</span>
+        <span class="spanTop">添加地址</span>
         <form action="" class="mform" onsubmit="return false">
 
             <div class="form_item">
@@ -35,7 +37,18 @@
                 <span class="mspan" id="areaTip"></span>
             </div>
         </form>
-        <button class="button" onclick="updateAddr()">保存</button>
+        <button class="button" onclick="updateAddr()">添加</button>
+    </div>
+    <div class="addr_index">
+        <div >
+            地名
+        </div>
+        <div>
+            操作
+        </div>
+    </div>
+    <div id="list-addr">
+
     </div>
 </div>
 <script src="../../js/mcity.js"></script>
@@ -46,8 +59,32 @@
     function updateAddr(){
 
     }
+    function getAddr(){
+        $.ajax({url:"/user/addresses",success:function(data){
+                $.each(data,function (index,item) {
+                    let div = document.createElement("div");
+                    div.className = "addr";
+                    div.innerHTML = /*html*/`
+                    <div>
+                      <input value="${item.address}">
+                    </div>
+                    <div class="addr_op">
+                       <input type="button" value="修改" onclick="updateAddress(${item.gid})" class="btn btn-danger">
+
+                       <input type="button" value="移除" onclick="deleteAddress(${item.gid})" class="btn btn-danger">
+                    </div>
+		            `;
+                    $("#list-addr").append(div);
+                })
+            },
+            error:function(data){
+
+            },
+            dataType:"json"});
+    }
     $(function () {
         addrInit();
+        getAddr();
     })
 </script>
 </body>

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import com.zyl.shop.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -75,5 +76,16 @@ public class UserController {
 			return new ResponseJson(false,"请登录");
 		}
 		return new ResponseJson(true,"获取成功",userService.getUserById(userIdSession));
+	}
+	@RequestMapping(value="/updateUserInfo",method=RequestMethod.POST)
+	public ResponseJson updateUserInfo(HttpSession session,@RequestParam("tel")String tel,
+									   @RequestParam("sex")String sex,@RequestParam("realName")String realName,
+									   @RequestParam("email")String email) {
+		Integer userId = (Integer) session.getAttribute("userID");
+		Integer row = userService.updateUserInfo(userId,realName,tel,email,sex);
+		if(row!=null&&row>0){
+			return new ResponseJson(true,"更新成功");
+		}
+		return new ResponseJson(true,"更新失败");
 	}
 }

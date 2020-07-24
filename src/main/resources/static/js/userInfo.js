@@ -17,11 +17,11 @@ $(document).ready(function() {
             fnError("accountTip", "会员名以字母或汉字开头，由3-18位的数字、字母、下划线、汉字组成");
         }
     });
-    $("#uname").blur(function() {
+    $("#realName").blur(function() {
         if (checkName($(this).val())) {
-            fnSuccess("unameTip");
+            fnSuccess("realNameTip");
         } else {
-            fnError("unameTip", "请输入您的真实姓名");
+            fnError("realNameTip", "请输入您的真实姓名");
         }
     });
     $("#pwd").blur(function() {

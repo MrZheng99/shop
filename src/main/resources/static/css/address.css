@@ -1,0 +1,42 @@
+@charset "utf-8";
+/* CSS Document */
+
+.addr{
+	min-height:100px;
+	max-height:100px;
+	width: 100%;
+	border:1px solid #CCFFE6;
+	margin-bottom: 5px;
+	text-align: center;
+}
+.addr_index{
+	height:50px;
+	width:100%;
+}
+.addr_index>div{
+	width:50%;
+	float: left;
+	text-align: center;
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+
+.addr>div{
+	float:left;
+	width:50%;
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+.addr_op>input{
+	width: 40%;
+	float: left;
+}
+.addr_op>input:first-child{
+	margin-right: 20px;
+}
+
+/**
+
+ */

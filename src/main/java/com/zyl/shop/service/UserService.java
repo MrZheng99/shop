@@ -51,4 +51,15 @@ public interface UserService {
 	 * @return
 	 */
     User getUserById(Integer userId);
+
+	/**
+	 * 修改用户信息
+	 * @param userId
+	 * @param realName
+	 * @param tel
+	 * @param email
+	 * @param sex
+	 * @return
+	 */
+	Integer updateUserInfo(Integer userId,String realName,String tel,String email,String sex);
 }
