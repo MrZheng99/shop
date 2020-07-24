@@ -1,0 +1,36 @@
+.menu{
+    width: 10%;
+    padding-left: 50px;
+    float: left;
+    margin-top: 50px;
+}
+.menu dl{
+    width: 100%;
+}
+.menu dt{
+    width: 100%;
+}
+.menu dd{
+    width: 100px;
+    margin-top: 15px;
+
+}
+.content{
+    width: 80%;
+    height: 500px;
+    margin-top: 50px;
+
+    padding-right: 50px;
+    border: #b2dba1 solid 1px;
+}
+/**
+导航栏<a>的样式
+ */
+.menu a:hover{
+    color: red;
+    text-decoration: none;
+}
+.menu a.active{
+    color: red;
+}
+

@@ -7,6 +7,8 @@ package com.zyl.shop.entity;
 public class User {
 	private Integer id;
 	private String name;
+	private String realName;
+
 	private String tel;
 	private String sex;
 	private String email;
@@ -34,6 +36,14 @@ public class User {
 	}
 	public void setSex(String sex) {
 		this.sex = sex;
+	}
+
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
 	}
 
 	public String getEmail() {

@@ -44,4 +44,11 @@ public interface UserService {
 	 * @return
 	 */
 	ResponseJson getUserByNameEmail(String userName, String email);
+
+	/**
+	 * 获取用户byId
+	 * @param userId
+	 * @return
+	 */
+    User getUserById(Integer userId);
 }

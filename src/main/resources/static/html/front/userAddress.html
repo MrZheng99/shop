@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>表单验证</title>
+    <link rel="stylesheet" href="../../css/userInfo.css">
+</head>
+
+<body>
+<div class="main">
+    <div class="center">
+        <span class="spanTop">地址信息</span>
+        <form action="" class="mform" onsubmit="return false">
+
+            <div class="form_item">
+                <span class="mspan1">省份：</span>
+                <select class="minput" id="province">
+                    <option>-请选择-</option>
+                </select>
+                <span class="mspan" id="provinceTip"></span>
+            </div>
+            <div class="form_item">
+                <span class="mspan1">城市：</span>
+                <select class="minput" id="city">
+                    <option>-请选择-</option>
+                </select>
+                <span class="mspan" id="cityTip"></span>
+            </div>
+            <div class="form_item">
+                <span class="mspan1">地区：</span>
+                <select class="minput" id="area">
+                    <option>-请选择-</option>
+                </select>
+                <span class="mspan" id="areaTip"></span>
+            </div>
+        </form>
+        <button class="button" onclick="updateAddr()">保存</button>
+    </div>
+</div>
+<script src="../../js/mcity.js"></script>
+
+<script src="../../js/checkUtil.js"></script>
+<script src="../../js/userInfo.js"></script>
+<script>
+    function updateAddr(){
+
+    }
+    $(function () {
+        addrInit();
+    })
+</script>
+</body>
+
+</html>

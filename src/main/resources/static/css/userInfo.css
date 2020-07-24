@@ -1,0 +1,60 @@
+
+.main {
+    margin-top: 20px;
+    width: 857px;
+}
+
+.button {
+    border-width: 0px;
+    text-align: center;
+    background-repeat: no-repeat;
+    margin-left: 45%;
+    /*边框透明*/
+    outline: none;
+    /*点击后没边框*/
+    width: 127px;
+    height: 39px;
+}
+
+.form_item {
+    margin: 0 auto;
+    width: 806px;
+    padding-left: 50px;
+}
+
+.mspan {
+    /* background-image: url("images/onCorrect.gif"); */
+    background-position: left center;
+    background-repeat: no-repeat;
+    padding-left: 20px;
+}
+
+.center {
+    width: 852px;
+    /*border-left: 3px solid rgb(255, 115, 0);*/
+    /*border-right: 3px solid rgb(255, 115, 0);*/
+}
+
+.mspan1 {
+    width: 90px;
+    display: inline-block;
+    letter-spacing: 2px;
+    margin-right: 5px;
+}
+
+.minput {
+    width: 150px;
+}
+
+.mradio {
+    display: inline-block;
+    width: 150px;
+}
+
+.spanTop {
+    padding-left: 50px;
+    background-position: center;
+    display: inline-block;
+    background-repeat: no-repeat;
+    width: 806px;
+}

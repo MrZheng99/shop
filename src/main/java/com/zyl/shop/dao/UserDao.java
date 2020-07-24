@@ -10,7 +10,8 @@ import com.zyl.shop.entity.User;
 @Mapper
 public interface UserDao {
 	@Results(id = "userResult", value = {
-			  @Result(property = "id", column = "uid", id = true)
+			  @Result(property = "id", column = "uid", id = true),
+			@Result(property = "realName",column = "realname")
 			})
 	@Select("select uid,name from tb_userinfo where name = #{account} and password=#{password} and status=1;")
 	User login(@Param("account")String account, @Param("password")String password);
@@ -61,5 +62,7 @@ public interface UserDao {
 	@ResultMap("userResult")
 	@Select("select uid,name,tel,email,status from tb_userinfo where email=#{email} and name=#{account};")
 	List<User> queryAllUserByNameEmail(@Param("account")String account, @Param("email") String email);
-
+	@ResultMap("userResult")
+	@Select("select uid,name,tel,email,status from tb_userinfo where uid=#{userId};")
+    User queryAllUserById(Integer userId);
 }
