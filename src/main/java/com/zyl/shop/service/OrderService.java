@@ -76,11 +76,13 @@ public interface OrderService {
 	 * @return 成功返回true
 	 */
 	boolean setAddress(int userId, String orderId, String aid);
+
 	/**
 	 * 给用户添加订单
 	 * @param userId 用户编号
 	 * @param items 商品列表
+	 * @param amount 商品总额
 	 * @return 添加成功返回true
 	 */
-	boolean addOrder(int userId, List<OrderDetailItem> items);
+	boolean addOrder(int userId, List<OrderDetailItem> items,Double amount);
 }

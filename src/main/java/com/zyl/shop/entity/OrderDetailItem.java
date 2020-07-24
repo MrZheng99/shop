@@ -7,24 +7,33 @@ package com.zyl.shop.entity;
  */
 public class OrderDetailItem{
 	private String gid;
-	private int number;
-	private double price;
+	private Integer number;
+	private Double price;
 	public String getGid() {
 		return gid;
 	}
 	public void setGid(String gid) {
 		this.gid = gid;
 	}
-	public int getNumber() {
+	public Integer getNumber() {
 		return number;
 	}
-	public void setNumber(int number) {
+	public void setNumber(Integer number) {
 		this.number = number;
 	}
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
-	public void setPrice(double price) {
+	public void setPrice(Double price) {
 		this.price = price;
+	}
+
+	@Override
+	public String toString() {
+		return "OrderDetailItem{" +
+				"gid='" + gid + '\'' +
+				", number=" + number +
+				", price=" + price +
+				'}';
 	}
 }

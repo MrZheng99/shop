@@ -38,7 +38,7 @@
 	width:100%;
 }
 .cart_index>div{
-	width:25%;
+	width:20%;
 	float: left;
 	text-align: center;
 	padding-left: 50px;
@@ -48,7 +48,7 @@
 
 .cart>div{
 	float:left;
-	width:25%;
+	width:20%;
 	padding-left: 50px;
 	padding-right: 50px;
 }
@@ -67,12 +67,4 @@
 }
 .cart_op>input:first-child{
 	margin-right: 20px;
-}
-footer {
-	height: 100px;
-	width:100%;
-	background-color: white;
-	margin-top: 20px;
-	text-align: center;
-	font-size:16px;
 }

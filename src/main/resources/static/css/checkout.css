@@ -1,0 +1,42 @@
+@charset "utf-8";
+/* CSS Document */
+
+.cart{
+    min-height:100px;
+    max-height:100px;
+    width: 100%;
+    border:1px solid #CCFFE6;
+    margin-bottom: 5px;
+    text-align: center;
+}
+.cart_index{
+    height:50px;
+    width:100%;
+}
+.cart_index>div{
+    width:25%;
+    float: left;
+    text-align: center;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.cart>div{
+    float:left;
+    width:25%;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+.cart_number{
+    text-align: center;
+    color: red;
+}
+.cart_price{
+    color: red;
+}
+.cart_img{
+    min-height:80px;
+    max-height:80px;
+    max-width:80px;
+    min-width:80px;
+}

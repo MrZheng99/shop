@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.zyl.shop.dao.CartDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +29,8 @@ public class OrderServiceImpl implements OrderService{
 	
 	@Autowired
 	private GoodsDao goodsDao;
-
+	@Autowired
+	private CartDao cartDao;
 	@Override
 	public List<OrderDetailItem> getOrderGoods(int userId, String oid) {
 		if(this.orderOfUser(userId, oid) == null) {
@@ -127,22 +129,17 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	@Override
-	public boolean addOrder(int userId, List<OrderDetailItem> items) {
+	public boolean addOrder(int userId, List<OrderDetailItem> items,Double amount) {
+		System.out.println(items);
+		System.out.println(amount);
+
 		Order order = new Order();
 		order.setOid(0);
 		order.setUid(userId);
 		order.setDate(new Date());
 		order.setOrderprogress(OrderService.OrderProgress.unpaid);
-		double amount = 0;
-		
-		
-		for(OrderDetailItem item : items) {
-			Goods good = goodsDao.queryGoodsById(Integer.parseInt(item.getGid()));
-			amount += good.getPrice() * item.getNumber();
-		}
 		order.setAmount(amount);
 		orderDao.addOrder(order);
-		
 		for(OrderDetailItem item : items) {
 			OrderDetail detail = new OrderDetail();
 			detail.setOdid(0);
@@ -151,6 +148,7 @@ public class OrderServiceImpl implements OrderService{
 			detail.setGid(Integer.parseInt(item.getGid()));
 			detail.setPrice(item.getPrice());
 			orderDao.addOrderDetail(detail);
+			cartDao.deleteUserGood(userId,Integer.valueOf(item.getGid()));
 		}
 		
 		return true;

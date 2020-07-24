@@ -1,9 +1,11 @@
 package com.zyl.shop.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import com.zyl.shop.entity.CartOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,13 +39,13 @@ public class OrderController {
 	
 	@RequestMapping(value="/order", method=RequestMethod.PUT)
 	@ResponseBody
-	public ResponseJson addOrder(@SessionAttribute(name="userID", required=false) Integer userId, @RequestBody List<OrderDetailItem> items) {
+	public ResponseJson addOrder(@SessionAttribute(name="userID", required=false) Integer userId, @RequestBody CartOrder cartOrder) {
 		ResponseJson responseJson = new ResponseJson();
 		if(userId == null) {
 			responseJson.setMsg("未登录");
 			return responseJson;
 		}
-		responseJson.setSuccess(orderService.addOrder(userId, items));
+		responseJson.setSuccess(orderService.addOrder(userId, cartOrder.getItems(),cartOrder.getAmount()));
 		return responseJson;
 	}
 	
