@@ -17,6 +17,8 @@
                style="display: inline-block; width: 150px;">
         <a href="/orders" class="btn btn-link">订单</a>
         <a href="/cart" class="btn btn-link">购物车</a>
+        <a href="/user" class="btn btn-link">个人中心</a>
+
     </div>
 </header>
 <div class="goods">
@@ -112,20 +114,16 @@
      * 购买商品
      */
     function buyGoods(goodsId) {
-
         $.ajax({
                 type: 'PUT',
-                url: "../order",
-                data: JSON.stringify([{
-                        gid: goodsId, number: $("#inputGoodsNumber").val(), price: $("#amount").text()
-                    }
-                    ]
-                ),
+                url: "/order",
+                data:
+                    JSON.stringify({items:[{
+                        gid: goodsId, number: $("#inputGoodsNumber").val(), price:$("#goodsprice").text().replace("¥","")
+                    }],amount:parseFloat($("#amount").text())}),
                 contentType: "application/json",
-                dataType:
-                    "json",
+                dataType: "json",
                 success:
-
                     function (msg) {
                         if (msg.success) {
                             window.location.href = "/orders";

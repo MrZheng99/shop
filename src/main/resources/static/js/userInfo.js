@@ -21,7 +21,7 @@ $(document).ready(function() {
         if (checkName($(this).val())) {
             fnSuccess("realNameTip");
         } else {
-            fnError("realNameTip", "请输入您的真实姓名");
+            fnError("realNameTip", "请核查");
         }
     });
     $("#pwd").blur(function() {
@@ -44,41 +44,41 @@ $(document).ready(function() {
         if (checkIdCard($(this).val().trim())) {
             fnSuccess("midTip");
         } else {
-            fnError("midTip", "请输入您的有效证件号");
+            fnError("midTip", "请核查");
         }
     });
     $("#memail").blur(function() {
         if (checkEmail($(this).val())) {
             fnSuccess("memailTip");
         } else {
-            fnError("memailTip", "请填写常用电子邮件");
+            fnError("memailTip", "请核查");
         }
     });
     $("#tel").blur(function() {
         if (checkTel($(this).val().trim())) {
             fnSuccess("telTip");
         } else {
-            fnError("telTip", "请输入您的常用联系方式");
+            fnError("telTip", "请核查");
         }
     });
 
     $("#province").blur(function() {
         if ($(this).val() === "-请选择-") {
-            fnError("provinceTip", "请选择您所在的省份");
+            fnError("provinceTip", "请选择");
         } else {
             fnSuccess("provinceTip");
         }
     });
     $("#city").blur(function() {
         if ($(this).val() === "-请选择-") {
-            fnError("cityTip", "请选择您所在的城市");
+            fnError("cityTip", "请选择");
         } else {
             fnSuccess("cityTip");
         }
     });
     $("#area").blur(function() {
         if ($(this).val() === "-请选择-") {
-            fnError("areaTip", "请选择您所在的县或区");
+            fnError("areaTip", "请选择");
         } else {
             fnSuccess("areaTip");
         }

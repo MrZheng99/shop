@@ -127,6 +127,7 @@ function checkout(gid,obj){
 			{
 				gid: gid,
 				number: number,
+				//TODO 结算
 				price: 0
 			}
 		]),

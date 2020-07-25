@@ -50,7 +50,7 @@ public interface UserDao {
 	@Update("update tb_userinfo set `status`=#{status} where uid = #{userId};")
 	Integer updateStatus(@Param("userId")Integer userId,  @Param("status")String status);
 
-	@Select("select aid, address, uid, status from tb_address where uid=#{uid}")
+	@Select("select aid, address, uid, status from tb_address where uid=#{uid} and status=1")
 	List<Address> getUserAddresses(@Param("uid")int uid);
 	
 	@Select("select uid,name from tb_userinfo where uid=#{uid} and status=1;")
@@ -66,4 +66,8 @@ public interface UserDao {
     User queryAllUserById(Integer userId);
 	@Update("update tb_userinfo set `email`=#{user.email},`sex`=#{user.sex},`tel`=#{user.tel},`realname`=#{user.realName} where uid = #{user.id};")
     Integer updateUserInfo(@Param("user")User user);
+    @Update("update `tb_address` set `status`=#{address.status} where uid=#{address.uid} and aid = #{address.aid};")
+    Integer updateUserAddress(@Param("address")Address address);
+    @Insert("insert into `tb_address` (`address`,`uid`,`status`) values (#{address.address}, #{address.uid}, '1')")
+    Integer addUserAddress(@Param("address")Address address);
 }

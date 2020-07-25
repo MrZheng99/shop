@@ -4,46 +4,61 @@
 <head>
     <meta charset="UTF-8">
     <title>表单验证</title>
-    <link rel="stylesheet" href="../../css/userInfo.css">
+    <link rel="stylesheet" href="../../css/address.css">
+    <style>
+        .minput{
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
-<div class="main">
-    <div class="center">
-        <span class="spanTop">会员信息</span>
-        <form action="" class="mform" onsubmit="return false">
-            <div class="form_item">
-                <span class="mspan1">会员名：</span>
-                <input type="text" disabled="disabled" name="aname" id="aname" class="minput">
-                <span class="mspan" id="accountTip"></span>
-            </div>
-            <div class="form_item">
-                <span class="mspan1">真实姓名：</span>
-                <input type="text" name="realName" id="realName" class="minput">
-                <span class="mspan" id="realNameTip"></span>
-            </div>
-            <div class="form_item">
-                <span class="mspan1">性别：</span>
-                <span class="mradio">
+
+
+<table class="table table-striped">
+    <caption>会员信息</caption>
+    <thead>
+    <tr>
+        <th>会员名</th>
+        <th>真实姓名</th>
+        <th>性别</th>
+        <th>E-mail</th>
+        <th>联系方式</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody class="mtbody">
+    <tr>
+        <td>
+            <span id="aname"></span>
+        </td>
+        <td>
+            <input type="text" name="realName" id="realName" class="minput">
+            <span class="mspan" id="realNameTip"></span>
+        </td>
+
+        <td>
+           <span class="mradio">
                         <label ><input type="radio"  name="sexType" value="男">男</label>
                         <label ><input type="radio" name="sexType" value="女" >女</label>
                     </span>
-                <span class="mspan" id="sexTypeTip"></span>
-            </div>
-            <div class="form_item">
-                <span class="mspan1">E-mail：</span>
-                <input type="text" name="memail" id="memail" class="minput">
-                <span class="mspan" id="memailTip"></span>
-            </div>
-            <div class="form_item">
-                <span class="mspan1">联系方式：</span>
-                <input type="text" name="tel" id="tel" class="minput">
-                <span class="mspan" id="telTip"></span>
-            </div>
-        </form>
-        <button class="button" onclick="updateInfo()">保存</button>
-    </div>
-</div>
+            <span class="mspan" id="sexTypeTip"></span>
+        </td>
+        <td>
+            <input type="text" name="memail" id="memail" class="minput">
+            <span class="mspan" id="memailTip"></span>
+        </td>
+        <td>
+            <input type="text" name="tel" id="tel" class="minput">
+            <span class="mspan" id="telTip"></span>
+        </td>
+        <td>
+            <button class="btn btn-primary" onclick="updateInfo()">保存</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
 <script src="../../js/checkUtil.js"></script>
 <script src="../../js/userInfo.js"></script>
 <script>
@@ -54,7 +69,7 @@
         let tel = $.trim($("#tel").val());
         let sex =  $("input[name='sexType']:checked").val();
         if(sex==null){
-            fnError("sexTypeTip", "请选择性别");
+            fnError("sexTypeTip", "请选择");
             return;
         }else{
             fnSuccess("sexTypeTip");
@@ -62,19 +77,19 @@
         if (checkTel(tel)) {
             fnSuccess("telTip");
         } else {
-            fnError("telTip", "请输入您的常用联系方式");
+            fnError("telTip", "请核查");
             return;
         }
         if (checkName(realName)) {
             fnSuccess("realNameTip");
         } else {
-            fnError("realNameTip", "请输入您的真实姓名");
+            fnError("realNameTip", "请核查");
             return;
         }
         if (checkEmail(email)) {
             fnSuccess("memailTip");
         } else {
-            fnError("memailTip", "请填写常用电子邮件");
+            fnError("memailTip", "请核查");
             return;
         }
 
@@ -86,6 +101,7 @@
                 flushUserInfo();
             },
             error:function(data){
+                alert("修改失败");
 
             },
             dataType:"json"});
@@ -94,10 +110,9 @@
     function flushUserInfo(){
         $.ajax({url:"/user/getUserInfo",success:function(data){
                 $("#tel").val(data.data.tel);
-                $("#tel").val(data.data.tel);
                 $("#memail").val(data.data.email);
                 $("#realName").val(data.data.realName);
-                $("#aname").val(data.data.name);
+                $("#aname").text(data.data.name);
                 if(data.data.sex!=null){
                     if(data.data.sex=="男"){
                         $("input[name='sexType']:first").attr('checked', 'checked');

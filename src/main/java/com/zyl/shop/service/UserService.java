@@ -62,4 +62,20 @@ public interface UserService {
 	 * @return
 	 */
 	Integer updateUserInfo(Integer userId,String realName,String tel,String email,String sex);
+
+    /**
+     * 删除用户地址
+     * @param userId
+     * @param aid
+     * @return
+     */
+    Integer updateUserAddress(Integer userId, Integer aid);
+
+	/**
+	 * 添加用户地址
+	 * @param userId
+	 * @param address
+	 * @return
+	 */
+	Integer addUserAddress(Integer userId, String address);
 }

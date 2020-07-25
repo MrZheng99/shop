@@ -1,42 +1,25 @@
 @charset "utf-8";
 /* CSS Document */
 
-.addr{
-	min-height:100px;
-	max-height:100px;
-	width: 100%;
-	border:1px solid #CCFFE6;
-	margin-bottom: 5px;
+.content{
+	padding-right: 0;
+}
+
+.mspan {
+	/* background-image: url("images/onCorrect.gif"); */
+	background-position: left center;
+	background-repeat: no-repeat;
+	padding-left: 20px;
+}
+
+.table>thead>tr>th {
 	text-align: center;
 }
-.addr_index{
-	height:50px;
-	width:100%;
-}
-.addr_index>div{
-	width:50%;
-	float: left;
+.table>caption {
 	text-align: center;
-	padding-left: 50px;
-	padding-right: 50px;
 }
 
-
-.addr>div{
-	float:left;
-	width:50%;
-	padding-left: 50px;
-	padding-right: 50px;
+.mtbody{
+	vertical-align: middle;
+	text-align: center;
 }
-
-.addr_op>input{
-	width: 40%;
-	float: left;
-}
-.addr_op>input:first-child{
-	margin-right: 20px;
-}
-
-/**
-
- */

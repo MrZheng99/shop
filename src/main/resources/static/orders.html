@@ -4,17 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>结账</title>
+    <link rel="stylesheet" type="text/css" href="/css/common.css">
+
     <!-- CSS only -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="popover-header" style="height: 60px; line-height: 40px;">
-        <a class="text-primary" >当前用户:<span id="userName"></span></a>
-        <label class="float-right">
-            <a href="/orders" class="btn btn-primary">订单</a>
-            <a href="/cart" class="btn btn-primary">购物车</a>
-        </label>
+
+<header>
+    <font class="text-primary">当前用户:&nbsp;</font>
+    <a class="text-primary" id="userName"></a>
+    <div class="header_right">
+        <input id="inputSearch" placeholder="输入搜索" maxlength="30" class="form-control"
+               style="display: inline-block; width: 150px;">
+        <a href="/orders" class="btn btn-link">订单</a>
+        <a href="/cart" class="btn btn-link">购物车</a>
+        <a href="/user" class="btn btn-link">个人中心</a>
+
     </div>
+</header>
     <div id="order-list" class="container"></div>
         <footer>
 <div >

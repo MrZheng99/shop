@@ -4,77 +4,131 @@
 <head>
     <meta charset="UTF-8">
     <title>表单验证</title>
-    <link rel="stylesheet" href="../../css/userInfo.css">
     <link rel="stylesheet" href="../../css/address.css">
 
 </head>
 
 <body>
-<div class="main">
-    <div class="center">
-        <span class="spanTop">添加地址</span>
-        <form action="" class="mform" onsubmit="return false">
-
-            <div class="form_item">
-                <span class="mspan1">省份：</span>
-                <select class="minput" id="province">
+<div>
+    <table class="table table-striped">
+        <caption>添加地址</caption>
+        <thead>
+        <tr>
+            <th>省份</th>
+            <th>城市</th>
+            <th>地区</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody class="mtbody">
+        <tr>
+            <td>
+                <select id="province">
                     <option>-请选择-</option>
                 </select>
                 <span class="mspan" id="provinceTip"></span>
-            </div>
-            <div class="form_item">
-                <span class="mspan1">城市：</span>
-                <select class="minput" id="city">
+            </td>
+            <td>
+                <select id="city">
                     <option>-请选择-</option>
                 </select>
                 <span class="mspan" id="cityTip"></span>
-            </div>
-            <div class="form_item">
-                <span class="mspan1">地区：</span>
-                <select class="minput" id="area">
+            </td>
+
+            <td>
+                <select id="area">
                     <option>-请选择-</option>
                 </select>
                 <span class="mspan" id="areaTip"></span>
-            </div>
-        </form>
-        <button class="button" onclick="updateAddr()">添加</button>
-    </div>
-    <div class="addr_index">
-        <div >
-            地名
-        </div>
-        <div>
-            操作
-        </div>
-    </div>
-    <div id="list-addr">
+            </td>
+            <td>
+                <button class="btn btn-primary" onclick="addAddr()">添加</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-    </div>
+
+    <table class="table table-striped">
+        <caption>已有地址</caption>
+        <thead>
+        <tr>
+            <th>地名</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody class="mtbody">
+
+        </tbody>
+    </table>
+
 </div>
 <script src="../../js/mcity.js"></script>
 
 <script src="../../js/checkUtil.js"></script>
 <script src="../../js/userInfo.js"></script>
 <script>
-    function updateAddr(){
+    function addAddr(){
+        if ($("#province").val() === "-请选择-") {
+            fnError("provinceTip", "请选择");
+            return;
+        } else {
+            fnSuccess("provinceTip");
+        }
+        if ($("#city").val() === "-请选择-") {
+            fnError("cityTip", "请选择");
+            return;
+        } else {
+            fnSuccess("cityTip");
+        }
+        if ($("#area").val() === "-请选择-") {
+            fnError("areaTip", "请选择");
+            return;
+        } else {
+            fnSuccess("areaTip");
+        }
+        let address = $("#province").val()+$("#city").val()+$("#area").val();
+        $.ajax({url:"/user/addUserAddress",type:"post",data:{address:address},
+            success:function (data) {
+                if(data.success) {
+                    getAddr();
 
+                    $("#province").val("-请选择-");
+                    $("#city").val("-请选择-");
+                    $("#area").val("-请选择-");
+
+                }
+            },
+            error:function (data) {
+                alert(data.msg);
+            },dataType: "json"
+        });
+    }
+    function deleteAddress(val) {
+        let flag = confirm("确定删除此地址吗？");
+        if(flag){
+            $.ajax({url:"/user/updateUserAddress",type:"post",data:{aid:parseInt(val)},
+                success:function (data) {
+                    if(data.success) {
+                        getAddr();
+                    }
+                },
+                error:function (data) {
+                    alert(data.msg);
+                },dataType: "json"
+            });
+        }
     }
     function getAddr(){
+        $(".mtbody:last").html("");
         $.ajax({url:"/user/addresses",success:function(data){
                 $.each(data,function (index,item) {
-                    let div = document.createElement("div");
-                    div.className = "addr";
-                    div.innerHTML = /*html*/`
-                    <div>
-                      <input value="${item.address}">
-                    </div>
-                    <div class="addr_op">
-                       <input type="button" value="修改" onclick="updateAddress(${item.gid})" class="btn btn-danger">
-
-                       <input type="button" value="移除" onclick="deleteAddress(${item.gid})" class="btn btn-danger">
-                    </div>
+                    let tr = document.createElement("tr");
+                    tr.innerHTML = /*html*/`
+                      <td>${item.address}</td>
+                      <td><input type="button" value="移除" onclick="deleteAddress(${item.aid})" class="btn btn-danger"></td>
 		            `;
-                    $("#list-addr").append(div);
+                    $(".mtbody:last").append(tr);
                 })
             },
             error:function(data){

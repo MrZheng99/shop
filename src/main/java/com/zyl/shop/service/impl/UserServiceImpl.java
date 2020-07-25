@@ -149,10 +149,26 @@ public class UserServiceImpl implements UserService {
         user.setRealName(realName);
         user.setEmail(email);
         user.setTel(tel);
-System.out.println(user);
         return userDao.updateUserInfo(user);
     }
 
+    @Override
+    public Integer updateUserAddress(Integer userId, Integer aid) {
+        Address address = new Address();
+        address.setUid(userId);
+        address.setAid(aid);
+        address.setStatus("0");
+        System.out.println(address);
+        return  userDao.updateUserAddress(address);
+    }
+
+    @Override
+    public Integer addUserAddress(Integer userId, String addr) {
+        Address address = new Address();
+        address.setUid(userId);
+        address.setAddress(addr);
+        return  userDao.addUserAddress(address);
+    }
 
 
 }

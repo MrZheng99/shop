@@ -20,7 +20,7 @@ function addrInit() {
     } else {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
-    xmlhttp.open("GET", "../city.xml", true); //发送-一个请求
+    xmlhttp.open("GET", "city.xml", true); //发送-一个请求
     xmlhttp.send(null); //发送请求参数，null说明没有参数
     var dom;
     xmlhttp.onreadystatechange = function() {
@@ -34,22 +34,22 @@ function addrInit() {
             var cities;
             //当省份发生改变时，城市里面的值也要跟着变
             proObj.onchange = function() {
-                    var flag = proObj.value;
-                    cityObj.length = 1;
-                    for (let i = 0, len = pros.length; i < len; i++) {
-                        if (pros[i].nodeType == 1 && pros[i].getAttribute("name") == flag) {
-                            //cities = pros[i].childNodes;
-                            cities = pros[i].getElementsByTagName("city");
-                            for (var j = 0, len1 = cities.length; j < len1; j++) {
-                                addoption(cities[j], cityObj);
-                            }
-
-                            cityObj.onchange();
-                            break;
+                var flag = proObj.value;
+                cityObj.length = 1;
+                for (let i = 0, len = pros.length; i < len; i++) {
+                    if (pros[i].nodeType == 1 && pros[i].getAttribute("name") == flag) {
+                        //cities = pros[i].childNodes;
+                        cities = pros[i].getElementsByTagName("city");
+                        for (var j = 0, len1 = cities.length; j < len1; j++) {
+                            addoption(cities[j], cityObj);
                         }
+
+                        cityObj.onchange();
+                        break;
                     }
                 }
-                //当城市发生改变时，地区要变
+            }
+            //当城市发生改变时，地区要变
             cityObj.onchange = function() {
                 var flag = cityObj.value;
                 areaObj.length = 1;

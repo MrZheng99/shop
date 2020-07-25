@@ -88,4 +88,26 @@ public class UserController {
 		}
 		return new ResponseJson(true,"更新失败");
 	}
+	@RequestMapping(value="/updateUserAddress",method=RequestMethod.POST)
+	public ResponseJson updateUserAddress(HttpSession session,@RequestParam("aid")Integer aid) {
+		Integer userId = (Integer) session.getAttribute("userID");
+		Integer row = userService.updateUserAddress(userId,aid);
+		if(row!=null&&row>0){
+			return new ResponseJson(true,"更新成功");
+		}
+		return new ResponseJson(false,"更新失败");
+	}
+
+	@RequestMapping(value="/addUserAddress",method=RequestMethod.POST)
+	public ResponseJson addUserAddress(HttpSession session,@RequestParam("address")String address) {
+		Integer userId = (Integer) session.getAttribute("userID");
+		Integer row = userService.addUserAddress(userId,address);
+		if(row!=null&&row>0){
+			return new ResponseJson(true,"添加成功");
+		}
+		return new ResponseJson(false,"添加失败");
+	}
+
+
+
 }
