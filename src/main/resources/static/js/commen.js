@@ -2,29 +2,6 @@
 function goShopping(goodsId) {
     window.location.href = "/shopping/" + goodsId;
 }
-function addSearch() {
-    $("#inputSearch").keyup(function (e) {
-        if (e.keyCode == 13) {
-            let goodsName = $(this).val().trim();
-            if (goodsName == null || goodsName == "") {
-                alert("请输入需要搜索的商品");
-                return;
-            }
-            $.ajax({
-                type: 'GET',
-                url: "/home/saveKeyWord/" + goodsName,
-                success: function (msg) {
-                    if (msg.success) {
-                        window.location.href = "/search";
-                    } else {
-                        alert("网络错误,稍后重试");
-                    }
-                }
-
-            });
-        }
-    });
-}
 //分页
 function loadPageNumber(value,op) {
     let url = null;
@@ -39,7 +16,6 @@ function loadPageNumber(value,op) {
         success: function (msg) {
             if (msg.success) {
                 let pages = Math.ceil(msg.data / 8);
-                console.log(pages);
                 $("#pagination").html("");
                 $("#pagination").showPage(pages,value,op);
             } else {
@@ -131,9 +107,11 @@ function getUserName(){
         url: "/user/name",
         success: function (msg) {
             if (msg.success) {
-                $("#userName").text(msg.data);
+                $("#userName").text("当前用户："+msg.data);
+                $("#userName").after("<a class='text-primary' style='margin-left: 10px' href='javascript:loginOut();'>退出</a>")
             } else {
-                $("#userName").text(msg.msg);
+                $("#userName").after("<a class='text-primary' href='javascript:location.href='/index''>"+msg.msg+"</a>")
+
             }
         }
 

@@ -21,60 +21,49 @@ class Good{
         })
     }
 
-
     render(parent){
         this.getGoodInfo();
-
-        //const cssClass = "list-group-item d-flex";
-        const cssClass = "cart";
-        let li = document.createElement("li");
-        li.className = cssClass;
-        li.innerHTML = /*html*/`
-           <div>
-		        <img  class="cart_img" src="/${this.imgUrl}">
-		    </div>
-		    <div>
+        let tr = document.createElement("tr");
+        tr.innerHTML = /*html*/`
+            <td>
+             <img  class="cart_img" src="/${this.imgUrl}">
+            </td>
+		    <td>
 		       <a href="{this.gid}">${this.name}</a>
-		    </div>
-		    <div>
+		    </td>
+		    <td>
 		      <span >${this.price}&nbsp;x</span>
 		      <span class="cart_number">
 		      ${this.number}
               </span>
-		    </div>
-		    <div>
+		    </td>
+		    <td>
 		     <span class="cart_price">&yen;${this.price * this.number}</span>
-		    </div>
+		    </td>
         `;
-        parent.appendChild(li);
+        parent.append(tr);
     }
 }
 
 class GoodList{
-
     constructor(){
         this.goods = [];
     }
-
     render(parent){
-        const cssClass = "list-group";
-        let ul = document.createElement("ul");
-        ul.className = cssClass;
-
+        console.log(parent);
         for(let good of this.goods){
-            good.render(ul);
+            good.render(parent);
         }
-        parent.appendChild(ul);
     }
 }
 
 const orderId = location.pathname.match(/\/(order)\/(.*?)$/)[2];
-const userName = $("#userName");
-
-$.get("/user/name", function(data){
-    if(data.success){
-        userName.text(data.data);
-    } else {
-        location.href = "/index";
-    }
-}, "json")
+// const userName = $("#userName");
+//
+// $.get("/user/name", function(data){
+//     if(data.success){
+//         userName.text(data.data);
+//     } else {
+//         location.href = "/index";
+//     }
+// }, "json")

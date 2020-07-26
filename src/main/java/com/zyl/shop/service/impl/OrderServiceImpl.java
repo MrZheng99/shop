@@ -140,7 +140,11 @@ public class OrderServiceImpl implements OrderService{
 		order.setOrderprogress(OrderService.OrderProgress.unpaid);
 		order.setAmount(amount);
 		orderDao.addOrder(order);
-		for(OrderDetailItem item : items) {
+		System.out.println(order);
+        System.out.println(items);
+        System.out.println(amount);
+
+        for(OrderDetailItem item : items) {
 			OrderDetail detail = new OrderDetail();
 			detail.setOdid(0);
 			detail.setOid(order.getOid());

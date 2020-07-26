@@ -5,6 +5,8 @@
     <title>购物车</title>
     <link href="../../css/cart.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../../css/address.css">
+
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
 
@@ -12,7 +14,6 @@
 
 <body >
 <header>
-    <font class="text-primary">当前用户:&nbsp;</font>
     <a class="text-primary" id="userName"></a>
     <div class="header_right">
         <input id="inputSearch" placeholder="输入搜索" maxlength="30" class="form-control"
@@ -20,6 +21,7 @@
         <a href="/orders" class="btn btn-link">订单</a>
         <a href="/cart" class="btn btn-link">购物车</a>
         <a href="/user" class="btn btn-link">个人中心</a>
+        <a href="/home" class="btn btn-link">首页</a>
 
     </div>
 </header>
@@ -39,23 +41,21 @@
 </div>
 
 <hr class="justify-content-center" width=90%>
+<table class="table table-striped">
+    <caption>购物车</caption>
+    <thead>
+    <tr>
+        <th>商品信息</th>
+        <th>商品名称</th>
+        <th>单价</th>
+        <th>数量</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody class="mtbody">
 
-<div class="cart_index">
-    <div >
-        商品信息
-    </div>
-    <div>
-        商品名
-    </div>
-    <div >
-        单价
-    </div>
-    <div >
-        数量
-    </div>
-</div>
-<div id="cart-goods">
-</div>
+    </tbody>
+</table>
 
 <footer>
     Copyright&nbsp;&copy;&nbsp;2020&nbsp;&nbsp;ZYL团队&nbsp;版权所有
@@ -64,20 +64,25 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" crossorigin="anonymous"></script>
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
 <script src="../../js/commen.js"></script>
+<script src="../../js/search_loginout.js"></script>
+
 <script type="text/javascript" src="/js/cart.js"></script>
 <script>
-    let cart = new Cart();
-    $.get("/cart/goods", function(result){
-        console.log(result);
-        cart.goods = [];
-        for(let i of result){
-            cart.goods.push(new CartGood(i.gid, i.number))
-        }
-        $("#cart-goods").empty();
-        cart.render($("#cart-goods")[0]);
-    }, "json")
+    $(function () {
+        addSearch();
+        getUserName();
+        let cart = new Cart();
+        $.get("/cart/goods", function(result){
+            console.log(result);
+            cart.goods = [];
+            for(let i of result){
+                cart.goods.push(new CartGood(i.gid, i.number))
+            }
+            $(".mtbody:first").empty();
+            cart.render($(".mtbody:first"));
+        }, "json");
+    })
 </script>
 </body>
 </html>

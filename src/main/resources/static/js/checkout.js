@@ -24,27 +24,24 @@ class Good{
 	render(parent){
 		this.getGoodInfo();
 
-		// const cssClass = "list-group-item d-flex";
-		const cssClass = "cart";
 
-		let li = document.createElement("li");
-		li.className = cssClass;
-		li.innerHTML = /*html*/`
-			<div>
+		let tr = document.createElement("tr");
+		tr.innerHTML = /*html*/`
+			<td>
 		        <img  class="cart_img" src="/${this.imgUrl}">
-		    </div>
-		    <div>
+		    </td>
+		    <td>
 		       <a href="{this.gid}">${this.name}</a>
-		    </div>
-		    <div>
+		    </td>
+		    <td>
 		      <span class="cart_price">${this.price}x${this.number}</span>
-		    </div>
-		    <div>
+		    </td>
+		    <td>
 		     <span class="cart_price">${this.price * this.number}</span>
-		    </div>
+		    </td>
 		   
         `;
-		parent.appendChild(li);
+		parent.append(tr);
 		return this.price;
 	}
 }
@@ -55,15 +52,12 @@ class Checkout{
 	}
 
 	render(parent){
-		const cssClass = "list-group";
-		let ul = document.createElement("ul");
-		ul.className = cssClass;
+
 		let totalPrice = 0;
 		for(let good of this.goods){
-			const price = good.render(ul);
+			const price = good.render(parent);
 			totalPrice += good.number * price;
 		}
-		parent.appendChild(ul);
 		$("#total-price").text(totalPrice);
 	}
 }

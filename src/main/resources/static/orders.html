@@ -12,7 +12,6 @@
 <body>
 
 <header>
-    <font class="text-primary">当前用户:&nbsp;</font>
     <a class="text-primary" id="userName"></a>
     <div class="header_right">
         <input id="inputSearch" placeholder="输入搜索" maxlength="30" class="form-control"
@@ -20,51 +19,42 @@
         <a href="/orders" class="btn btn-link">订单</a>
         <a href="/cart" class="btn btn-link">购物车</a>
         <a href="/user" class="btn btn-link">个人中心</a>
+        <a href="/home" class="btn btn-link">首页</a>
 
     </div>
 </header>
-    <div id="order-list" class="container"></div>
-        <footer>
-<div >
+<div id="order-list" class="container"></div>
+<footer>
     Copyright&nbsp;&copy;&nbsp;2020&nbsp;&nbsp;ZYL团队&nbsp;版权所有
-</div>
 </footer>
-    <!-- JS, Popper.js, and jQuery -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-    <script src="/js/orders.js"></script>
-    <script>
-		    let ol = new OrderList();
-		    $.get(`/orders/orders`, function(data){
-		        console.log(data);
-		        ol.orders = [];
-		        if(data && data.success){
-		        	for(let i of data.data){
-		        		ol.orders.push(new Order(i.oid, i.date, i.progress, i.amount));
-			        }
-		        	ol.render(document.getElementById("order-list"));
-		        } else {
-		        	alert("网络异常");
-		        }
-		    }, "json");
+<!-- JS, Popper.js, and jQuery -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<script src="/js/commen.js"></script>
+<script src="/js/search_loginout.js"></script>
+<script src="/js/orders.js"></script>
+<script>
+    $(function () {
+        getUserName();
+        addSearch();
 
-            ol.orders = [
-                new Order(1, "1234年1月20日", "已付款", 239),
-                new Order(2, "1234年1月20日", "已付款", 34)
-            ];
-            ol.render(document.getElementById("order-list"));
-    </script>
-    
-     <style>
-    footer {
-    height: 100px;
-    width:100%;
-    background-color: white;
-    margin-top: 20px;
-    text-align: center;
-    font-size:16px;
-}
-    </style>
+        let ol = new OrderList();
+        $.get(`/orders/orders`, function(data){
+            ol.orders = [];
+            if(data && data.success){
+                for(let i of data.data){
+                    ol.orders.push(new Order(i.oid, i.date, i.progress, i.amount));
+                }
+                ol.render(document.getElementById("order-list"));
+            } else {
+                alert("网络异常");
+            }
+        }, "json");
+        ol.render(document.getElementById("order-list"));
+    })
+</script>
+
+
 </body>
 </html>

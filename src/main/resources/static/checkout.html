@@ -6,6 +6,7 @@
     <title>结账</title>
     <!-- CSS only -->
     <link rel="stylesheet" type="text/css" href="/css/common.css">
+    <link  rel="stylesheet" href="/css/address.css">
 
     <link  rel="stylesheet" href="/css/checkout.css">
 
@@ -13,7 +14,6 @@
 </head>
 <body>
 <header>
-    <font class="text-primary">当前用户:&nbsp;</font>
     <a class="text-primary" id="userName"></a>
     <div class="header_right">
         <input id="inputSearch" placeholder="输入搜索" maxlength="30" class="form-control"
@@ -21,24 +21,26 @@
         <a href="/orders" class="btn btn-link">订单</a>
         <a href="/cart" class="btn btn-link">购物车</a>
         <a href="/user" class="btn btn-link">个人中心</a>
+        <a href="/home" class="btn btn-link">首页</a>
+
 
     </div>
 </header>
-<div class="cart_index">
-    <div >
-        商品图片
-    </div>
-    <div>
-        商品名
-    </div>
-    <div >
-        单价与数量
-    </div>
-    <div >
-        总额
-    </div>
-</div>
-<div id="list-goods"></div>
+
+<table class="table table-striped">
+    <caption>订单付款</caption>
+    <thead>
+    <tr>
+        <th> 商品图片</th>
+        <th>商品名称</th>
+        <th>单价与数量</th>
+        <th>总额</th>
+    </tr>
+    </thead>
+    <tbody class="mtbody">
+
+    </tbody>
+</table>
 <div class="other">
     <div class="input-group mb-3">
         <div class="input-group-prepend">
@@ -46,7 +48,7 @@
             <select class="custom-select" id="address">
                 <option selected value="-1">Choose...</option>
             </select>
-            总金额：<span id="total-price"></span>
+            总金额：<span id="total-price" class="cart_price"></span>
             <button class="btn btn-primary" onclick="pay()">付款</button>
         </div>
 
@@ -102,7 +104,7 @@
             for(let i of data){
                 gl.goods.push(new Good(i.gid, i.number));
             }
-            gl.render($("#list-goods")[0]);
+            gl.render($(".mtbody:first"));
         }, "json");
         $.get(`/user/addresses`, function(data){
             console.log(data);
@@ -115,6 +117,7 @@
             $("#address").append($(str));
         }, "json");
         getUserName();
+        addSearch();
     })
 </script>
 

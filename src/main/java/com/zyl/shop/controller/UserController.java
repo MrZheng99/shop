@@ -32,6 +32,7 @@ public class UserController {
 		mav.setViewName("/html/front/user.html");
 		return mav;
 	}
+
 	@RequestMapping("/addresses")
 	@ResponseBody
 	public List<AddressItem> userAddresses(HttpSession session){

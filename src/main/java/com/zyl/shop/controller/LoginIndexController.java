@@ -8,10 +8,8 @@ import javax.servlet.http.HttpSession;
 
 import com.zyl.shop.entity.ResponseJson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.zyl.shop.entity.User;
@@ -58,4 +56,23 @@ public class LoginIndexController {
 		return responseJson;
 	}
 
+	/**
+	 * 退出账户
+	 * @param session
+	 * @return
+	 */
+	@GetMapping("/loginOut")
+	public ModelAndView loginOut(HttpSession session){
+		ModelAndView mav = new ModelAndView();
+		Integer userIdSession = (Integer) session.getAttribute("userID");
+		if(userIdSession!=null && userIdSession>100) {
+			session.removeAttribute("userID");
+			session.removeAttribute("userName");
+			mav.setViewName("redirect:index");
+			return mav;
+		}
+		mav.setStatus(HttpStatus.FORBIDDEN);
+		mav.setViewName("redirect:index");
+		return mav;
+	}
 }
