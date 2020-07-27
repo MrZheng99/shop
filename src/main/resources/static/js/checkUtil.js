@@ -48,14 +48,10 @@ function checkAccount(account) {
 }
 
 function checkPassword(password) {
-    let account = document.getElementById('userName').value;
-
     if (password === "" && !account === "") { //输入不能为空
-        document.getElementById('pwdError').textContent = '不能为空';
         return false;
 
     } else if (!checkPwd(password)) {
-        document.getElementById('pwdError').textContent = '格式不正确';
         return false;
 
     }

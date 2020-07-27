@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import com.zyl.shop.entity.ResponseJson;
+import com.zyl.shop.util.SessionKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -39,20 +40,30 @@ public class LoginIndexController {
 	 * @return
 	 */
 	@RequestMapping(value="/login", method=RequestMethod.POST)
-	public ResponseJson login(@RequestParam String account,@RequestParam String password,HttpSession session) {
-		User user= userService.login(account, password);
+	public ResponseJson login(@RequestParam String account,@RequestParam String password,@RequestParam String code,HttpSession session) {
+		String scode = (String) session.getAttribute(SessionKey.VALIDATE_CODE);
 		ResponseJson responseJson = new ResponseJson();
+		System.out.println(code+":"+scode);
+		if(!scode.equals(code)){
+			responseJson.setSuccess(false);
+			responseJson.setMsg("验证码不正确");
+			responseJson.setData(500);
+			return responseJson;
+		}
+		User user= userService.login(account, password);
 		if(user!=null) {
 			session.setAttribute("userID", user.getId());
 			System.out.println(user.getId());
 			session.setAttribute("userName", user.getName());
 			session.setMaxInactiveInterval(30 * 60);
 			responseJson.setSuccess(true);
+			responseJson.setMsg("登录成功");
 			responseJson.setData(user.getId());
 			return responseJson;
 		}
 		responseJson.setSuccess(false);
-		responseJson.setData(-1);
+		responseJson.setMsg("账户密码不正确");
+		responseJson.setData(404);
 		return responseJson;
 	}
 
