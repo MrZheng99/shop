@@ -46,7 +46,7 @@ public class RegisterController {
     @GetMapping(value = "")
     public ModelAndView register() {
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("/html/front/register.html");
+        mav.setViewName("/html/register.html");
         return mav;
     }
 
@@ -72,7 +72,7 @@ public class RegisterController {
     @GetMapping(value = "/step2")
     public ModelAndView registerStepTwo() {
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("/html/front/registerStep2.html");
+        mav.setViewName("/html/registerStep2.html");
         return mav;
     }
 
@@ -141,7 +141,7 @@ public class RegisterController {
         //成功之后清除session
         session.removeAttribute("account");
         session.removeAttribute("password");
-        mav.setViewName("/html/front/registerStep3.html");
+        mav.setViewName("/html/registerStep3.html");
         return mav;
     }
 }

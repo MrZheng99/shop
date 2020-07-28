@@ -48,4 +48,13 @@ public class CartServiceImpl implements CartService {
 		cartDao.deleteUserGood(userId, cartItem.getGid());
 		return true;
 	}
+
+	@Override
+	public boolean existGoods(Integer userId, Integer goodsId) {
+		Integer scid = cartDao.queryGoodsByUserId(userId,goodsId);
+		if(scid!=null&&scid>=100){
+			return true;
+		}
+		return false;
+	}
 }

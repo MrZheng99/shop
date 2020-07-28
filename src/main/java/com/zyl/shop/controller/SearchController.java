@@ -21,7 +21,7 @@ public class SearchController {
     @GetMapping("")
     public ModelAndView jump2Search() {
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("/html/front/search.html");
+        mav.setViewName("/html/search.html");
         return mav;
     }
     @RequestMapping("/getKeyWord")

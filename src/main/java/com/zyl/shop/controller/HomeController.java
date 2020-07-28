@@ -39,13 +39,13 @@ public class HomeController {
 			mav.setViewName("redirect:../index");
 			return mav;
 		}
-		mav.setViewName("/html/front/home.html");
+		mav.setViewName("/html/home.html");
 		return mav;
 	}
 	@RequestMapping(value="",method=RequestMethod.GET)
 	public ModelAndView home() {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("/html/front/home.html");
+		mav.setViewName("/html/home.html");
 		return mav;
 	}
 	@RequestMapping(value="/queryCategroy",method=RequestMethod.GET)

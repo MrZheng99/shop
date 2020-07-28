@@ -25,4 +25,12 @@ public interface CartService {
 	  * @return
 	  */
 	boolean deleteGood(Integer userId, CartItem cartItem);
+
+	/**
+	 * 是不是在购物车之中
+	 * @param userId
+	 * @param goodsId
+	 * @return
+	 */
+	boolean existGoods(Integer userId,Integer goodsId);
 }

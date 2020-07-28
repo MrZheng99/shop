@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import com.zyl.shop.entity.ResponseJson;
+import com.zyl.shop.service.impl.CartServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,11 +23,12 @@ import com.zyl.shop.service.impl.GoodsServiceImpl;
 public class ShoppingController {
     @Autowired
     GoodsServiceImpl goodsService;
-
+    @Autowired
+    CartServiceImpl cartService;
     @RequestMapping(value = "/{goodsId}", method = RequestMethod.GET)
     public ModelAndView home(@PathVariable("goodsId") Integer goodsId) {
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("/html/front/shopping.html");
+        mav.setViewName("/html/shopping.html");
         return mav;
     }
 
@@ -43,20 +46,42 @@ public class ShoppingController {
         return map;
     }
 
+    @GetMapping(value = "/getGoodsDetails/shopping/{goodsId}")
+    public ResponseJson getGoodsDetails(@PathVariable("goodsId") Integer goodsId,HttpSession session) {
+        ResponseJson responseJson = new ResponseJson();
+        Map<String, Object> data = new HashMap<String, Object>();
+        Goods goods = goodsService.queryGoodsById(goodsId);
+        Integer userId = (Integer) session.getAttribute("userID");
+        if(userId==null){
+            responseJson.setSuccess(true);
+            data.put("goods",goods);
+            data.put("exist",false);
+            responseJson.setData(data);
+            return  responseJson;
+        }
+        Boolean exist = cartService.existGoods(userId,goodsId);
+        if(goods!=null){
+            responseJson.setSuccess(true);
+            data.put("goods",goods);
+            data.put("exist",exist);
+            responseJson.setData(data);
+        }else{
+            responseJson.setSuccess(false);
+        }
+        return responseJson;
+    }
     @GetMapping(value = "/getGoodsDetails/{goodsId}")
-    public Map<String, Object> getGoodsDetails(@PathVariable("goodsId") Integer goodsId) {
-        Map<String, Object> map = new HashMap<String, Object>();
+    public ResponseJson getGoodsDetails(@PathVariable("goodsId") Integer goodsId) {
+        ResponseJson responseJson = new ResponseJson();
         Goods goods = goodsService.queryGoodsById(goodsId);
         if(goods!=null){
-            map.put("success", true);
-            map.put("data", goods);
+            responseJson.setSuccess(true);
+            responseJson.setData(goods);
         }else{
-            map.put("success", false);
+            responseJson.setSuccess(false);
         }
-
-        return map;
+        return responseJson;
     }
-
     @GetMapping(value = "/addGoods2ShoppingCart/{goodsId}")
     public Map<String, Object> addGoods2ShoppingCart(@PathVariable("goodsId") Integer goodsId, HttpSession session) {
         Map<String, Object> map = new HashMap<String, Object>();

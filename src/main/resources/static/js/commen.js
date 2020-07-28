@@ -75,19 +75,14 @@ function joinShoppingCart(goodsId) {
         success: function (msg) {
             if (msg.success) {
                 alert("添加成功");
-                $("#btnJoinShoppingCart").text("已在购物车");
-                $("#btnJoinShoppingCart").attr("disabled", false);
-
+                $("#btnJoinShoppingCart").text("查看购物车");
+                $("#btnJoinShoppingCart").text("查看购物车").bind("click",function () {
+                    location.href='/cart';
+                });
             } else {
                 if (msg.data === "未登录") {
                     alert("请登录!!!");
                     window.location.href = "../index";
-                }
-
-                if (msg.data === "已在购物车之中") {
-                    alert("已在购物车之中!!!");
-                    $("#btnJoinShoppingCart").val("已在购物车");
-                    $("#btnJoinShoppingCart").attr("disabled", true);
                 }
                 if (msg.data === "加入购物车失败") {
                     alert("加入购物车失败!!!");
@@ -110,7 +105,7 @@ function getUserName(){
                 $("#userName").text("当前用户："+msg.data);
                 $("#userName").after("<a class='text-primary' style='margin-left: 10px' href='javascript:loginOut();'>退出</a>")
             } else {
-                $("#userName").after("<a class='text-primary' href='javascript:location.href='/index''>"+msg.msg+"</a>")
+                $("#userName").after("<a class='text-primary' href='/index'>"+msg.msg+"</a>")
 
             }
         }

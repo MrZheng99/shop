@@ -31,7 +31,7 @@ public class CartController {
 			mav.setViewName("redirect:/index");
 			return mav;
 		}
-		mav.setViewName("/html/front/cart.html");
+		mav.setViewName("/html/cart.html");
 		return mav;
 	}
 
