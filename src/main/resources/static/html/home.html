@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZYL商城主页</title>
+    <link rel="short icon" href="../images/logo.png" type="image/x-icon">
+
+    <link rel="stylesheet" type="text/css" href="../css/home.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/pagination.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+
+
+</head>
+
+<body>
+
+<header>
+    <a class="text-primary" id="userName"></a>
+    <div class="header_right">
+        <input id="inputSearch" placeholder="输入搜索" maxlength="30" class="form-control"
+               style="display: inline-block; width: 150px;">
+        <a href="/orders" class="btn btn-link">订单</a>
+        <a href="/cart" class="btn btn-link">购物车</a>
+        <a href="/user" class="btn btn-link">个人中心</a>
+
+    </div>
+</header>
+<div class="container" style="min-width: 100%;">
+
+    <div>
+
+        <div class="dome">
+            <ul id="demoLi">
+                <li>~~~~~精品特卖，绝对超值~~~~~</li>
+                <li >~~~~~潮流新鞋，引领时尚~~~~~</li>
+                <li>~~~~~男女服装，质量保证~~~~~</li>
+            </ul>
+
+        </div>
+    </div>
+
+    <div class="warp">
+        <div class="broadcast" id="broadcast">
+            <ul id="img_list">
+                <li><img src="../images/home_img1.jpg" alt="1"></li>
+                <li><img src="../images/home_img2.jpg" alt="2"></li>
+                <li><img src="../images/home_img3.jpg" alt="3"></li>
+            </ul>
+            <ol id="button_list">
+                <!-- 轮播按钮 -->
+                <li class="first-li" id="olli1">1</li>
+                <li id="olli2">2</li>
+                <li id="olli3">3</li>
+            </ol>
+        </div>
+    </div>
+    <hr>
+    <div class="categroy">
+        <ol>
+            <li>
+                <div class="active">
+                    <a class="categroyLink" href="#">精品特卖</a>
+                </div>
+            </li>
+        </ol>
+    </div>
+    <div class="content">
+
+    </div>
+    <div id="pagination">
+
+    </div>
+</div>
+<footer>
+
+        Copyright&nbsp;&copy;&nbsp;2020&nbsp;&nbsp;ZYL团队&nbsp;版权所有
+
+</footer>
+<!--<script src="../js/jquery.js"></script>-->
+<!-- JS, Popper.js, and jQuery -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+<script src="../js/showPages.js"></script>
+<script src="../js/search_loginout.js"></script>
+<script src="../js/commen.js"></script>
+
+<script>
+
+
+    /**
+     * 标语
+     */
+    function changeTitle(){
+        $("#demoLi").animate({top:"-50px"}).animate({top:0},0,function(){
+            let liFirst=$("#demoLi>li:first");
+
+            $("#demoLi").append(liFirst.clone());
+            liFirst.remove();
+        });
+    }
+
+    /**
+     * 图片轮播
+     */
+    function auto() {
+        let broadcast = $("#broadcast"),
+            img_list = $("#img_list"),
+            button_list = $("#button_list li"),
+            index = 0,
+            timer = null;
+        //初始化
+        if (timer) {
+            clearInterval(timer);
+            timer = null;
+        }
+        // 自动切换
+        timer = setInterval(autoPlay, 3000);
+        // 调用自动播放函数
+        function autoPlay() {
+            index++;
+            if (index >= button_list.length) {
+                index = 0;
+            }
+            imgChange(index);
+        }
+        function imgChange(buttonIndex) {
+            for (let i = 0; i < button_list.length; i++) {
+                button_list[i].className = "";
+            }
+            button_list[buttonIndex].className = "first-li";//按钮样式切换
+            $(img_list).css("marginLeft",-1000 * buttonIndex + "px");
+            index = buttonIndex;
+        }
+        //鼠标接触div
+        broadcast.onmouseover = function () {
+            clearInterval(timer);
+
+        }
+        //鼠标离开div
+        broadcast.onmouseout = function () {
+            timer = setInterval(autoPlay, 2000);
+        }
+    }
+
+   function getCategroy(){ $.ajax({
+        type: 'GET',
+        url: "/home/queryCategroy",
+        success: function (msg) {
+            if (msg.success) {
+                let categroies = msg.data;
+                for (let i = 0,len=msg.data.length; i <len ; i++) {
+                    $(".categroy ol").append("<li><div><a class='categroyLink'" +
+                        " href='javascript:void(0);'>"+categroies[i]+"</a></div></li>");
+                }
+                for (let i = 0,len=$(".categroyLink").length; i < len; i++) {
+                    $(".categroyLink:eq(" + (i) + ")").click(function () {
+                        $(".categroyLink").parent("div").removeClass("active");
+                        $(".categroyLink:eq(" + (i) + ")").parent("div").addClass("active");
+                        if (i > 0) {
+                            getGoods(this.text,"type");
+
+                        } else {
+                            getGoods("hot","type");
+
+                        }
+                    });
+                }
+            } else {
+                $(".categroy.ol li:last").after( msg.msg);
+            }
+        }
+
+    });}
+    window.onload = function () {
+        auto();
+        setInterval(changeTitle,2000);
+        addSearch();
+        getCategroy();
+        getUserName();
+        getGoods("hot","type");
+        //最后一个右边距0
+        for (let i = 0; i < 8; i++) {
+            if (i % 4 == 3) {
+                $(".disp:eq(" + (i) + ")").addClass("last");
+            }
+        }
+    }
+</script>
+
+</body>
+
+</html>

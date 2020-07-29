@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZYL商城会员注册</title>
+    <link rel="short icon" href="../images/logo.png" type="image/x-icon">
+
+    <link rel="stylesheet" href="../css/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/register.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>注册</h1>
+    </header>
+    <div class="steps">
+        <ol>
+            <li class="active" style="padding-left: 0px;"><i>1</i><span>填写账户信息</span></li>
+            <li><i>2</i><span>验证账户信息</span></li>
+            <li><i>3</i><span>注册成功</span></li>
+        </ol>
+    </div>
+    <div class="content">
+        <form action="#" class="mform" role="form">
+            <div class="form-line">
+                <span class="msg">用户名：</span>
+                <input id="userName" name="userName" type="text" class="form-control" onblur="checkAccount(this.value.trim())">
+                <span class="msgError" id="userNameError"></span>
+            </div>
+            <div class="form-line">
+
+                <span class="msg">登录密码：</span>
+                <input type="password" id="pwd" name="pwd" class="form-control" onblur="checkPassword(this.value.trim())">
+                <span class="msgError" id="pwdError"></span>
+
+            </div>
+            <div class="form-line">
+
+                <span class="msg">确认密码：</span>
+                <input type="password" id="pwdAgain" name="pwdAgain" class="form-control" onblur="checkPasswordAgain(this.value.trim())">
+                <span class="msgError" id="pwdAgainError"></span>
+
+
+            </div>
+
+            <div class="form-line">
+                <input style="margin-left: 25%;width: 50%; text-align: center;
+                " type="button" class="btn btn-primary" value="同意协议并注册" onclick="register()">
+
+            </div>
+            <a href="#">ZYL商城协议</a>
+            <span class="msgError" id="error"></span>
+        </form>
+    </div>
+       <footer>
+<div >
+    Copyright&nbsp;&copy;&nbsp;2020&nbsp;&nbsp;ZYL团队&nbsp;版权所有
+</div>
+</footer>
+    <script src="../js/jquery.js"></script>
+
+    <script src="../js/checkUtil.js"></script>
+    <script src="../js/md5.js"></script>
+    <script src="../js/setTimeOut.js"></script>
+
+    <script>
+        window.onload = function() {
+            document.getElementById('userName').focus();
+            document.onkeyup = function(e) {
+                if (e.keyCode == 13) {
+                    register();
+                }
+            }
+            let inputs = document.getElementsByTagName('input');
+            for (let i = 0, len = inputs.length - 1; i < len; i++) {
+                inputs[i].onfocus = function(e) {
+                    let errorId = this.id + "Error";
+                    document.getElementById(errorId).textContent = '';
+                }
+            }
+        }
+
+
+        function register() {
+            let account = document.getElementById('userName').value.trim();
+            let pwd = document.getElementById('pwd').value.trim();
+            let pwdAgain = document.getElementById('pwdAgain').value.trim();
+            if (checkAccount(account) && checkPassword(pwd) && checkPasswordAgain(pwdAgain)) {
+                $.ajax({
+                    type: 'POST',
+                    url: "/register/step1",
+                    data: {
+                        account: account,
+                        password: hex_md5(pwd)
+                    },
+                    dataTypa: 'json/text',
+                    success: function(msg) {
+                        if (!msg.success) {
+
+                            if (msg.data === "ACCOUNT_REPEAT") {
+                            	console.log(msg.data)
+                                $('#userNameError').text('用户名已存在');
+                            }
+                        } else {
+                            $("ol li:first").removeClass("active");
+                            $("ol li:eq(1)").addClass("active");
+
+                            $.ajax({
+                                type: 'GET',
+                                url: "/register/step2",
+                                //dataTypa: 'html',
+                                success: function(rs) {
+                                    $(".content").html(rs);
+                                }
+                            });
+
+                        }
+
+                    },
+                    error: function(msg) {
+                        console.log(msg);
+                        if (msg.status === 404) {
+                            $('#error').val('网络错误请重试');
+                        }
+
+                    }
+
+                });
+            }
+
+        }
+
+
+      
+    </script>
+</body>
+
+</html>
