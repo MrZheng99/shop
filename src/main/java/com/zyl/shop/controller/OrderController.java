@@ -45,7 +45,7 @@ public class OrderController {
 			responseJson.setMsg("未登录");
 			return responseJson;
 		}
-		responseJson.setSuccess(orderService.addOrder(userId, cartOrder.getItems(),cartOrder.getAmount()));
+		responseJson.setSuccess(orderService.addOrder(userId, cartOrder.getItems(),cartOrder.getAmount(),cartOrder.getOid()));
 		return responseJson;
 	}
 	

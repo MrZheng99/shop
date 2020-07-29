@@ -33,7 +33,7 @@ public interface OrderDao {
 	@Update("UPDATE tb_orderinfo SET aid=#{aid} WHERE oid=#{oid}")
 	void setAddress(@Param("oid")String orderId, @Param("aid")String aid);
 	
-	@Insert("INSERT INTO tb_orderinfo(uid, date, orderprogress, amount, status) VALUES(#{uid}, #{date}, #{orderprogress}, #{amount}, 1)")
+	@Insert("INSERT INTO tb_orderinfo(oid,uid, date, orderprogress, amount, status) VALUES(#{oid},#{uid}, #{date}, #{orderprogress}, #{amount}, 1)")
 	@Options(useGeneratedKeys = true, keyProperty = "oid")
 	void addOrder(Order order);
 

@@ -82,7 +82,8 @@ public interface OrderService {
 	 * @param userId 用户编号
 	 * @param items 商品列表
 	 * @param amount 商品总额
+	 * @param oid 订单编号
 	 * @return 添加成功返回true
 	 */
-	boolean addOrder(int userId, List<OrderDetailItem> items,Double amount);
+	boolean addOrder(int userId, List<OrderDetailItem> items,Double amount,Integer oid);
 }

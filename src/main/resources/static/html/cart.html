@@ -35,6 +35,7 @@
 <div >
 
     <div align="right" class="pay_right">
+        <input type="checkbox" class="form-check-input" id="mcheckbox-all" checked >全选&nbsp;&nbsp;
         <label  class="pay1" > 当前金额(不含运费): <em></em> 元
             <input  type="button" value="结算" class="btn btn-info" onclick="payAll()">
 
@@ -83,6 +84,35 @@
             }
             $(".mtbody:first").empty();
             cart.render($(".mtbody:first"));
+            /**
+             * 添加check事件
+             */
+            $.each($(".mcheckbox"),function (index,item) {
+                $(item).click(function () {
+                    check();
+                    //如果全部选中则全选勾中
+                   if( $(".mcheckbox:checked").length == $(".mtbody:first>tr").length){
+                       $("#mcheckbox-all").prop("checked",true);
+                   }else{
+                       $("#mcheckbox-all").prop("checked",false);
+                   }
+                })
+            })
+            /**
+             * 添加全选按钮功能
+             */
+            $("#mcheckbox-all").click(function () {
+                if($(this).is(':checked')){
+                    $.each($(".mcheckbox"),function (index,item) {
+                       $(item).prop("checked",true);
+                    });
+                }else{
+                    $.each($(".mcheckbox"),function (index,item) {
+                        $(item).prop("checked",false);
+                    });
+                }
+                check();
+            })
         }, "json");
     })
 </script>

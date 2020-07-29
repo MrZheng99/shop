@@ -129,21 +129,14 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	@Override
-	public boolean addOrder(int userId, List<OrderDetailItem> items,Double amount) {
-		System.out.println(items);
-		System.out.println(amount);
-
+	public boolean addOrder(int userId, List<OrderDetailItem> items,Double amount,Integer oid) {
 		Order order = new Order();
-		order.setOid(0);
+		order.setOid(oid);
 		order.setUid(userId);
 		order.setDate(new Date());
 		order.setOrderprogress(OrderService.OrderProgress.unpaid);
 		order.setAmount(amount);
 		orderDao.addOrder(order);
-		System.out.println(order);
-        System.out.println(items);
-        System.out.println(amount);
-
         for(OrderDetailItem item : items) {
 			OrderDetail detail = new OrderDetail();
 			detail.setOdid(0);

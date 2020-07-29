@@ -67,6 +67,7 @@ class CartGood{
 		      <input type="number" onchange="check()"  class="cart_number" max="${this.store}" min="1" value= ${this.number}>
 		    </td>
 		    <td>
+		        <input type="checkbox" class="form-check-input mcheckbox" checked >
 		       <input type="button" value="结算" onclick="checkout(${this.gid},this)" class="btn btn-primary">
 		       <input type="button" value="移除" onclick="deleteGood(${this.gid})" class="btn btn-danger">
 		    </td>
@@ -96,11 +97,15 @@ class Cart{
 *   核对输入的值
 * */
 function check() {
+    console.info("计算总价");
     let numbers = $(".cart_number");
     let prices = $(".cart_price");
+    let checkboxs = $(".mcheckbox");
     let amount=0;
     for(let i=0,len=prices.length;i<len;i++){
-        amount += (parseInt($(numbers[i]).val())*parseInt($(prices[i]).text()));
+        if($(checkboxs[i]).is(":checked")){
+            amount += (parseInt($(numbers[i]).val())*parseInt($(prices[i]).text()));
+        }
     }
     $(".pay1>em").text(amount);
 }
@@ -160,23 +165,30 @@ function deleteGood(gid){
 function payAll(){
     let datas = [];
     let numbers = $(".cart_number");
+    let checkboxs = $(".mcheckbox");
+    let prices = $(".cart_price");
+
     for(let i=0,len=numbers.length;i<len;i++){
-        datas.push({
-            gid:$(numbers[i]).prev("input").val(),
-            number: $(numbers[i]).val(),
-            price: $(numbers[i]).parent().prev("div").children("span").text()
-        })
+        if($(checkboxs[i]).is(":checked")){
+            datas.push({
+                gid:$(numbers[i]).prev("input").val(),
+                number: $(numbers[i]).val(),
+                price: $(prices[i]).text()
+            })
+        }
     }
+    let date = new Date();
+    let oid = ""+date.getHours()+date.getMinutes()+date.getSeconds()+date.getMilliseconds();
     $.ajax({
         type: 'PUT',
         url: "/order",
-        data: JSON.stringify({items:datas,amount:$(".pay1>em").text()}),
+        data: JSON.stringify({items:datas,amount:$(".pay1>em").text(),oid:oid}),
         contentType: "application/json",
         dataType: "json",
         success:
             function (msg) {
                 if (msg.success) {
-                    window.location.href = "/orders";
+                    window.location.href = "/checkout/"+oid;
                 } else {
                     if (msg.msg === "未登录") {
                         alert("请登录!!!");
