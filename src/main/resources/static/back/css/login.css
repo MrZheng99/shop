@@ -1,20 +1,21 @@
 @CHARSET "UTF-8";
 * { margin:0; padding:0; list-style:none;}
-html, body { 
-	background: url(../images/login/bg.gif);
+html, body {
+	height: 100%;
+	background-image:linear-gradient(141deg,#9fb8ad 0%,#1fc8db 51%,#2cb5e8 75%);
 	overflow-y: auto;
 	overflow-x: hidden;
 	font:normal 15px "Microsoft YaHei";
 }
 #login_top {
  height:39px;
- background: #07c url('../images/login/topBg.gif') 0px 0px repeat-x;
+ /*background: #07c url('../images/login/topBg.gif') 0px 0px repeat-x;*/
 }
 #welcome{
 	height: 39px;
 	line-height: 39px;
 	padding-left: 40px;
-	background: url('../images/login/topleft.gif') 0px 0px no-repeat;
+	/*background: url('../images/login/topleft.gif') 0px 0px no-repeat;*/
 	color:#fff;
 	float: left;
 }
@@ -40,15 +41,16 @@ html, body {
 	margin: 0px auto;
 	width: 986px;
 	height: 570px;
-	background: url('../images/login/login.gif') 0px 0px no-repeat;
+	 /*background: url('../images/login/login.gif') 0px 0px no-repeat;*/
 	position: relative;
 }
 #login_form{
-	width: 370px;
 	height: 270px;
 	position: absolute;
 	top: 180px;
-	right: 180px;
+	margin: 0 auto;
+	width: 100%;
+	text-align:center;vertical-align:middle;
 }
 #login_tip{
 	height: 35px;

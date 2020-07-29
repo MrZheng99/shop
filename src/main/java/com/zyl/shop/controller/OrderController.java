@@ -34,7 +34,7 @@ public class OrderController {
 		if(orderId == null) {
 			return "redirect:/orders.html";
 		}
-		return "/order.html";
+		return "/html/order.html";
 	}
 	
 	@RequestMapping(value="/order", method=RequestMethod.PUT)
@@ -109,7 +109,7 @@ public class OrderController {
 		if(userId == null) {
 			return "redirect:/index";
 		}
-		return "/orders.html";
+		return "/html/orders.html";
 	}
 	
 	@RequestMapping("/orders/orders")

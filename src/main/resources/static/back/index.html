@@ -2,18 +2,17 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>源辰-零食网后台登陆</title>
+    <title>时尚购物网后台登陆</title>
     <link rel="stylesheet" href="css/login.css">
-    <link rel="short icon" href="../images/yc.png" type="image/x-icon">
+    <link rel="short icon" href="../images/logo.png" type="image/x-icon">
 </head>
 <body>
 <div id="login_top">
     <div id="welcome">
-        欢迎使用源辰零食网后台管理系统
+        欢迎使用时尚购物网后台管理系统
     </div>
     <div id="back">
-        <a href="../index.html">返回首页</a>&nbsp;&nbsp; | &nbsp;&nbsp;
-        <a href="#">帮助</a>
+        <a href="/index">返回首页</a>
     </div>
 </div>
 <div id="login_center">
@@ -33,30 +32,39 @@
     </div>
 </div>
 <div id="login_bottom">
-    <label style="color:#FFF"><a class="copy" href="http://www.hyycinfo.com">衡阳市源辰信息科技有限公司 </a>&copy; 版权所有</label>
+
+
+    <label style="color:#FFF">Copyright&nbsp;&copy;&nbsp;2020&nbsp;&nbsp;ZJ&nbsp;版权所有</label>
 </div>
 <script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/md5.js"></script>
+
 <script type="text/javascript">
+    $(function(){
+        document.onkeyup = function(e) {
+            if (e.keyCode == 13) {
+                login();
+            }
+        }
+    })
     function login() {
         $.ajax({
-			type:"POST",
+            type:"POST",
             url: "/back/login",
             data: {
                 account: $("#account").val(),
-                password: $("#pwd").val()
+                password: hex_md5($("#pwd").val())
             },
-			success:function (o) {
-				console.log(o);
-				if(o.success){
-					location.href="/manager/"+o.data;
-				}else{
-					alert('账户密码不匹配');
-				}
-			},
-			error:function (o) {
-				console.log(o);
-
-			}
+            success:function (o) {
+                if(o.success){
+                    location.href="/manager/"+o.data;
+                }else{
+                    alert('账户密码不匹配');
+                }
+            },
+            error:function (o) {
+                console.log(o);
+            }
         })
     }
 </script>

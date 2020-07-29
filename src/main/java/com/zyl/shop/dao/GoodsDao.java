@@ -146,6 +146,8 @@ public interface GoodsDao {
 	 */
 	@Select("select * from tb_goodsinfo where (isnull(#{gtid}) or goodstype=#{gtid}) and goodsname like #{gname}")
 	List<GoodsInfo> searchGoodByTypeAndName(@Param("gtid")Integer gtid, @Param("gname")String gname);
+	@Select("select gid,goodsname from tb_goodsinfo where (isnull(#{gtid}) or goodstype=#{gtid}) and goodsname like #{gname} and hot=1 and status=1")
+	List<GoodsInfo> searchHotGoodByTypeAndName(@Param("gtid")Integer gtid, @Param("gname")String gname);
 
 	/**
 	 * 上下架商品
@@ -154,4 +156,13 @@ public interface GoodsDao {
 	 */
 	@Update("update tb_goodsinfo set status=#{status} where gid=#{gid}")
 	void updateGoodStatus(@Param("gid")int goodId, @Param("status")String status);
+
+	/**
+	 * 上下架热卖
+	 * @param goodId
+	 * @param hot
+	 */
+	@Update("update tb_goodsinfo set hot=#{hot} where gid=#{gid}")
+	Integer updateGoodHotStatus(@Param("gid")int goodId, @Param("hot")String hot);
+
 }

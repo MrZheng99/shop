@@ -35,7 +35,7 @@ public class ForgetPasswordController {
 	@GetMapping("")
 	public ModelAndView forgetPassword() {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("/html/front/forgetPassword.html");
+		mav.setViewName("/html/forgetPassword.html");
 		return mav;
 	}
 	@PostMapping("/getCode")

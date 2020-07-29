@@ -56,7 +56,7 @@ public interface UserDao {
 	@Select("select uid,name from tb_userinfo where uid=#{uid} and status=1;")
 	User getUserById(@Param("uid")int uid);
 	@ResultMap("userResult")
-	@Select("select uid,name,tel,email,status from tb_userinfo;")
+	@Select("select uid,name,realname,tel,email,status from tb_userinfo;")
 	List<User> queryAllUser();
 	@ResultMap("userResult")
 	@Select("select uid,name,tel,email,status from tb_userinfo where email=#{email} and name=#{account};")

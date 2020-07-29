@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>源辰-浏览商品信息</title>
-<link rel="shortcut icon" href="../../images/yc.png" type="image/x-icon" />
-<link rel="stylesheet" href="../css/common.css">
-<link rel="stylesheet" href="../css/main.css">
+	<meta charset="UTF-8">
+	<title>源辰-浏览商品信息</title>
+	<link rel="shortcut icon" href="../../images/yc.png" type="image/x-icon" />
+	<link rel="stylesheet" href="../css/common.css">
+	<link rel="stylesheet" href="../css/main.css">
 </head>
 <body>
 <div class="mt10">
@@ -14,11 +14,11 @@
 			<div class="box_center">
 				<form id="myform">
 					商品类型：<select class="select" name="tno" id="goodsType">
-								
-						</select>&nbsp;&nbsp;
+
+				</select>&nbsp;&nbsp;
 					商品名称：<input type="tel" id="gname" class="input-text lh30" size="40" />&nbsp;&nbsp;
 					<input type="button" name="button" class="btn btn82 btn_search"
-						onclick="searchGoods()" value="查询" />&nbsp;&nbsp;
+						   onclick="searchGoods()" value="查询" />&nbsp;&nbsp;
 				</form>
 			</div>
 		</div>
@@ -27,98 +27,90 @@
 <div id="table" class="mt10">
 	<div class="box span10 oh">
 		<table width="100%" border="0" cellpadding="0" cellspacing="0"
-			class="list_table">
+			   class="list_table">
 			<thead>
-				<tr>
-					<th width="8%">编号</th>
-					<th width="20%">名称</th>
-					<th width="10%">类型</th>
-					<th width="10%">商品价格</th>
-					<th width="10%">库存</th>
-					<th width="8%">状态</th>
-					<th>操作</th>
-				</tr>
+			<tr>
+				<th width="8%">编号</th>
+				<th width="20%">名称</th>
+				<th width="10%">类型</th>
+				<th width="10%">商品价格</th>
+				<th width="10%">库存</th>
+				<th width="8%">热卖</th>
+				<th width="8%">状态</th>
+				<th>操作</th>
+			</tr>
 			</thead>
 			<tbody id="goods_info" align="center">
-				<tr>
-					<td>1001</td>
-					<td>安慕希风味酸牛奶</td>
-					<td>奶制品</td>
-					<td>68.8</td>
-					<td>120</td>
-					<td>箱</td>
-					<td>500G</td>
-					<td>6个月</td>
-					<td class="green">已上架</td>
-					<td><a href='' class='red'>[下架]</a>&nbsp;&nbsp;<a href=''>[详细]</a></td>
-				</tr>
-				<tr>
-					<td>1002</td>
-					<td>喜之郎果肉果冻</td>
-					<td>果冻</td>
-					<td>68.8</td>
-					<td>120</td>
-					<td>包</td>
-					<td>500G</td>
-					<td>6个月</td>
-					<td class="red">已下架</td>
-					<td><a href='' class='green'>[上架]</a>&nbsp;&nbsp;<a href=''>[详细]</a></td>
-				</tr>
+
 			</tbody>
 		</table>
 	</div>
 </div>
 <script type="text/javascript" src="../js/jquery.min.js"></script>
 <script type="text/javascript">
-var goodsType = {};
-$.get("../../types", function(result){
-	let str = "";
-	$.each(result, function(index, item){
-		goodsType[item.gtid] = item.typename;
-		str += `<option value="${item.gtid}">${item.typename}</option>`;
-	});
-	str = `<option value="">全部</option>`+str;
-	$("#goodsType").append($(str));
-	searchGoods();
-}, "json");
+	var goodsType = {};
+	$.get("../../types", function(result){
+		let str = "";
+		$.each(result, function(index, item){
+			goodsType[item.gtid] = item.typename;
+			str += `<option value="${item.gtid}">${item.typename}</option>`;
+		});
+		str = `<option value="">全部</option>`+str;
+		$("#goodsType").append($(str));
+		searchGoods();
+	}, "json");
 
-function searchGoods(){
-	const gtid = $("#goodsType").val();
-	const gname = $("#gname").val();
-	console.log(gtid, gname)
-	$.get("/goods", {tid:gtid, gname:gname}, function(data){
-		console.log(data)
-		let content = '';
-		for(let item of data){
-			content += /*html*/`<tr>
+	function searchGoods(){
+		const gtid = $("#goodsType").val();
+		const gname = $("#gname").val();
+		console.log(gtid, gname)
+		$.get("/goods", {tid:gtid, gname:gname}, function(data){
+			console.log(data)
+			let content = '';
+			for(let item of data){
+				content += /*html*/`<tr>
 				<td>${item.gid}</td>
 				<td>${item.goodsname}</td>
 				<td>${goodsType[item.goodstype]}</td>
 				<td>${item.goodsprice}</td>
 				<td>${item.store}</td>`;
-			if(item.status == "1"){
-				content += /*html*/`<td class="green">已上架</td>
+				if(item.hot == "1"){
+					content += /*html*/`<td><a href='javascript:changeHotStatus(${item.gid}, 0)' class='green'>[取消热卖]</a></td>`;
+				}else{
+					content += /*html*/`<td><a href='javascript:changeHotStatus(${item.gid}, 1)' class='red'>[加入热门]</a></td>`;
+				}
+				if(item.status == "1"){
+					content += /*html*/`<td class="green">已上架</td>
 					<td><a href='javascript:changeStatus(${item.gid}, 0)' class='red'>[下架]</a>&nbsp;&nbsp;<a href='/shopping/${item.gid}' target="_blank">[详细]</a></td>
 				</tr>`
-			}else{
-				content += /*html*/`<td class="red">已下架</td>
+				}else{
+					content += /*html*/`<td class="red">已下架</td>
 					<td><a href='javascript:changeStatus(${item.gid}, 1)' class='green'>[上架]</a>&nbsp;&nbsp;<a href='/shopping/${item.gid}' target="_blank">[详细]</a></td>
 				</tr>`
+				}
 			}
-		}
-		$("#goods_info").html("").append($(content));
-	})
-}
+			$("#goods_info").html("").append($(content));
+		})
+	}
 
-function changeStatus(gid, status){
-	$.post(`/good/${gid}`, {status:status}, function(result){
-		if(result.success){
-			searchGoods();
-		}else{
-			alert("失败");
-		}
-	})
-}
+	function changeStatus(gid, status){
+		$.post(`/good/${gid}`, {status:status}, function(result){
+			if(result.success){
+				searchGoods();
+			}else{
+				alert("失败");
+			}
+		})
+	}
+	function changeHotStatus(gid, status){
+		$.post(`/good/hot`, {gid:gid,hot:status}, function(result){
+			if(result.success){
+				searchGoods();
+			}else{
+				alert("失败");
+			}
+		})
+	}
 </script>
 </body>
 </html>

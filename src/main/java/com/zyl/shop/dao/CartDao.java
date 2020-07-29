@@ -22,4 +22,6 @@ public interface CartDao {
 	
 	@Delete("delete from tb_shoppingcart where uid=#{uid} and gid=#{gid}")
 	void deleteUserGood(@Param("uid")int userId, @Param("gid")int gid);
+	@Select("select sc.scid from tb_shoppingcart sc where sc.status=1 and sc.uid=#{uid} and sc.gid=#{gid}")
+	Integer queryGoodsByUserId(@Param("uid")int userId, @Param("gid")int goodsId);
 }

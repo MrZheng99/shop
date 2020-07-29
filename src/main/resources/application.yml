@@ -5,6 +5,10 @@ spring:
     username: root
     password: Zheng1125
     driver-class-name: com.mysql.cj.jdbc.Driver
+    minIdle: 5
+    maxWait: 6000
+    initialSize: 5
+    maxActive: 50
   mail:
     # 邮件服务地址
     host: smtp.qq.com

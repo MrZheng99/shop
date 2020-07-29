@@ -16,6 +16,11 @@ header{
 
 a{
     text-decoration: none;
+    cursor: pointer;
+}
+a:hover{
+    text-decoration: none;
+    cursor: pointer;
 }
 .header_right{
     float:right;

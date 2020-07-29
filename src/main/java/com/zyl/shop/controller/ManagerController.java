@@ -5,6 +5,8 @@ import com.zyl.shop.entity.ResponseJson;
 import com.zyl.shop.entity.User;
 import com.zyl.shop.service.impl.AdminServiceImpl;
 import com.zyl.shop.service.impl.UserServiceImpl;
+import com.zyl.shop.util.SessionKey;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,12 +19,22 @@ import java.util.List;
 public class ManagerController {
     @Autowired
     AdminServiceImpl adminService;
-@Autowired
-UserServiceImpl userService;
+
+    @Autowired
+    UserServiceImpl userService;
+    @RequestMapping(value="/name",method= RequestMethod.GET)
+    public ResponseJson queryName(HttpSession session) {
+        String admName = (String) session.getAttribute(SessionKey.CURRENT_ADMIN_NAME);
+        System.out.println(admName);
+        if(admName==null||admName=="") {
+            return  new ResponseJson(false,"未登录",null);
+        }
+        return  new ResponseJson(true,"登录成功",admName);
+    }
     @RequestMapping(value="/{adminId}",method= RequestMethod.GET)
     public ModelAndView home(@PathVariable("adminId")Integer adminId, HttpSession session) {
         ModelAndView mav = new ModelAndView();
-        Integer userIdSession = (Integer) session.getAttribute("adminID");
+        Integer userIdSession = (Integer) session.getAttribute(SessionKey.CURRENT_ADMIN_ID);
         if(userIdSession==null||adminId<=100||userIdSession<=100||adminId!=userIdSession) {
             mav.setViewName("redirect:/back/index");
             return mav;
@@ -37,7 +49,7 @@ UserServiceImpl userService;
         return mav;
     }
     @RequestMapping(value="/getAllAdminInfo",method=RequestMethod.GET)
-    public ResponseJson getAdminsInfo(@SessionAttribute("adminID")Integer mid) {
+    public ResponseJson getAdminsInfo(@SessionAttribute(SessionKey.CURRENT_ADMIN_ID)Integer mid) {
         ResponseJson responseJson = adminService.getAllAdminInfo(mid);
         System.out.println(responseJson);
         return responseJson;

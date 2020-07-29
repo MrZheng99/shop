@@ -2,6 +2,7 @@ package com.zyl.shop.controller;
 
 import javax.servlet.http.HttpSession;
 
+import com.zyl.shop.util.SessionKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,8 +34,8 @@ public class BackLoginController {
         Admin admin = adminService.login(account, password);
         ResponseJson responseJson = new ResponseJson();
         if(admin!=null) {
-            session.setAttribute("adminID", admin.getId());
-            session.setAttribute("adminName", admin.getName());
+            session.setAttribute(SessionKey.CURRENT_ADMIN_ID, admin.getId());
+            session.setAttribute(SessionKey.CURRENT_ADMIN_NAME, admin.getName());
             session.setMaxInactiveInterval(30*60);
             responseJson.setSuccess(true);
             responseJson.setData(admin.getId());
@@ -47,13 +48,13 @@ public class BackLoginController {
     }
     
     @PostMapping("/pwd")
-    public ResponseJson changePassword(@SessionAttribute("adminID") int aid, @RequestParam String password_older, @RequestParam String password_new) {
+    public ResponseJson changePassword(@SessionAttribute(SessionKey.CURRENT_ADMIN_ID) int aid, @RequestParam String password_older, @RequestParam String password_new) {
     	adminService.changePassword(aid, password_older, password_new);
     	return new ResponseJson(true);
     }
     
     @RequestMapping("/info")
-    public ResponseJson getInfo(@SessionAttribute("adminID") int aid) {
+    public ResponseJson getInfo(@SessionAttribute(SessionKey.CURRENT_ADMIN_ID) int aid) {
     	return new ResponseJson(true, "", adminService.getInfo(aid));
     }
 

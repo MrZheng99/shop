@@ -60,9 +60,16 @@ public class GoodController {
 
 	@RequestMapping("/goods")
 	public List<GoodsInfo> searchGoodsByTypeAndName(@RequestParam Integer tid, @RequestParam String gname){
-		return goodsService.searchGoodByTypeAndName(tid, gname);
+		return goodsService.searchGoodByTypeAndName(tid, gname,false);
 	}
-
+	@RequestMapping("/goods/hot")
+	public List<GoodsInfo> searchHotGoodsByTypeAndName(@RequestParam Integer tid, @RequestParam String gname){
+		return goodsService.searchGoodByTypeAndName(tid, gname,true);
+	}
+	@RequestMapping("/goods/hot/update")
+	public ResponseJson deleteHotGoodsById(@RequestParam Integer gid, @RequestParam String hot){
+		return goodsService.updateGoodHotStatus(gid,hot);
+	}
 	@RequestMapping(value="/good/{goodId}", method=RequestMethod.POST)
 	public ResponseJson updateGoodStatus(@PathVariable("goodId")int goodId, @RequestParam String status) {
 		goodsService.updateGoodStatus(goodId, status);

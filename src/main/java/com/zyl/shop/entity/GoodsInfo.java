@@ -9,6 +9,7 @@ public class GoodsInfo {
 	private String goodsdescription;
 	private int goodstype;
 	private String images;
+	private String hot;
 
     public String getImages() {
         return images;
@@ -29,6 +30,12 @@ public class GoodsInfo {
 	}
 	public void setGoodsname(String goodsname) {
 		this.goodsname = goodsname;
+	}
+	public String getHot() {
+		return hot;
+	}
+	public void setHot(String hot) {
+		this.hot = hot;
 	}
 	public double getGoodsprice() {
 		return goodsprice;
@@ -61,17 +68,18 @@ public class GoodsInfo {
 		this.goodstype = goodstype;
 	}
 
-    @Override
-    public String toString() {
-        return "GoodsInfo{" +
-                "gid=" + gid +
-                ", goodsname='" + goodsname + '\'' +
-                ", goodsprice=" + goodsprice +
-                ", store=" + store +
-                ", status='" + status + '\'' +
-                ", goodsdescription='" + goodsdescription + '\'' +
-                ", goodstype=" + goodstype +
-                ", images='" + images + '\'' +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "GoodsInfo{" +
+				"gid=" + gid +
+				", goodsname='" + goodsname + '\'' +
+				", goodsprice=" + goodsprice +
+				", store=" + store +
+				", status='" + status + '\'' +
+				", goodsdescription='" + goodsdescription + '\'' +
+				", goodstype=" + goodstype +
+				", images='" + images + '\'' +
+				", hot='" + hot + '\'' +
+				'}';
+	}
 }

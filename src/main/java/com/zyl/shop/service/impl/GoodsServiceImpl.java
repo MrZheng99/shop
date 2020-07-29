@@ -171,9 +171,12 @@ public class GoodsServiceImpl implements GoodsService {
 	}
 
 	@Override
-	public List<GoodsInfo> searchGoodByTypeAndName(Integer tid, String gname) {
+	public List<GoodsInfo> searchGoodByTypeAndName(Integer tid, String gname,Boolean hot) {
 		if(gname == null) {
 			gname = "";
+		}
+		if(hot){
+			return goodsDao.searchHotGoodByTypeAndName(tid, "%"+gname+"%");
 		}
 		return goodsDao.searchGoodByTypeAndName(tid, "%"+gname+"%");
 	}
@@ -183,5 +186,13 @@ public class GoodsServiceImpl implements GoodsService {
 		goodsDao.updateGoodStatus(goodId, status);
 
 	}
+	@Override
+	public ResponseJson updateGoodHotStatus(int goodId, String hot) {
+		Integer row = goodsDao.updateGoodHotStatus(goodId, hot);
+		if(row!=null&&row>0){
+			return new ResponseJson(true,"更新成功",goodsDao.updateGoodHotStatus(goodId, hot));
+		}
+		return new ResponseJson(false,"更新失败",-1);
 
+	}
 }

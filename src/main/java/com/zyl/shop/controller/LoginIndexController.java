@@ -28,7 +28,7 @@ public class LoginIndexController {
 	@RequestMapping(value="/index", method=RequestMethod.GET)
 	public ModelAndView index() {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("/html/front/index.html");
+		mav.setViewName("/html/index.html");
 		return mav;
 	}
 

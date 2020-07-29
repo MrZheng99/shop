@@ -29,7 +29,7 @@ public class UserController {
 			mav.setViewName("redirect:index");
 			return mav;
 		}
-		mav.setViewName("/html/front/user.html");
+		mav.setViewName("/html/user.html");
 		return mav;
 	}
 
@@ -56,7 +56,7 @@ public class UserController {
 			mav.setStatus(HttpStatus.FORBIDDEN);
 			return mav;
 		}
-		mav.setViewName("/html/front/userInfo.html");
+		mav.setViewName("/html/userInfo.html");
 		return mav;
 	}
 	@GetMapping("/getUserAddressPage")
@@ -67,7 +67,7 @@ public class UserController {
 			mav.setStatus(HttpStatus.FORBIDDEN);
 			return mav;
 		}
-		mav.setViewName("/html/front/userAddress.html");
+		mav.setViewName("/html/userAddress.html");
 		return mav;
 	}
 	@RequestMapping(value="/getUserInfo",method=RequestMethod.GET)

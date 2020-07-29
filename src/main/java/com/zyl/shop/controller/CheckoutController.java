@@ -27,7 +27,7 @@ public class CheckoutController {
 		if(orderId == null) {
 			return "error.html";
 		}
-		return "/checkout.html";
+		return "/html/checkout.html";
 	}
 	
 	@RequestMapping(value="/pay/{orderId}", method=RequestMethod.GET)

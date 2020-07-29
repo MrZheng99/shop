@@ -52,11 +52,18 @@ public interface GoodsService {
 	 * @param gname 商品名，为null时返回所有商品
 	 * @return
 	 */
-	List<GoodsInfo> searchGoodByTypeAndName(Integer tid, String gname);
+	List<GoodsInfo> searchGoodByTypeAndName(Integer tid, String gname,Boolean hot);
 	/**
 	 * 修改商品状态，上架下架
 	 * @param goodId 商品编号
 	 * @param status 1上架, 0下架
 	 */
 	void updateGoodStatus(int goodId, String status);
+
+	/**
+	 * 是否热卖
+	 * @param goodId
+	 * @param hot
+	 */
+	ResponseJson updateGoodHotStatus(int goodId, String hot);
 }

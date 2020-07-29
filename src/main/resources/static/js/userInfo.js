@@ -83,4 +83,11 @@ $(document).ready(function() {
             fnSuccess("areaTip");
         }
     });
+    $("#detailAddr").blur(function() {
+        if ($(this).val() === "") {
+            fnError("detailAddrTip", "请输入");
+        } else {
+            fnSuccess("detailAddrTip");
+        }
+    });
 })
