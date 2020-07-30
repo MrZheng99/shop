@@ -42,7 +42,7 @@ public interface AdminService {
      * @param oldPassword
      * @param newPassword
      */
-    void changePassword(int aid, String oldPassword, String newPassword);
+    ResponseJson changePassword(int aid, String oldPassword, String newPassword);
 
     /**
      * 获取管理员信息
@@ -50,4 +50,12 @@ public interface AdminService {
      * @return
      */
 	Admin getInfo(int aid);
+
+    /**
+     * 管理员修改自己的电话号码
+     * @param aid
+     * @param tel
+     * @return
+     */
+    ResponseJson updateAdminTel(String aid, String tel);
 }

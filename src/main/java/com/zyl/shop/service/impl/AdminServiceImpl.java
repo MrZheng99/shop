@@ -70,10 +70,30 @@ public class AdminServiceImpl implements AdminService {
         responseJson.setSuccess(false);
         return  responseJson;
     }
-    
-	@Override
-	public void changePassword(int aid, String oldPassword, String newPassword) {
-		adminDao.changePassword(aid, oldPassword, newPassword);
+    @Override
+    public ResponseJson updateAdminTel(String aid, String tel) {
+        Integer row = adminDao.changeTel(aid,tel);
+        ResponseJson responseJson = new ResponseJson();
+        if(row!=null && row>0){
+            responseJson.setSuccess(true);
+            responseJson.setData(row);
+            return  responseJson;
+        }
+        responseJson.setSuccess(false);
+        return  responseJson;
+    }
+
+    @Override
+	public ResponseJson changePassword(int aid, String oldPassword, String newPassword) {
+        Integer row = adminDao.changePassword(aid, oldPassword, newPassword);
+        ResponseJson responseJson = new ResponseJson();
+        if(row!=null && row>0){
+            responseJson.setSuccess(true);
+            responseJson.setData(row);
+            return  responseJson;
+        }
+        responseJson.setSuccess(false);
+        return  responseJson;
 	}
 
 	

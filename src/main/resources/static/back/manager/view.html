@@ -3,9 +3,9 @@
 <head>
 	<meta charset="UTF-8">
 	<title>源辰-浏览商品信息</title>
-	<link rel="shortcut icon" href="../../images/yc.png" type="image/x-icon" />
 	<link rel="stylesheet" href="../css/common.css">
 	<link rel="stylesheet" href="../css/main.css">
+	<link rel="stylesheet" href="../css/view.css">
 </head>
 <body>
 <div class="mt10">
@@ -46,9 +46,157 @@
 		</table>
 	</div>
 </div>
+<div id="fade" class="black_overlay">
+</div>
+<!-- 弹出框 -->
+<div id="MyDiv" class="white_content">
+	<div id="title">
+		<img src="../../images/onError.gif" alt="" srcset="" onclick="CloseDiv('MyDiv','fade')" id="close_icon">
+	</div>
+	<div id="forms" style="padding-top: 0;margin-top: 0" class="mt10">
+		<div class="box">
+			<div class="box_border" style="margin-top: 0">
+				<div class="box_center">
+					<form action="" class="jqtransform" id="addGoodsForm">
+						<table class="form_table pt15 pb15" width="100%" border="0" cellpadding="0" cellspacing="0">
+							<tr>
+
+								<td class="td_right">商品类型：</td>
+								<td>
+									<select class="select" name="tid" id="edit_goods_Type">
+
+									</select>
+								</td>
+								<td class="td_right">商品名称：</td>
+								<td>
+									<input type="text" id="edit_gname" name="title" class="input-text lh30" size="30" placeholder="请输入商品名称">
+								</td>
+								<td class="td_right">商品单价：</td>
+								<td>
+									<input type="number" id="price" name="price" class="input-text lh30" size="30" placeholder="单价"/>
+								</td>
+							</tr>
+							<tr>
+								<td class="td_right">商品库存：</td>
+								<td>
+									<input type="number" id="balance" name="balance" class="input-text lh30" size="30"  placeholder="库存"/>
+								</td>
+							</tr>
+							<tr>
+								<td class="td_right">商品图片：</td>
+								<td>
+									<input type="file" id="pic" name="pic" class="input-text lh30" size="30" multiple="multiple" onchange="setImagePreviews(this,'showPics')">
+								</td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+								<td colspan="5" align="center">
+									<div id="showPics">
+
+									</div>
+								</td>
+							</tr>
+
+							<tr>
+								<td class="td_right">商品描述：</td>
+								<td colspan="5">
+									<textarea name="editor1" id="editor1" rows="10" cols="80"></textarea>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="4" align="center">
+									<input id="gid" hidden>
+									<input type="button" name="button" class="btn btn82 btn_save2" onclick="addGoodsInfo()" value="保存">
+									<input type="reset" name="button" class="btn btn82 btn_res" value="重置">
+								</td>
+							</tr>
+						</table>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 <script type="text/javascript" src="../js/jquery.min.js"></script>
+<!--弹出框-->
+<script type="text/javascript" src="../js/showpic.js"></script>
+<script type="text/javascript" src="../js/ajaxfileupload.js"></script>
+<script src="../../ckeditor/ckeditor.js"></script>
+<script>
+
+	CKEDITOR.replace( 'editor1' );
+	//弹出隐藏层
+	function ShowDiv(gid) {
+		$("#MyDiv").css("display","block");
+		$("#fade").css("display","block");
+		$("#fade").width($(document).scrollWidth);
+		$("#fade").height($(document).height());
+		/**
+		 * 填充类别
+		 * @type {string}
+		 */
+		let str = "";
+		console.log(goodsType);
+		for(gtid in goodsType){
+			str += `<option value="${gtid}">${goodsType[gtid]}</option>`;
+		}
+		str = `<option value="">全部</option>`+str;
+		$("#edit_goods_Type").append($(str));
+		/**
+		 * 填充其他信息
+		 */
+		let temp = goodsInfo[gid];
+		$("#edit_goods_Type").val(temp.goodstype);
+		$("#edit_gname").val(temp.gname);
+		$("#price").val(temp.goodsprice);
+		$("#balance").val(temp.store);
+		$("#gid").val(gid);
+
+		CKEDITOR.instances.editor1.setData(temp.goodsdescription);
+
+	};
+	//关闭弹出层
+	function CloseDiv() {
+		$("#MyDiv").css("display","none");
+		$("#fade").css("display","none");
+
+	};
+	function addGoodsInfo() {
+		var tno = $.trim($("#edit_goods_Type").val());
+		var gname = $.trim($("#edit_gname").val());
+		var price = $.trim($("#price").val());
+		var balance = $.trim($("#balance").val());
+		var descr = CKEDITOR.instances.editor1.getData();
+
+		$.ajaxFileUpload({
+			url:'/good/update/'+$("#gid").val(),
+			secureuri: false,
+			fileElementId:"pic",
+			dataType:"json",
+			data:{tid:tno, gname:gname,price:price,balance:balance,descr:descr},
+			success:function(data, stuts) {
+				data = parseInt($.trim(data));
+				if (data == 1) {
+					$("#addGoodsForm")[0].reset();
+					$("#showPics").html("");
+					CKEDITOR.instances.editor1.setData("");
+					alert("修改商品信息成功...");
+				} else {
+					alert("修改商品信息失败...");
+				}
+			},
+			error:function(data, status, e) {
+				alert("修改商品信息失败，请稍后重试...\n" + e);
+			}
+		});
+	}
+</script>
+<!--   弹出框到此为止 -->
 <script type="text/javascript">
 	var goodsType = {};
+	var goodsInfo={};
 	$.get("../../types", function(result){
 		let str = "";
 		$.each(result, function(index, item){
@@ -68,6 +216,14 @@
 			console.log(data)
 			let content = '';
 			for(let item of data){
+				goodsInfo[item.gid] = {
+					gname:item.goodsname,
+					goodsprice:item.goodsprice,
+					store:item.store,
+					goodsdescription:item.goodsdescription,
+					images:item.images,
+					goodstype:item.goodstype
+				};
 				content += /*html*/`<tr>
 				<td>${item.gid}</td>
 				<td>${item.goodsname}</td>
@@ -81,11 +237,11 @@
 				}
 				if(item.status == "1"){
 					content += /*html*/`<td class="green">已上架</td>
-					<td><a href='javascript:changeStatus(${item.gid}, 0)' class='red'>[下架]</a>&nbsp;&nbsp;<a href='/shopping/${item.gid}' target="_blank">[详细]</a></td>
+					<td><a href='javascript:changeStatus(${item.gid}, 0)' class='red'>[下架]</a>&nbsp;&nbsp;<a href='javascript:void(0);' onclick="ShowDiv(${item.gid})">[编辑]</a></td>
 				</tr>`
 				}else{
 					content += /*html*/`<td class="red">已下架</td>
-					<td><a href='javascript:changeStatus(${item.gid}, 1)' class='green'>[上架]</a>&nbsp;&nbsp;<a href='/shopping/${item.gid}' target="_blank">[详细]</a></td>
+					<td><a href='javascript:changeStatus(${item.gid}, 1)' class='green'>[上架]</a>&nbsp;&nbsp;<a href='javascript:void(0);' onclick="ShowDiv(${item.gid})">[编辑]</a></td>
 				</tr>`
 				}
 			}

@@ -47,15 +47,6 @@ public class BackLoginController {
         return responseJson;
     }
     
-    @PostMapping("/pwd")
-    public ResponseJson changePassword(@SessionAttribute(SessionKey.CURRENT_ADMIN_ID) int aid, @RequestParam String password_older, @RequestParam String password_new) {
-    	adminService.changePassword(aid, password_older, password_new);
-    	return new ResponseJson(true);
-    }
-    
-    @RequestMapping("/info")
-    public ResponseJson getInfo(@SessionAttribute(SessionKey.CURRENT_ADMIN_ID) int aid) {
-    	return new ResponseJson(true, "", adminService.getInfo(aid));
-    }
+
 
 }

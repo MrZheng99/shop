@@ -60,7 +60,10 @@ public class ManagerController {
         System.out.println(responseJson);
         return responseJson;
     }
-
+    @RequestMapping("/getAdminInfo")
+    public ResponseJson getInfo(@SessionAttribute(SessionKey.CURRENT_ADMIN_ID) int aid) {
+        return new ResponseJson(true, "", adminService.getInfo(aid));
+    }
     @RequestMapping(value="/addAdmin",method=RequestMethod.POST)
     public ResponseJson addAdmin(@RequestParam("name")String name,@RequestParam("password")String password,@RequestParam("tel")String tel) {
         System.out.println(name+":"+password+":"+tel);
@@ -73,6 +76,7 @@ public class ManagerController {
         ResponseJson responseJson = adminService.updateAdmin(aid,status);
         System.out.println(responseJson);
         return responseJson;
+
     }
     @RequestMapping(value="/updateUser",method=RequestMethod.POST)
     public ResponseJson updateUserStatus(@RequestParam("userId")Integer userId,@RequestParam("data")String data,@RequestParam("type")String type) {
@@ -87,4 +91,15 @@ public class ManagerController {
         System.out.println(responseJson);
         return responseJson;
     }
+    @PostMapping("/changePassword")
+    public ResponseJson changePassword(@SessionAttribute(SessionKey.CURRENT_ADMIN_ID) int aid, @RequestParam String password_older, @RequestParam String password_new) {
+        return adminService.changePassword(aid, password_older, password_new);
+    }
+    @RequestMapping(value="/changeTel",method=RequestMethod.POST)
+    public ResponseJson updateAdminTel(@RequestParam("id")String aid,@RequestParam("tel")String tel) {
+        ResponseJson responseJson = adminService.updateAdminTel(aid,tel);
+        System.out.println(responseJson);
+        return responseJson;
+    }
+
 }

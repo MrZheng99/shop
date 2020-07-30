@@ -1,18 +1,14 @@
 package com.zyl.shop.service;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import com.zyl.shop.entity.ResponseJson;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.zyl.shop.entity.Goods;
 import com.zyl.shop.entity.GoodsInfo;
-
-import javax.servlet.http.HttpSession;
 
 public interface GoodsService {
 	List<String> queryCategroy(); 
@@ -57,8 +53,9 @@ public interface GoodsService {
 	 * 修改商品状态，上架下架
 	 * @param goodId 商品编号
 	 * @param status 1上架, 0下架
+	 * @return
 	 */
-	void updateGoodStatus(int goodId, String status);
+	ResponseJson updateGoodStatus(int goodId, String status);
 
 	/**
 	 * 是否热卖
@@ -66,4 +63,16 @@ public interface GoodsService {
 	 * @param hot
 	 */
 	ResponseJson updateGoodHotStatus(int goodId, String hot);
+
+	/**
+	 * 修改商品信息
+	 * @param file
+	 * @param gid
+	 * @param tid
+	 * @param gname
+	 * @param price
+	 * @param balance
+	 * @param descr
+	 */
+	void updateGood(MultipartFile[] file, int gid, int tid, String gname, double price, int balance, String descr) throws IOException;
 }

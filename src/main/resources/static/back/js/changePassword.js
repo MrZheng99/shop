@@ -25,7 +25,7 @@ function passSubmission(){
 }
 function loadingSubmission(ypassword,password){
     $.ajax({
-        url:"/back/pwd",
+        url:"/manager/changePassword",
         type:"post",
         dataType:"json",
         data:{

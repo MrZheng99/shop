@@ -57,7 +57,21 @@ public class GoodController {
 		}
 		return 1;
 	}
+	@RequestMapping(value="/good/update/{gid}", method=RequestMethod.POST)
+	public int updateGood(@RequestParam("pic") MultipartFile[] file,@PathVariable("gid") int gid, @RequestParam int tid,
+					   @RequestParam String gname, @RequestParam double price, @RequestParam int balance,
+					   @RequestParam String descr) {
 
+		System.out.println(file[0].getOriginalFilename());
+		System.out.println(descr);
+		try {
+			goodsService.updateGood(file, gid,tid, gname, price, balance, descr);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return 0;
+		}
+		return 1;
+	}
 	@RequestMapping("/goods")
 	public List<GoodsInfo> searchGoodsByTypeAndName(@RequestParam Integer tid, @RequestParam String gname){
 		return goodsService.searchGoodByTypeAndName(tid, gname,false);
@@ -72,8 +86,7 @@ public class GoodController {
 	}
 	@RequestMapping(value="/good/{goodId}", method=RequestMethod.POST)
 	public ResponseJson updateGoodStatus(@PathVariable("goodId")int goodId, @RequestParam String status) {
-		goodsService.updateGoodStatus(goodId, status);
-		return new ResponseJson(true);
+		return goodsService.updateGoodStatus(goodId, status);
 	}
 
 	@RequestMapping(value="/goods/number/type/{type}",method=RequestMethod.GET)

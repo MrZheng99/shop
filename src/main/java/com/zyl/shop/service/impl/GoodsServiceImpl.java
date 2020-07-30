@@ -1,7 +1,6 @@
 package com.zyl.shop.service.impl;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,16 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.zyl.shop.dao.GoodsDao;
 import com.zyl.shop.entity.Goods;
-import com.zyl.shop.entity.GoodsImage;
 import com.zyl.shop.entity.GoodsInfo;
 import com.zyl.shop.service.GoodsService;
-
-import javax.servlet.http.HttpSession;
 
 @Service
 @Transactional
@@ -145,6 +140,24 @@ public class GoodsServiceImpl implements GoodsService {
 	}
 
 	@Override
+	public void updateGood(MultipartFile[] files,int gid, int tid, String gname, double price, int balance, String descr) throws IOException {
+		GoodsInfo goodsInfo = new GoodsInfo();
+		goodsInfo.setGid(gid);
+		goodsInfo.setGoodsname(gname);
+		goodsInfo.setGoodsprice(price);
+		goodsInfo.setGoodstype(tid);
+		goodsInfo.setStore(balance);
+		goodsInfo.setGoodsdescription(descr);
+		goodsInfo.setStatus("1");
+		List<String> listImage = new ArrayList<String>();
+		for(MultipartFile file : files) {
+			listImage.add(this.addImage(file));
+		}
+		goodsInfo.setImages(String.join(",",listImage));
+		goodsDao.updateGood(goodsInfo);
+
+	}
+	@Override
 	public Map<String, Object> uploadImage(MultipartFile file) throws IOException {
 		String fileName = "_"+System.currentTimeMillis()+"."+file.getOriginalFilename().split("\\.", 2)[1];
 
@@ -182,8 +195,12 @@ public class GoodsServiceImpl implements GoodsService {
 	}
 
 	@Override
-	public void updateGoodStatus(int goodId, String status) {
-		goodsDao.updateGoodStatus(goodId, status);
+	public ResponseJson updateGoodStatus(int goodId, String status) {
+		Integer row = goodsDao.updateGoodStatus(goodId, status);
+		if(row!=null&&row>0){
+			return new ResponseJson(true,"更新成功");
+		}
+		return new ResponseJson(false,"更新失败");
 
 	}
 	@Override

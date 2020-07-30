@@ -39,8 +39,11 @@ public interface AdminDao {
     Integer update(@Param("aid")String aid,@Param("status")String status);
 
     @Update("update tb_admininfo set password=#{npwd} where aid = #{aid} and password=#{opwd} and status=1;")
-    void changePassword(@Param("aid")int aid, @Param("opwd")String oldPassword, @Param("npwd")String newPassword);
-    
+    Integer changePassword(@Param("aid")int aid, @Param("opwd")String oldPassword, @Param("npwd")String newPassword);
+
+    @Update("update tb_admininfo set tel=#{tel} where aid = #{aid} and status=1;")
+    Integer changeTel(@Param("aid")String aid, @Param("tel")String tel);
+
     @Select("select * from tb_admininfo where aid=#{aid}")
     @ResultMap("adminResult")
     Admin getAdminById(@Param("aid")int aid);
