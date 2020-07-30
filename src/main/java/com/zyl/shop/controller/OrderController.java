@@ -76,7 +76,10 @@ public class OrderController {
 	@RequestMapping("/order/{orderId}/amount")
 	@ResponseBody
 	public ResponseJson orderAmount(HttpSession session, @PathVariable String orderId) {
-		int userId = (int)session.getAttribute("userID");
+		Integer userId = (Integer)session.getAttribute("userID");
+		if(userId == null) {
+			return new ResponseJson(false);
+		}
 		ResponseJson responseJson = new ResponseJson();
 		responseJson.setData(orderService.getOrderAmount(userId, orderId));
 		responseJson.setSuccess(true);

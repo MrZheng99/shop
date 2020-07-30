@@ -107,19 +107,22 @@
      * 购买商品
      */
     function buyGoods(goodsId) {
+        let date = new Date();
+        let oid = ""+date.getHours()+date.getMinutes()+date.getSeconds()+date.getMilliseconds();
+
         $.ajax({
                 type: 'PUT',
                 url: "/order",
                 data:
                     JSON.stringify({items:[{
                         gid: goodsId, number: $("#inputGoodsNumber").val(), price:$("#goodsprice").text().replace("¥","")
-                    }],amount:parseFloat($("#amount").text())}),
+                    }],amount:parseFloat($("#amount").text()),oid:oid}),
                 contentType: "application/json",
                 dataType: "json",
                 success:
                     function (msg) {
                         if (msg.success) {
-                            window.location.href = "/orders";
+                            window.location.href = "/checkout/"+oid;
                         } else {
                             if (msg.msg === "未登录") {
                                 alert("请登录!!!");

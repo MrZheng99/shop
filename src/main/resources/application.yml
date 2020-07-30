@@ -28,3 +28,51 @@ spring:
           starttls:
             enable: true
             required: true
+alipay:
+  #应用ID,您的APPID，收款账号既是您的APPID对应支付宝账号
+  appId: '2021000116675778'
+  #商户私钥，您的PKCS8格式RSA2私钥
+  privateKey: 'MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDNIX4hC5lyiCVt
+               7hT/H9GJzNItQPcE2JIetAR6qkbYVgjUmMoRL5IK2Bn9DvVkaNwTIGXiHW2Gc9vM
+               WiwvHXxnsjTC2VNecx0NNckA4g0m1ssNC7uJ5dE66IZkVES6pZxRahcsTEJMHZ2G
+               IuwRJ0IqTckTIbl/BluoAzxwo3/AkUKVeq6zG6vty1VJQZYdzRD/Mes/vLMM+j7u
+               pjR8CmbCve1lCtmHs8IEIHNS41tZaRe+0rSKVUF7vFGqTT67vNy+/eep+tgmlIoY
+               eg+8cKQ43FqmNK6PDX1wwE+YnOH48hA//d186mHhdmEYSoIbkCT0TCS8Df8WcayE
+               CcaPMqJ3AgMBAAECggEAMvZxOZCCLPw6IFeYC9JB4rRqOyf6ts9/bfVXb4pCU5j8
+               VKUo/qAM7njF7CL9QFb05iOUbFrXTSIXp2t3srTmpXSWuxn3Jm3+97s3FusSTWXr
+               yG/zxcy88J+4U9DDyoM+lNOAsla32eU5r4uZjqFsRMpSfFhSl4Zi2xkCuRFFufdq
+               mBqBFpXUhaZJnSZ+JLkoJcFn7X1cDGxHU5H+MFjk/N3W4LsAemtpk0fkQ5WVCRze
+               ePWdc954V0jTyalHruxysM8bn4lQt2l0KNjzYzPlStwJJppwkNB0Qhg+8R+Z3PrN
+               MrVOcBenOPgswINQcLAlSGCHB9PO4K3XqRhLNFTmoQKBgQD3onUnP86qek/1ktEy
+               0N+cNYnG8P7vz0y0iCfl+e1CHawazQlrikEx1eGSy/QVfJsRb9LDVfbg7G+u3xuF
+               vjWybY8M2amA7rvRKwtOOX/YLColG78RTbh2eGQSFjzUJ6k6F9nEhOzKN/pJAcBx
+               rhcBqdzXr/I3tjydFH7vvSyB7wKBgQDUD3Z2rDQFM4o6VRzY+56rvZaxxJx4BqyR
+               2vqtsHKnlrej40nkpN3TJjQxUcsx4i76fNio80byYK2pI1nzulOJlDodB0UqzieY
+               WEyiMGggP950A3gcjzUPvCI86/YpGnLITANACKfJpqoCYTDGT1bEoXrJuWSYm7kI
+               aJfyg6jP+QKBgEDa32vkHjAv0Hk0dm2knqu+qdLckygjVqeBcVGd3zGNq+FpCaqM
+               jv6KUYWsvMRT2hj6/GwEO6A0zBs0e3TPmCie4PQwnWATJkVlzJQ0IvNuvaryVVwm
+               ysTcSvkhsdSufnekf3gkiA9+EaLFPq2HNqdM4XXrsrg8litdjtEi7mEpAoGBAMKW
+               YcTppV50ec2nFi6BTYsYEDSVTmLQ9P9t6gMBW2Qu59oKEV8ubaJ4dwIepQ7kFumh
+               MApwGdUFI7WFi+AbRNaE3oKOjkiGHU0tETzuoE2fbdgU6t2CB1Wl8+DlQN9ctqDX
+               J1BV4Okn9u7yEhiW6u7JomuCpC1pD3QIzg0qBPi5AoGBANEUCk/5eKTpoWVy7HmB
+               0nr2Y7fSBCADPwWQiXqzr7nAPu0ZDFz/3mfocCdLHYgnhGwwF5xzmxq3h0rQ38Gx
+               UdZypboyBLcIXEF9uyKZagqSoOff4fYO2/auD/t1TC0eDvuo2PXFfVqwKT2xgQPC
+               V3OYjhXkMR1aZXJNjCMq2pp8'
+  publicKey: 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzSF+IQuZcoglbe4U/x/R
+              iczSLUD3BNiSHrQEeqpG2FYI1JjKES+SCtgZ/Q71ZGjcEyBl4h1thnPbzFosLx18
+              Z7I0wtlTXnMdDTXJAOINJtbLDQu7ieXROuiGZFREuqWcUWoXLExCTB2dhiLsESdC
+              Kk3JEyG5fwZbqAM8cKN/wJFClXqusxur7ctVSUGWHc0Q/zHrP7yzDPo+7qY0fApm
+              wr3tZQrZh7PCBCBzUuNbWWkXvtK0ilVBe7xRqk0+u7zcvv3nqfrYJpSKGHoPvHCk
+              ONxapjSujw19cMBPmJzh+PIQP/3dfOph4XZhGEqCG5Ak9EwkvA3/FnGshAnGjzKi
+              dwIDAQAB'
+  #服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
+  notifyUrl:
+  #页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
+  returnUrl: 'http://localhost:8080/pay/success'
+  #签名方式(固定值，无需修改)
+  signType: RSA2
+  #字符编码格式(固定值，无需修改)
+  charset: utf-8
+  #支付宝网关(固定值，无需修改)
+  gatewayUrl: 'https://openapi.alipay.com/gateway.do'
+

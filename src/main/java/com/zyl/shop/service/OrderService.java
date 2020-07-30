@@ -2,11 +2,14 @@ package com.zyl.shop.service;
 
 import java.util.List;
 
+import com.alipay.api.AlipayApiException;
 import com.zyl.shop.entity.OrderDetailItem;
 import com.zyl.shop.entity.OrderItem;
 
 public interface OrderService {
-	/**
+    String alipay(String orderId) throws AlipayApiException;
+
+    /**
 	 * 常量类
 	 * 存放订单进度的常量
 	 */

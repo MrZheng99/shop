@@ -1,10 +1,12 @@
 package com.zyl.shop.service.impl;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.request.AlipayTradePagePayRequest;
+import com.zyl.shop.conf.AliPayConfig;
 import com.zyl.shop.dao.CartDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +20,7 @@ import com.zyl.shop.entity.OrderDetail;
 import com.zyl.shop.entity.OrderDetailItem;
 import com.zyl.shop.entity.OrderItem;
 import com.zyl.shop.service.OrderService;
-
+import com.alibaba.fastjson.JSON;
 @Service("OrderService")
 @Transactional
 public class OrderServiceImpl implements OrderService{
@@ -31,6 +33,45 @@ public class OrderServiceImpl implements OrderService{
 	private GoodsDao goodsDao;
 	@Autowired
 	private CartDao cartDao;
+
+	@Override
+	public String alipay(String orderId) throws AlipayApiException {
+		// 构建支付数据信息
+		Map<String, String> data = new HashMap<>();
+		data.put("subject", "订单编号："+orderId); //订单标题
+		data.put("out_trade_no", new SimpleDateFormat().format(new Date())); //商户订单号,64个字符以内、可包含字母、数字、下划线；需保证在商户端不重复   //此处模拟订单号为时间
+		Order order = orderDao.getOrderById(orderId);
+		Date date = new Date(String.valueOf(order.getDate()));
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.MINUTE, 30);
+		data.put("timeout_express",String.valueOf(cal.getTime()) ); //该笔订单允许的最晚付款时间
+		data.put("total_amount",String.valueOf( order.getAmount())); //订单总金额，单位为元，精确到小数点后两位，取值范围[0.01,100000000]
+
+
+		data.put("product_code", "QUICK_MSECURITY_PAY"); //销售产品码，商家和支付宝签约的产品码，为固定值QUICK_MSECURITY_PAY
+
+
+		//构建客户端
+		DefaultAlipayClient alipayRsa2Client = new DefaultAlipayClient(
+				AliPayConfig.gatewayUrl,
+				AliPayConfig.appId,
+				AliPayConfig.merchantPrivateKey,
+				"json",
+				AliPayConfig.charset,
+				AliPayConfig.alipayPublicKey,
+				AliPayConfig.signType);
+//    AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();// APP支付
+		AlipayTradePagePayRequest request = new AlipayTradePagePayRequest(); // 网页支付
+//    AlipayTradeWapPayRequest request = new AlipayTradeWapPayRequest(); //移动h5
+		request.setNotifyUrl(AliPayConfig.notifyUrl);
+		request.setReturnUrl(AliPayConfig.returnUrl);
+		request.setBizContent(JSON.toJSONString(data));
+		String response = alipayRsa2Client.pageExecute(request).getBody();
+		return response;
+	}
+
+
 	@Override
 	public List<OrderDetailItem> getOrderGoods(int userId, String oid) {
 		if(this.orderOfUser(userId, oid) == null) {
