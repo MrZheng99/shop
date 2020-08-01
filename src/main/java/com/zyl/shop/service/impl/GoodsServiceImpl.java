@@ -157,6 +157,7 @@ public class GoodsServiceImpl implements GoodsService {
 		goodsDao.updateGood(goodsInfo);
 
 	}
+
 	@Override
 	public Map<String, Object> uploadImage(MultipartFile file) throws IOException {
 		String fileName = "_"+System.currentTimeMillis()+"."+file.getOriginalFilename().split("\\.", 2)[1];
@@ -211,5 +212,34 @@ public class GoodsServiceImpl implements GoodsService {
 		}
 		return new ResponseJson(false,"更新失败",-1);
 
+	}
+	@Override
+	public ResponseJson getComments(Integer oid, Integer userId) {
+		String comments = goodsDao.queryGoodsCommentsByOId(oid,userId);
+		if(comments!=null&&comments!=""&&comments!="null"){
+			return new ResponseJson(true,"获取成功",comments);
+		}
+		return new ResponseJson(false);
+	}
+
+	@Override
+	public ResponseJson addComments(List<Integer> goodsIds, String comments, Integer userId,Integer oid,Boolean exist) {
+		try{
+			if (exist) {
+				for (Integer gid : goodsIds) {
+					goodsDao.updateGoodsComments(gid, userId,oid,comments);
+				}
+			} else {
+				for (Integer gid : goodsIds) {
+					goodsDao.insertGoodsComments(gid, userId,oid,comments);
+				}
+			}
+		}
+		catch (Exception e){
+			e.printStackTrace();
+			return new ResponseJson(false);
+
+		}
+		return new ResponseJson(true);
 	}
 }

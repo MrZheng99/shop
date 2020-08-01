@@ -29,7 +29,7 @@ class Good{
              <img  class="cart_img" src="/${this.imgUrl}">
             </td>
 		    <td>
-		       <a href="{this.gid}">${this.name}</a>
+		       <a href="/shopping/${this.gid}">${this.name}</a>
 		    </td>
 		    <td>
 		      <span >${this.price}&nbsp;x</span>
@@ -58,12 +58,3 @@ class GoodList{
 }
 
 const orderId = location.pathname.match(/\/(order)\/(.*?)$/)[2];
-// const userName = $("#userName");
-//
-// $.get("/user/name", function(data){
-//     if(data.success){
-//         userName.text(data.data);
-//     } else {
-//         location.href = "/index";
-//     }
-// }, "json")

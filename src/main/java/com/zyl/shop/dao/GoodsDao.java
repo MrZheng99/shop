@@ -1,5 +1,6 @@
 package com.zyl.shop.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.*;
@@ -103,6 +104,15 @@ public interface GoodsDao {
 	})
 	@Select("select u.name username,a.assessiondetails,a.date from tb_goodsassession a,tb_userinfo u where u.uid=a.uid and a.gid=#{goodsId} and a.status=1 and u.status=1")
 	List<Comments> queryGoodsComments(@Param("goodsId")Integer goodsId);
+
+	/**
+	 * 查询订单的评论
+	 * @param oid
+	 * @param uid
+	 * @return
+	 */
+	@Select("select assessiondetails from tb_goodsassession where oid=#{oid} and uid=#{uid} and status=1 limit 0,1")
+	String queryGoodsCommentsByOId(@Param("oid")Integer oid,@Param("uid")Integer uid);
 	/**
 	 * 查询商品图片
 	 * @param goodsId
@@ -166,4 +176,21 @@ public interface GoodsDao {
 	@Update("update tb_goodsinfo set hot=#{hot} where gid=#{gid}")
 	Integer updateGoodHotStatus(@Param("gid")int goodId, @Param("hot")String hot);
 
+	/**
+	 * 添加评论
+	 * @param gid
+	 * @param uid
+	 * @param comments
+	 */
+	@Insert("INSERT INTO `tb_goodsassession` (`uid`, `gid`,`oid`, `assessiondetails`, `date`, `status`) VALUES (#{uid}, #{gid},#{oid}, #{comments}, now(), '1')")
+	void insertGoodsComments(@Param("gid") Integer gid,@Param("uid") Integer uid,@Param("oid") Integer oid,@Param("comments") String comments);
+
+	/**
+	 * 更新评论
+	 * @param gid
+	 * @param uid
+	 * @param comments
+	 */
+	@Update("UPDATE `tb_goodsassession` SET `assessiondetails`=#{comments}, `date`=now() WHERE `gid`=#{gid} and `uid`=#{uid} and `oid`=#{oid} and `status`=1")
+	void updateGoodsComments(@Param("gid") Integer gid,@Param("uid") Integer uid,@Param("oid") Integer oid,@Param("comments") String comments);
 }

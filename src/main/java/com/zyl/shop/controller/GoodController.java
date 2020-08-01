@@ -76,6 +76,17 @@ public class GoodController {
 	public List<GoodsInfo> searchGoodsByTypeAndName(@RequestParam Integer tid, @RequestParam String gname){
 		return goodsService.searchGoodByTypeAndName(tid, gname,false);
 	}
+	@RequestMapping("/goods/getComments")
+	public ResponseJson getComments(@RequestParam Integer oid,HttpSession session){
+		Integer userId = (Integer) session.getAttribute("userID");
+		return goodsService.getComments(oid, userId);
+	}
+	@PostMapping("/goods/addComments")
+	public ResponseJson addComments(@RequestParam("gids[]")List<Integer> goodsIds,@RequestParam("comments") String comments,
+									@RequestParam("oid") Integer oid,@RequestParam("exist") Boolean exist,HttpSession session){
+		Integer userId = (Integer) session.getAttribute("userID");
+		return goodsService.addComments(goodsIds, comments,userId,oid,exist);
+	}
 	@RequestMapping("/goods/hot")
 	public List<GoodsInfo> searchHotGoodsByTypeAndName(@RequestParam Integer tid, @RequestParam String gname){
 		return goodsService.searchGoodByTypeAndName(tid, gname,true);

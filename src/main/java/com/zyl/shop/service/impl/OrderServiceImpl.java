@@ -49,7 +49,7 @@ public class OrderServiceImpl implements OrderService{
 		data.put("total_amount",String.valueOf( order.getAmount())); //订单总金额，单位为元，精确到小数点后两位，取值范围[0.01,100000000]
 
 
-		data.put("product_code", "QUICK_MSECURITY_PAY"); //销售产品码，商家和支付宝签约的产品码，为固定值QUICK_MSECURITY_PAY
+		data.put("product_code", "FAST_INSTANT_TRADE_PAY"); //销售产品码，商家和支付宝签约的产品码，为固定值QUICK_MSECURITY_PAY
 
 
 		//构建客户端

@@ -75,4 +75,22 @@ public interface GoodsService {
 	 * @param descr
 	 */
 	void updateGood(MultipartFile[] file, int gid, int tid, String gname, double price, int balance, String descr) throws IOException;
+
+	/**
+	 * 获取订单评论
+	 * @param oid
+	 * @param userId
+	 * @return
+	 */
+    ResponseJson getComments(Integer oid, Integer userId);
+
+	/**
+	 * 给订单中每个货物添加评论
+	 * @param goodsIds
+	 * @param orderId
+	 * @param comments
+	 * @param userId
+	 * @return
+	 */
+	ResponseJson addComments(List<Integer> goodsIds, String comments, Integer userId,Integer orderId,Boolean exist);
 }

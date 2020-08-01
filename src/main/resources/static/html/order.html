@@ -36,7 +36,7 @@
         <th>商品图片</th>
         <th>商品名称</th>
         <th>单价与数量</th>
-        <th>总额</th>
+        <th>小计</th>
     </tr>
     </thead>
     <tbody class="mtbody">
@@ -45,8 +45,20 @@
 </table>
 
 
-<div id="amount" style="width: 100%;text-align: center;color: red">
-</div>
+<!--<div id="amount" style="width: 100%;text-align: center;color: red">-->
+<!--</div>-->
+
+<form role="form" style="width: 70%">
+    <div class="form-group">
+        <label >添加评论</label>
+        <label id="error"></label>
+        <textarea id="comments" class="form-control" rows="3"></textarea>
+        <div style="text-align:center;margin-top: 15px;">
+            <button type="button"  class="btn btn-primary" onclick="addComments();">提交</button>
+        </div>
+    </div>
+</form>
+
 <footer>
     Copyright&nbsp;&copy;&nbsp;2020&nbsp;&nbsp;ZYL团队&nbsp;版权所有
 </footer>
@@ -58,21 +70,63 @@
 <script src="../js/commen.js"></script>
 <script src="../js/order.js"></script>
 <script>
+    var goodsId = [];
+    var exist = false;
+    function addComments(){
+        let comments = $.trim($("#comments").val());
+        if(comments.length<20){
+            $("#error").text("长度不得小于20位").css("color","red");
+            $(".form-group:first").addClass("has-error");
+            $("#comments").focus();
+            return;
+        }
+        console.log({gids:goodsId,comments:comments,exist:exist});
+        $.ajax({type:"post",url:'/goods/addComments',
+            contentType:"application/json",
+            data:{"gids":goodsId,"comments":comments,"oid":orderId,"exist":exist},
+            success: function(data){
+                if(data.success){
+                    alert("评论成功...");
+                    $("#comments").val("");
+                }
+            },error:function (e) {
+                alert("网络错误稍后重试");},dataType:"json"});
+    }
     $(function () {
         getUserName();
         addSearch();
         let gl = new GoodList();
         let amount = 0;
+        $.getJSON(`/order/${orderId}/status`,function (data) {
+            if(!data.success||data.data=="未付款"){
+                $("#comments").attr("disabled",true);
+                $(".btn:last").attr("disabled",true);
+            }
+        });
         $.post(`/order/${orderId}/items`, function(data){
-            console.log(data);
+            $.post('/goods/getComments',{oid:orderId},function (data) {
+                if(data.success){
+                    exist = true;
+                    $("#comments").val(data.data);
+                }
+            },"json");
             gl.goods = [];
             for(let i of data){
+                goodsId.push(parseInt(i.gid));
                 gl.goods.push(new Good(i.gid, '', i.number, '', i.price));
                 amount+=i.number*i.price;
             }
             gl.render($(".mtbody:first"));
+            $(".mtbody:last").append("<tr><td colspan='3'></td><td style='color: red;' id='amount'></td></tr>");
             $("#amount").text("总额："+amount);
-        }, "json");})
+
+        }, "json");
+        $("#comments").on("input",function () {
+            $("#error").text("");
+            $(".form-group:first").removeClass("has-error");
+        })
+    })
+
 </script>
 
 </body>

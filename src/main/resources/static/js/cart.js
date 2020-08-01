@@ -1,12 +1,3 @@
-const userName = $("#userName");
-
-$.get("/user/name", function(data){
-    if(data.success){
-        userName.text(data.data);
-    } else {
-        location.href = "/index";
-    }
-}, "json")
 
 class CartGood{
     constructor(gid, number){
