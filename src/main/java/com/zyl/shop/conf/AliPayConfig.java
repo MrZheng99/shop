@@ -44,8 +44,8 @@ public class AliPayConfig {
     // 签名方式
     public static String signType = "RSA2";
     public  static  String gatewayHost = "openapi.alipay.com";
-    public static String returnUrl="http://120.26.184.107:8081/alipay/return";
-    public static String notifyUrl="http://120.26.184.107:8081/alipay/notify";
+    public static String returnUrl="http://120.26.184.107:8080/aliPay/return";
+    public static String notifyUrl="http://120.26.184.107:8080/aliPay/notify";
 
     // 字符编码格式
     public static String charset = "utf-8";

@@ -46,17 +46,17 @@ public class CheckoutController {
 	@ResponseBody
 	public ResponseJson pay(HttpSession session, @PathVariable String orderId) {
 		int userId = (int)session.getAttribute("userID");
+		System.out.println("支付，更新数据库");
 		ResponseJson responseJson = new ResponseJson(orderService.pay(userId, orderId));
 		if(!responseJson.isSuccess()) {
 			responseJson.setMsg("请不要重复支付");
 		}
 		return responseJson;
 	}
-
+	@ResponseBody
 	@RequestMapping(value="/aliPay/{orderId}", method=RequestMethod.GET)
 	public String aliPay(@PathVariable String orderId) throws AlipayApiException {
-		//System.out.println("获取支付页面");
-		//return "/html/pay.html";
+		System.out.println("获取支付页面");
 		return orderService.alipay(orderId);
 	}
 
@@ -69,7 +69,7 @@ public class CheckoutController {
 	 * @throws AlipayApiException
 	 */
 	@PostMapping("/aliPay/notify")
-	private String alipayNotify(HttpServletRequest request, String out_trade_no, String trade_no, String trade_status)
+	private ResponseJson aliPayNotify(HttpServletRequest request, String out_trade_no, String trade_no, String trade_status)
 			throws AlipayApiException {
 		Map<String, String> map = new HashMap<String, String>();
 		Map<String, String[]> requestParams = request.getParameterMap();
@@ -88,50 +88,29 @@ public class CheckoutController {
 					AliPayConfig.signType);
 		} catch (com.alipay.api.AlipayApiException e) {
 			// 验签发生异常,则直接返回失败
-			return ("--failed--");
+			return new ResponseJson(false,"验签发生异常");
 		}
 		if (signVerified) {
-			//处理你的业务逻辑，更细订单状态等
-			return ("--success--");
-		} else {
-			return ("--failed--");
+			try {
+				return pay(request.getSession(),out_trade_no);
+			}catch (Exception e){
+				e.printStackTrace();
+			}
 		}
+		return new ResponseJson(false,"验签失败");
+
 	}
 	/**
 	 * @Description: 支付宝回调接口
-	 * @param out_trade_no 商户订单号
-	 * @param trade_no     支付宝交易凭证号
 	 * @return String
 	 * @throws AlipayApiException
 	 */
 	@GetMapping("/aliPay/return")
-	private String alipayReturn(Map<String, String> params, HttpServletRequest request, String out_trade_no, String trade_no, String total_amount)
-			throws AlipayApiException {
-		Map<String, String> map = new HashMap<String, String>();
-		Map<String, String[]> requestParams = request.getParameterMap();
-		for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext(); ) {
-			String name = iter.next();
-			String[] values = requestParams.get(name);
-			String valueStr = "";
-			for (int i = 0; i < values.length; i++) {
-				valueStr = (i == values.length - 1) ? valueStr + values[i] : valueStr + values[i] + ",";
-				System.out.println(valueStr);
-			}
-			map.put(name, valueStr);
-		}
-		boolean signVerified = false;
-		try {
-			signVerified = AlipaySignature.rsaCheckV1(map, AliPayConfig.alipayPublicKey, AliPayConfig.charset,
-					AliPayConfig.signType);
-		} catch (AlipayApiException e) {
-			System.out.println("支付宝回调异常"+ e);
-			// 验签发生异常,则直接返回失败
-			return ("--fail--");
-		}
-		if (signVerified) {
-			return ("--success--");
-		} else {
-			return ("fail");
-		}
+	private String aliPayReturn(HttpServletRequest request) {
+		System.out.println("接收到支付宝的同步通知请求");
+		Map<String, String[]> maps = request.getParameterMap();
+		String orderId = maps.get("out_trade_no")[0];//获取订单号
+		pay(request.getSession(),orderId);
+		return "redirect:/home";
 	}
 }

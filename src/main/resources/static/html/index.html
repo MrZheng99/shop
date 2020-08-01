@@ -7,6 +7,7 @@
     <title>ZYL商城登录</title>
     <link rel="short icon" href="../images/logo.png" type="image/x-icon">
     <link href="../css/index.css" type="text/css" rel="stylesheet">
+
 </head>
 
 <body>
@@ -44,9 +45,8 @@
         </div>
         <span class="error-span"></span>
 
-        <span style="float: left; margin: 10px 5% 10px 5%;padding-right: 50px;"><input type="checkbox">&nbsp;&nbsp;自动登录</span>
+        <span style=" width: 50%;float: left; margin: 10px 5% 10px 5%;"><input style="width: 100%;height: 28px;" type="button" onclick="login()" value="登录"></span>
         <a style="float: right; margin: 10px 5% 10px 5%; text-decoration: none;" href="forgetPassword">忘记密码</a>
-
     </div>
 </article>
 <footer>
@@ -74,39 +74,41 @@
         document.getElementById('account').focus();
         document.onkeyup = function(e) {
             if (e.keyCode == 13) {
-                if(!(checkInput('account')&&checkInput('password')&&checkInput('code'))){
-                    return;
-                }
-                clearError('account');
-                clearError('password');
-                clearError('code');
-                $.ajax({
-                    type: 'POST',
-                    url: "/login",
-                    data: {
-                        account: $.trim($("#account").val()),
-                        password: hex_md5($.trim($("#password").val())),
-                        code:$.trim($("#code").val())
-                    },
-                    success:function(msg){
-                        if(msg.success){
-                            location.href="/home/"+msg.data;
-                        }else{
-                            if(msg.data==500){
-                                $(".error-span:last").text('验证码不正确');
-
-                            }else{
-                                $(".error-span:first").text('账户密码不匹配');
-
-                            }
-                        }
-                    }
-
-                });
+                login();
             }
         }
     }
+    function login() {
+        if(!(checkInput('account')&&checkInput('password')&&checkInput('code'))){
+            return;
+        }
+        clearError('account');
+        clearError('password');
+        clearError('code');
+        $.ajax({
+            type: 'POST',
+            url: "/login",
+            data: {
+                account: $.trim($("#account").val()),
+                password: hex_md5($.trim($("#password").val())),
+                code:$.trim($("#code").val())
+            },
+            success:function(msg){
+                if(msg.success){
+                    location.href="/home/"+msg.data;
+                }else{
+                    if(msg.data==500){
+                        $(".error-span:last").text('验证码不正确');
 
+                    }else{
+                        $(".error-span:first").text('账户密码不匹配');
+
+                    }
+                }
+            }
+
+        });
+    }
     function clearInput(inputID) {
         if (inputID == "account") {
             $("#account").val("");
