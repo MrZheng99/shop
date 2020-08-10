@@ -19,11 +19,18 @@
     <div id="login_area">
         <div id="login_form">
             <form action="" id="myform">
-                <div id="login_tip">
-                    用户登录&nbsp;&nbsp;UserLogin
+                <div class="login_tip">
+                    管理员登录&nbsp;&nbsp;AdminLogin
                 </div>
                 <div><input type="text" class="username" id="account" placeholder="请输入账号..."></div>
                 <div><input type="password" class="pwd" id="pwd" placeholder="请输入密码..."></div>
+                <div class="login_tip">
+                    <span>
+                        <label style="margin-right: 60px;"><input type="radio"  name="roleType" value="1">超级</label>
+                        <label ><input type="radio" name="roleType" value="0" checked >普通</label>
+                    </span>
+                </div>
+
                 <div id="btn_area">
                     <input type="button" onclick="login()" id="sub_btn" value="登&nbsp;&nbsp;录">&nbsp;&nbsp;
                 </div>
@@ -53,11 +60,17 @@
             url: "/back/login",
             data: {
                 account: $("#account").val(),
-                password: hex_md5($("#pwd").val())
+                password: hex_md5($("#pwd").val()),
+                // 0 为普通 1为超级
+                role:$("input[name='roleType']:checked").val()
             },
             success:function (o) {
                 if(o.success){
-                    location.href="/manager/"+o.data;
+                    if(o.data.type=="1"){
+                        location.href="/manager/supper/"+o.data.id;
+                        return;
+                    }
+                    location.href="/manager/"+o.data.id;
                 }else{
                     alert('账户密码不匹配');
                 }

@@ -22,10 +22,10 @@ function addSearch() {
     });
 }
 function loginOut() {
-   let flag =  confirm("确定退出？");
-   if(flag){
+   //let flag =  confirm("客官请三思啊！！！");
+   //if(flag){
        $.ajax({url:"/loginOut",success:function (data) {
               location.href = "/index";
        }})
-   }
+   //}
 }

@@ -74,9 +74,8 @@ function joinShoppingCart(goodsId) {
         url: "../shopping/addGoods2ShoppingCart/" + goodsId,
         success: function (msg) {
             if (msg.success) {
-                alert("添加成功");
-                $("#btnJoinShoppingCart").text("查看购物车");
-                $("#btnJoinShoppingCart").text("查看购物车").bind("click",function () {
+
+                $("#btnJoinShoppingCart").text("查看购物车").removeClass("btn-primary").addClass("btn-info").bind("click",function () {
                     location.href='/cart';
                 });
             } else {
@@ -102,10 +101,11 @@ function getUserName(){
         url: "/user/name",
         success: function (msg) {
             if (msg.success) {
-                $("#userName").text("当前用户："+msg.data);
-                $("#userName").after("<a class='text-primary' style='margin-left: 10px' href='javascript:loginOut();'>退出</a>")
+                $("#userName").text("当前用户："+msg.data).prop("class",'btn btn-link');
+
+                $("#userName").after("<a class='btn btn-link' href='javascript:loginOut();'>退出</a>")
             } else {
-                $("#userName").after("<a class='text-primary' href='/index'>"+msg.msg+"</a>")
+                $("#userName").after("<a class='btn btn-link' href='/index'>"+msg.msg+"</a>")
 
             }
         }

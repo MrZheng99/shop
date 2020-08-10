@@ -16,10 +16,10 @@
 </head>
 <body>
 <header>
-    <a class="text-primary" id="userName"></a>
+    <a id="userName"></a>
     <div class="header_right">
         <input id="inputSearch" placeholder="输入搜索" maxlength="30" class="form-control"
-               style="display: inline-block; width: 150px;">
+               style="display: inline-block; width: 250px;">
         <a href="/orders" class="btn btn-link">订单</a>
         <a href="/cart" class="btn btn-link">购物车</a>
         <a href="/user" class="btn btn-link">个人中心</a>
@@ -45,22 +45,22 @@
 </table>
 <div class="other">
     <div class="input-group mb-3">
-        <div class="input-group-prepend">
+        <div class="input-group-prepend" style="margin-top: 20px;">
             <label class="input-group-text" for="address">收货地址</label>
             <select class="custom-select" id="address">
-                <option selected value="-1">Choose...</option>
             </select>
-            总金额：<span id="total-price" class="cart_price"></span>
-            <button class="btn btn-primary" onclick="pay()">付款</button>
         </div>
-
+        <div class="input-group-prepend" style="text-align: center;margin-top: 20px">
+        总金额：<span id="total-price" style="color: red;font-size: large;font-weight: bold;"></span>
+            <button style="margin-left: 10px" class="btn btn-primary" onclick="pay()">付款</button>
+        </div>
     </div>
 </div>
 
 
 <footer>
 
-    Copyright&nbsp;&copy;&nbsp;2020&nbsp;&nbsp;ZYL团队&nbsp;版权所有
+    Copyright&nbsp;&copy;&nbsp;2020&nbsp;&nbsp;ZJ&nbsp;版权所有
 
 </footer>
 <!-- JS, Popper.js, and jQuery -->
@@ -75,7 +75,7 @@
         // 先设置好地址再付款
         let aid = parseInt($("#address").val());
        if(aid==-1){
-            alert("请选择收货地址");
+            //alert("请选择收货地址");
             return;
         }
         $.ajax({
@@ -111,10 +111,16 @@
         $.get(`/user/addresses`, function(data){
             console.log(data);
             let str = "";
-            for(let i of data){
-                str += /*html*/`
-                        <option value="${i.aid}">${i.address}</option>
+            for(let i of data.data){
+                if(i.flag=="0"){
+                    str += /*html*/`
+                        <option value="${i.aid}" >${i.address}</option>
+                    `;}
+                else{
+                    str += /*html*/`
+                        <option value="${i.aid}" selected="selected">${i.address}--默认</option>
                     `;
+                }
             }
             $("#address").append($(str));
         }, "json");

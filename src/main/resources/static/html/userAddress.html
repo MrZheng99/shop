@@ -130,17 +130,35 @@
             });
         }
     }
+    function setAddressDefault(val) {
+        $.ajax({url:"/user/updateUserAddressDefault",type:"post",data:{aid:parseInt(val)},
+            success:function (data) {
+                if(data.success) {
+                    getAddr();
+                }
+            },
+            error:function (data) {
+                alert(data.msg);
+            },dataType: "json"
+        });
+    }
     function getAddr(){
         $(".mtbody:last").html("");
         $.ajax({url:"/user/addresses",success:function(data){
-                $.each(data,function (index,item) {
+            if(data.success){
+                $.each(data.data,function (index,item) {
                     let tr = document.createElement("tr");
-                    tr.innerHTML = /*html*/`
-                      <td>${item.address}</td>
+                    let str = "";
+                    str += /*html*/`<td>${item.address}</td>
                       <td><input type="button" value="移除" onclick="deleteAddress(${item.aid})" class="btn btn-danger"></td>
-		            `;
+                  `
+                    str += item.flag=="0"?'<td><input type="button" value="设置为默认" onclick="setAddressDefault('+item.aid+')" class="btn btn-primary"></td>':'<td>当前默认</td>';
+                    tr.innerHTML = str;
                     $(".mtbody:last").append(tr);
                 })
+            }else{
+                alert(data.msg);
+            }
             },
             error:function(data){
 

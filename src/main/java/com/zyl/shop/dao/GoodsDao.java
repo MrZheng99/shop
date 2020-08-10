@@ -3,12 +3,8 @@ package com.zyl.shop.dao;
 import java.util.Date;
 import java.util.List;
 
+import com.zyl.shop.entity.*;
 import org.apache.ibatis.annotations.*;
-
-import com.zyl.shop.entity.Comments;
-import com.zyl.shop.entity.Goods;
-import com.zyl.shop.entity.GoodsImage;
-import com.zyl.shop.entity.GoodsInfo;
 
 @Mapper
 public interface GoodsDao {
@@ -179,18 +175,14 @@ public interface GoodsDao {
 	/**
 	 * 添加评论
 	 * @param gid
-	 * @param uid
-	 * @param comments
 	 */
-	@Insert("INSERT INTO `tb_goodsassession` (`uid`, `gid`,`oid`, `assessiondetails`, `date`, `status`) VALUES (#{uid}, #{gid},#{oid}, #{comments}, now(), '1')")
-	void insertGoodsComments(@Param("gid") Integer gid,@Param("uid") Integer uid,@Param("oid") Integer oid,@Param("comments") String comments);
+	@Insert("INSERT INTO `tb_goodsassession` (`uid`, `gid`,`oid`, `assessiondetails`, `date`, `status`) VALUES (#{commentsItem.uid}, #{gid},#{commentsItem.oid}, #{commentsItem.comments}, now(), '1')")
+	void insertGoodsComments(@Param("gid")Integer gid,@Param("commentsItem")AddCommentsItem commentsItem);
 
 	/**
 	 * 更新评论
 	 * @param gid
-	 * @param uid
-	 * @param comments
 	 */
-	@Update("UPDATE `tb_goodsassession` SET `assessiondetails`=#{comments}, `date`=now() WHERE `gid`=#{gid} and `uid`=#{uid} and `oid`=#{oid} and `status`=1")
-	void updateGoodsComments(@Param("gid") Integer gid,@Param("uid") Integer uid,@Param("oid") Integer oid,@Param("comments") String comments);
+	@Update("UPDATE `tb_goodsassession` SET `assessiondetails`=#{commentsItem.comments}, `date`=now() WHERE `gid`=#{gid} and `uid`=#{commentsItem.uid} and `oid`=#{commentsItem.oid} and `status`=1")
+	void updateGoodsComments(@Param("gid") Integer gid,@Param("commentsItem")AddCommentsItem commentsItem);
 }

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import com.zyl.shop.entity.AddCommentsItem;
 import com.zyl.shop.entity.ResponseJson;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -86,11 +87,7 @@ public interface GoodsService {
 
 	/**
 	 * 给订单中每个货物添加评论
-	 * @param goodsIds
-	 * @param orderId
-	 * @param comments
-	 * @param userId
 	 * @return
 	 */
-	ResponseJson addComments(List<Integer> goodsIds, String comments, Integer userId,Integer orderId,Boolean exist);
+	ResponseJson addComments(AddCommentsItem commentsItem);
 }

@@ -20,7 +20,7 @@ public interface UserService {
 	  * @param userId 用户编号
 	  * @return 用户地址前端实体类列表
 	  */
-	 List<AddressItem> getAddresses(int userId);
+	 ResponseJson getAddresses(int userId);
 	 /**
 	  * 根据用户编号获取用户名
 	  * @param userId 用户编号
@@ -78,4 +78,6 @@ public interface UserService {
 	 * @return
 	 */
 	Integer addUserAddress(Integer userId, String address);
+
+	Integer updateUserAddressDefault(Integer userId, Integer aid);
 }

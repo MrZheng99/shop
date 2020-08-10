@@ -6,7 +6,10 @@ import org.apache.ibatis.annotations.*;
 
 import com.zyl.shop.entity.Address;
 import com.zyl.shop.entity.User;
+import org.springframework.transaction.annotation.Transactional;
+
 @Mapper
+@Transactional
 public interface UserDao {
 	@Results(id = "userResult", value = {
 			  @Result(property = "id", column = "uid", id = true),
@@ -50,7 +53,7 @@ public interface UserDao {
 	@Update("update tb_userinfo set `status`=#{status} where uid = #{userId};")
 	Integer updateStatus(@Param("userId")Integer userId,  @Param("status")String status);
 
-	@Select("select aid, address, uid, status from tb_address where uid=#{uid} and status=1")
+	@Select("select aid, address, uid, status,flag from tb_address where uid=#{uid} and status=1")
 	List<Address> getUserAddresses(@Param("uid")int uid);
 	
 	@Select("select uid,name from tb_userinfo where uid=#{uid} and status=1;")
@@ -68,6 +71,10 @@ public interface UserDao {
     Integer updateUserInfo(@Param("user")User user);
     @Update("update `tb_address` set `status`=#{address.status} where uid=#{address.uid} and aid = #{address.aid};")
     Integer updateUserAddress(@Param("address")Address address);
-    @Insert("insert into `tb_address` (`address`,`uid`,`status`) values (#{address.address}, #{address.uid}, '1')")
+    @Insert("insert into `tb_address` (`address`,`uid`,`status`,`flag`) values (#{address.address}, #{address.uid}, '1','0')")
     Integer addUserAddress(@Param("address")Address address);
+
+	@Update("update `tb_address` set `flag`=( case when `aid`=#{address.aid} then 1 else 0 end) where uid=#{address.uid} and status=1;")
+	//@Options(useGeneratedKeys = true)
+	Integer updateUserAddressDefault(@Param("address")Address address);
 }

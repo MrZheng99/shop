@@ -5,6 +5,27 @@ public class Address {
 	private String address;
 	private int uid;
 	private String status;
+	private String flag;
+
+	public String getFlag() {
+		return flag;
+	}
+
+	@Override
+	public String toString() {
+		return "Address{" +
+				"aid=" + aid +
+				", address='" + address + '\'' +
+				", uid=" + uid +
+				", status='" + status + '\'' +
+				", flag='" + flag + '\'' +
+				'}';
+	}
+
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
+
 	public int getAid() {
 		return aid;
 	}
@@ -28,9 +49,5 @@ public class Address {
 	}
 	public void setStatus(String status) {
 		this.status = status;
-	}
-	@Override
-	public String toString() {
-		return "Address [aid=" + aid + ", address=" + address + ", uid=" + uid + ", status=" + status + "]";
 	}
 }

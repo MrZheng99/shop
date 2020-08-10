@@ -35,7 +35,7 @@ public class UserController {
 
 	@RequestMapping("/addresses")
 	@ResponseBody
-	public List<AddressItem> userAddresses(HttpSession session){
+	public ResponseJson userAddresses(HttpSession session){
 		int userId = (int) session.getAttribute("userID");
 		return userService.getAddresses(userId);
 	}
@@ -109,6 +109,15 @@ public class UserController {
 		return new ResponseJson(false,"添加失败");
 	}
 
-
+	@RequestMapping(value="/updateUserAddressDefault",method=RequestMethod.POST)
+	public ResponseJson updateUserAddressDefault(HttpSession session,@RequestParam("aid")Integer aid) {
+		Integer userId = (Integer) session.getAttribute("userID");
+		Integer row = userService.updateUserAddressDefault(userId,aid);
+		System.out.println(row);
+		if(row!=null&&row>0){
+			return new ResponseJson(true,"更新成功");
+		}
+		return new ResponseJson(false,"更新失败");
+	}
 
 }

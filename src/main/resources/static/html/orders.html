@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>结账</title>
+    <title>全部订单</title>
     <link rel="short icon" href="../images/logo.png" type="image/x-icon">
 
     <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/address.css">
 
     <!-- CSS only -->
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
@@ -14,10 +15,10 @@
 <body>
 
 <header>
-    <a class="text-primary" id="userName"></a>
+    <a id="userName"></a>
     <div class="header_right">
         <input id="inputSearch" placeholder="输入搜索" maxlength="30" class="form-control"
-               style="display: inline-block; width: 150px;">
+               style="display: inline-block; width: 250px;">
         <a href="/orders" class="btn btn-link">订单</a>
         <a href="/cart" class="btn btn-link">购物车</a>
         <a href="/user" class="btn btn-link">个人中心</a>
@@ -25,10 +26,23 @@
 
     </div>
 </header>
-<div id="order-list" class="container"></div>
+<table class="table table-hover">
+    <caption>所有订单</caption>
+    <thead>
+    <tr>
+        <th>订单编号</th>
+        <th>订单总额</th>
+        <th>订单进度</th>
+        <th>下单时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody class="mtbody">
 
+    </tbody>
+</table>
 <footer>
-    Copyright&nbsp;&copy;&nbsp;2020&nbsp;&nbsp;ZYL团队&nbsp;版权所有
+    Copyright&nbsp;&copy;&nbsp;2020&nbsp;&nbsp;ZJ&nbsp;版权所有
 </footer>
 <!-- JS, Popper.js, and jQuery -->
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
@@ -49,12 +63,12 @@
                 for(let i of data.data){
                     ol.orders.push(new Order(i.oid, i.date, i.progress, i.amount));
                 }
-                ol.render(document.getElementById("order-list"));
+                ol.render($(".mtbody:first"));
             } else {
                 alert("网络异常");
             }
         }, "json");
-        ol.render(document.getElementById("order-list"));
+        ol.render($(".mtbody:first"));
     })
 </script>
 

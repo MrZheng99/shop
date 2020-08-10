@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.zyl.shop.entity.AddCommentsItem;
 import com.zyl.shop.entity.Goods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -82,10 +83,12 @@ public class GoodController {
 		return goodsService.getComments(oid, userId);
 	}
 	@PostMapping("/goods/addComments")
-	public ResponseJson addComments(@RequestParam("gids[]")List<Integer> goodsIds,@RequestParam("comments") String comments,
-									@RequestParam("oid") Integer oid,@RequestParam("exist") Boolean exist,HttpSession session){
+	public ResponseJson addComments(@RequestBody AddCommentsItem comments,HttpSession session){
 		Integer userId = (Integer) session.getAttribute("userID");
-		return goodsService.addComments(goodsIds, comments,userId,oid,exist);
+		comments.setUid(userId);
+		System.out.println(comments);
+
+		return goodsService.addComments(comments);
 	}
 	@RequestMapping("/goods/hot")
 	public List<GoodsInfo> searchHotGoodsByTypeAndName(@RequestParam Integer tid, @RequestParam String gname){

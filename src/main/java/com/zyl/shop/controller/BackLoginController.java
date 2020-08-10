@@ -30,15 +30,15 @@ public class BackLoginController {
         return mav;
     }
     @RequestMapping(value="/login", method=RequestMethod.POST)
-    public ResponseJson backLogin(@RequestParam String account, @RequestParam String password, HttpSession session) {
-        Admin admin = adminService.login(account, password);
+    public ResponseJson backLogin(@RequestParam String account, @RequestParam String password,@RequestParam String role, HttpSession session) {
+        Admin admin = adminService.login(account, password,role);
         ResponseJson responseJson = new ResponseJson();
         if(admin!=null) {
             session.setAttribute(SessionKey.CURRENT_ADMIN_ID, admin.getId());
             session.setAttribute(SessionKey.CURRENT_ADMIN_NAME, admin.getName());
             session.setMaxInactiveInterval(30*60);
             responseJson.setSuccess(true);
-            responseJson.setData(admin.getId());
+            responseJson.setData(admin);
 
             return responseJson;
         }

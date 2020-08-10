@@ -52,6 +52,7 @@ public class CartServiceImpl implements CartService {
 	@Override
 	public boolean existGoods(Integer userId, Integer goodsId) {
 		Integer scid = cartDao.queryGoodsByUserId(userId,goodsId);
+		System.out.println(scid);
 		if(scid!=null&&scid>=100){
 			return true;
 		}

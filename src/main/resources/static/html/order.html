@@ -16,10 +16,10 @@
 </head>
 <body>
 <header>
-    <a class="text-primary" id="userName"></a>
+    <a id="userName"></a>
     <div class="header_right">
         <input id="inputSearch" placeholder="输入搜索" maxlength="30" class="form-control"
-               style="display: inline-block; width: 150px;">
+               style="display: inline-block; width: 250px;">
         <a href="/orders" class="btn btn-link">订单</a>
         <a href="/cart" class="btn btn-link">购物车</a>
         <a href="/user" class="btn btn-link">个人中心</a>
@@ -52,7 +52,7 @@
     <div class="form-group">
         <label >添加评论</label>
         <label id="error"></label>
-        <textarea id="comments" class="form-control" rows="3"></textarea>
+        <textarea id="comments" class="form-control" rows="3" placeholder="买了就评论一下，不要少于20字！！！怪=乖"></textarea>
         <div style="text-align:center;margin-top: 15px;">
             <button type="button"  class="btn btn-primary" onclick="addComments();">提交</button>
         </div>
@@ -60,7 +60,7 @@
 </form>
 
 <footer>
-    Copyright&nbsp;&copy;&nbsp;2020&nbsp;&nbsp;ZYL团队&nbsp;版权所有
+    Copyright&nbsp;&copy;&nbsp;2020&nbsp;&nbsp;ZJ&nbsp;版权所有
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" crossorigin="anonymous"></script>
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
@@ -83,14 +83,14 @@
         console.log({gids:goodsId,comments:comments,exist:exist});
         $.ajax({type:"post",url:'/goods/addComments',
             contentType:"application/json",
-            data:{"gids":goodsId,"comments":comments,"oid":orderId,"exist":exist},
+            data:JSON.stringify({"goodsIds":goodsId,"comments":comments,"oid":orderId,"exist":exist}),
             success: function(data){
                 if(data.success){
-                    alert("评论成功...");
+                    $("#error").text("评论成功...").css("color","red");
                     $("#comments").val("");
                 }
             },error:function (e) {
-                alert("网络错误稍后重试");},dataType:"json"});
+                $("#error").text("网络错误稍后重试");},dataType:"json"});
     }
     $(function () {
         getUserName();

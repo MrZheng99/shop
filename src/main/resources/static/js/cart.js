@@ -44,6 +44,8 @@ class CartGood{
         this.getGoodInfo();
         let tr = document.createElement("tr");
         tr.innerHTML = /*html*/`
+<td>            	<input  type="checkbox" class="form-check-input mcheckbox" checked >
+</td>
             <td>
                 <img  class="cart_img" src="/${this.imgUrl}">
             </td>
@@ -58,7 +60,6 @@ class CartGood{
 		      <input type="number" onchange="check()"  class="cart_number" max="${this.store}" min="1" value= ${this.number}>
 		    </td>
 		    <td>
-		        <input type="checkbox" class="form-check-input mcheckbox" checked >
 		       <input type="button" value="结算" onclick="checkout(${this.gid},this)" class="btn btn-primary">
 		       <input type="button" value="移除" onclick="deleteGood(${this.gid})" class="btn btn-danger">
 		    </td>
@@ -79,6 +80,19 @@ class Cart{
         for(let good of this.goods){
             totalPrice += good.render(parent);
         }
+        let tr = document.createElement("tr");
+        tr.innerHTML = /*html*/`
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td> <label class="pay1"> 当前金额(不含运费): <em></em> 元</label><br>
+                    <input  type="button" value="结算" class="btn btn-primary" onclick="payAll()">
+                 
+            </td>
+		`;
+        parent.append(tr);
         // 计算总价
         $(".pay1>em").text(totalPrice);
         CartGood.checkListener();
@@ -167,6 +181,10 @@ function payAll(){
                 price: $(prices[i]).text()
             })
         }
+    }
+    if(datas.length==0){
+        alert("请选择需要结算的商品");
+        return;
     }
     let date = new Date();
     let oid = ""+date.getHours()+date.getMinutes()+date.getSeconds()+date.getMilliseconds();

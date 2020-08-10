@@ -33,7 +33,7 @@ function loadingSubmission(ypassword,password){
             "password_new":hex_md5(password)
         },
         success:function(data){
-            if(data.success==0){
+            if(data.success){
                 alert("密码修改成功,请重新登录");
                 location.href="/back/index";
             }else{

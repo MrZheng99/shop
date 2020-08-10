@@ -2,10 +2,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="/back/css/common.css">
-<link rel="stylesheet" href="/back/css/main.css">
-	<script type="text/javascript" src="/back/js/jquery.min.js"></script>
-
+	<link rel="stylesheet" href="../css/main.css">
+	<link rel="stylesheet" href="/back/css/common.css">
+	<link rel="stylesheet" href="/back/css/style.css">
 </head>
 <body>
 <div id="forms" class="mt10">
@@ -43,18 +42,25 @@
 	</div>
 </div>
 </body>
+<script type="text/javascript" src="../../js/md5.js" ></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" crossorigin="anonymous"></script>
+
 <script>
 	function addAdmin(){
+
 		$.ajax({
 			url:"/manager/addAdmin",
 			type:"POST",
 			data:{
 				name:$("#tname").val().trim(),
-				password:$("#pwd").val().trim(),
+				password:hex_md5($("#pwd").val().trim()),
 				tel:$("#tel").val().trim()
 			},
 			success:function (o) {
 				if(o.success){
+					$("#tname").val("");
+					$("#pwd").val("");
+					$("#tel").val("");
 					updateTable();
 
 				}else {
@@ -78,6 +84,7 @@
 			},
 			success:function (o) {
 				if(o.success){
+
 					updateTable();
 				}else {
 					alert("更新失败");

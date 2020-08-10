@@ -82,16 +82,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<AddressItem> getAddresses(int userId) {
+    public ResponseJson getAddresses(int userId) {
         List<Address> addresses = userDao.getUserAddresses(userId);
-        List<AddressItem> addressItems = new ArrayList<AddressItem>();
-        for (Address addr : addresses) {
-            AddressItem ai = new AddressItem();
-            ai.setAid(String.valueOf(addr.getAid()));
-            ai.setAddress(addr.getAddress());
-            addressItems.add(ai);
+        if (addresses == null || addresses.size() <= 0) {
+            return new ResponseJson(false,"无地址或者获取失败");
         }
-        return addressItems;
+        return new ResponseJson(true,"获取成功",addresses);
+//        List<AddressItem> addressItems = new ArrayList<AddressItem>();
+////        for (Address addr : addresses) {
+////            AddressItem ai = new AddressItem();
+////            ai.setAid(String.valueOf(addr.getAid()));
+////            ai.setAddress(addr.getAddress());
+////            ai.setAddress(addr.getAddress());
+////            addressItems.add(ai);
+////        }
+////        return addressItems;
+
     }
 
     @Override
@@ -168,6 +174,16 @@ public class UserServiceImpl implements UserService {
         address.setUid(userId);
         address.setAddress(addr);
         return  userDao.addUserAddress(address);
+    }
+
+    @Override
+    public Integer updateUserAddressDefault(Integer userId, Integer aid) {
+        Address address = new Address();
+        address.setUid(userId);
+        address.setAid(aid);
+        return  userDao.updateUserAddressDefault(address);
+       // return  userDao.updateUserAddressDefault(aid,userId);
+
     }
 
 

@@ -12,8 +12,8 @@ public interface AdminDao {
     @Results(id = "adminResult", value = {
             @Result(property = "id", column = "aid", id = true)
     })
-    @Select("select aid,name from tb_admininfo where name = #{account} and password=#{password} and status=1;")
-    Admin login(@Param("account")String account,@Param("password")String password);
+    @Select("select aid,name,type from tb_admininfo where name = #{account} and password=#{password} and status=1 and type=#{role};")
+    Admin login(@Param("account")String account,@Param("password")String password,@Param("role")String role);
 
     @ResultMap("adminResult")
     @Select("select aid,name,tel,status from tb_admininfo where aid!=#{mid};")
@@ -26,7 +26,7 @@ public interface AdminDao {
      * @param tel
      * @return
      */
-    @Insert("insert into `tb_admininfo` (`name`, `tel`, `password`, `status`) values (#{name}, #{tel}, #{password}, '1')")
+    @Insert("insert into `tb_admininfo` (`name`, `tel`, `password`, `status`,`type`) values (#{name}, #{tel}, #{password}, '1','0')")
     Integer addAdmin(@Param("name")String name,@Param("password") String password,@Param("tel") String tel);
 
     /**

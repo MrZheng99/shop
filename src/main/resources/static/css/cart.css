@@ -39,4 +39,6 @@
 	max-width:80px;
 	min-width:80px;
 }
-
+.pay1>em{
+	color: red;font-size: large;font-weight: bold;
+}

@@ -27,7 +27,7 @@ public interface OrderDao {
 	@Update("UPDATE tb_goodsinfo SET store=store-#{number} where gid=#{gid}")
 	void decreaseStore(@Param("gid")int gid, @Param("number")int number);
 
-	@Select("SELECT * FROM tb_orderinfo where uid=#{uid}")
+	@Select("SELECT * FROM tb_orderinfo where uid=#{uid} order by date desc")
 	List<Order> getOrderByUserId(@Param("uid")int uid);
 
 	@Update("UPDATE tb_orderinfo SET aid=#{aid} WHERE oid=#{oid}")

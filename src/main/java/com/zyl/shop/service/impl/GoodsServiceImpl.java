@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.zyl.shop.entity.AddCommentsItem;
 import com.zyl.shop.entity.ResponseJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -107,16 +108,16 @@ public class GoodsServiceImpl implements GoodsService {
 	 */
 	@Override
 	public Integer insert2ShoppingCart(Integer userID, Integer goodsId) {
-		System.out.println(userID+":"+goodsId);
-		Integer number = goodsDao.queryGoodsShoppingCart(userID, goodsId);
-		if(number==null||number<=0){
-			Integer row = goodsDao.insert2ShoppingCart(userID, goodsId);
-			if(row>0){
-				return row;
-			}
-			return -1;
+		//System.out.println(userID+":"+goodsId);
+		//Integer number = goodsDao.queryGoodsShoppingCart(userID, goodsId);
+		//if(number==null||number<=0){
+		Integer row = goodsDao.insert2ShoppingCart(userID, goodsId);
+		if(row>0){
+			return row;
 		}
-		return 0;
+		return -1;
+		//}
+		//return 0;
 
 	}
 
@@ -223,15 +224,15 @@ public class GoodsServiceImpl implements GoodsService {
 	}
 
 	@Override
-	public ResponseJson addComments(List<Integer> goodsIds, String comments, Integer userId,Integer oid,Boolean exist) {
+	public ResponseJson addComments(AddCommentsItem commentsItem) {
 		try{
-			if (exist) {
-				for (Integer gid : goodsIds) {
-					goodsDao.updateGoodsComments(gid, userId,oid,comments);
+			if (commentsItem.getExist()) {
+				for (Integer gid : commentsItem.getGoodsIds()) {
+					goodsDao.updateGoodsComments(gid,commentsItem);
 				}
 			} else {
-				for (Integer gid : goodsIds) {
-					goodsDao.insertGoodsComments(gid, userId,oid,comments);
+				for (Integer gid : commentsItem.getGoodsIds()) {
+					goodsDao.insertGoodsComments(gid, commentsItem);
 				}
 			}
 		}

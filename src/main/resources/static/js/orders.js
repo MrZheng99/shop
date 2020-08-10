@@ -58,25 +58,23 @@ class Order{
     }
 
     render(parent){
-        const cssClass = "list-group-item list-group-item-action";
-
-        let a = document.createElement("a");
-        a.className = cssClass;
-        a.href = `/order/${this.oid}`;
-        a.innerHTML = /*html*/`
-            <div>订单编号：${this.oid}</div>
-            <div class="d-flex justify-content-between">
-                <ul>
-                    <li>${this.amount} 元</li>
-                    <li>${this.orderprogress}</li>
-                    <li>${this.date}</li>
-                </ul>
-                <div class="operation">
-                    ${this.getOperation()}
-                </div>
-            </div>
-        `;
-        parent.appendChild(a);
+        let tr = document.createElement("tr");
+        tr.innerHTML = /*html*/`
+            <td onclick="location.href='/order/${this.oid}'">${this.oid}</td>
+            <td onclick="location.href='/order/${this.oid}'">
+                ${this.amount}元
+            </td>
+            <td onclick="location.href='/order/${this.oid}'">
+               ${this.orderprogress}
+            </td>
+		    <td onclick="location.href='/order/${this.oid}'">
+		   		${this.date}
+            </td>
+		    <td > 
+		      ${this.getOperation()}
+		    </td>
+		`;
+        parent.append(tr);
     }
 }
 
@@ -87,15 +85,11 @@ class OrderList{
     }
 
     render(parent){
-        const cssClass = "list-group";
-        let div = document.createElement("div");
-        div.className = cssClass;
+
 
         for(let order of this.orders){
-        	order.render(div);
+        	order.render(parent);
         }
-        parent.appendChild(div);
-
         Order.checkListener();
     }
 }

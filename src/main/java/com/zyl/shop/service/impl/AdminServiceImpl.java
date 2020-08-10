@@ -19,8 +19,8 @@ public class AdminServiceImpl implements AdminService {
     UserDao userDao;
 
     @Override
-    public Admin login(String account, String password) {
-        Admin admin = adminDao.login(account, password);
+    public Admin login( String account, String password,String role) {
+        Admin admin = adminDao.login(account, password,role);
         if(admin!=null) {
             return admin;
         }

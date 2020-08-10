@@ -16,10 +16,10 @@
 
 <body >
 <header>
-    <a class="text-primary" id="userName"></a>
+    <a id="userName"></a>
     <div class="header_right">
         <input id="inputSearch" placeholder="输入搜索" maxlength="30" class="form-control"
-               style="display: inline-block; width: 150px;">
+               style="display: inline-block; width: 250px;">
         <a href="/orders" class="btn btn-link">订单</a>
         <a href="/cart" class="btn btn-link">购物车</a>
         <a href="/user" class="btn btn-link">个人中心</a>
@@ -32,22 +32,14 @@
 <!--    <h1 class="sec_title"><font class="font-italic" color="#CC3333"> 购物车</font></h1>-->
 <!--</div><br>-->
 
-<div >
-
-    <div align="right" class="pay_right">
-        <input type="checkbox" class="form-check-input" id="mcheckbox-all" checked >全选&nbsp;&nbsp;
-        <label  class="pay1" > 当前金额(不含运费): <em></em> 元
-            <input  type="button" value="结算" class="btn btn-info" onclick="payAll()">
-
-        </label>
-    </div>
-</div>
 
 <hr class="justify-content-center" width=90%>
 <table class="table table-striped">
     <caption>购物车</caption>
     <thead>
     <tr>
+        <th> <input type="checkbox" class="form-check-input" id="mcheckbox-all" checked >
+        </th>
         <th>商品信息</th>
         <th>商品名称</th>
         <th>单价</th>
@@ -59,9 +51,13 @@
 
     </tbody>
 </table>
-
+<!--<div align="right" class="pay_right">-->
+<!--    <label class="pay1"> 当前金额(不含运费): <em></em> 元-->
+<!--        <input  type="button" value="结算" class="btn btn-info" onclick="payAll()">-->
+<!--    </label>-->
+<!--</div>-->
 <footer>
-    Copyright&nbsp;&copy;&nbsp;2020&nbsp;&nbsp;ZYL团队&nbsp;版权所有
+    Copyright&nbsp;&copy;&nbsp;2020&nbsp;&nbsp;ZJ&nbsp;版权所有
 </footer>
 <!-- JS, Popper.js, and jQuery -->
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" crossorigin="anonymous"></script>

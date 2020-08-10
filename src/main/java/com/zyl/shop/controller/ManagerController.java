@@ -42,6 +42,7 @@ public class ManagerController {
         mav.setViewName("/back/manager/index.html");
         return mav;
     }
+
     @RequestMapping(value="",method=RequestMethod.GET)
     public ModelAndView home() {
         ModelAndView mav = new ModelAndView();
@@ -64,20 +65,7 @@ public class ManagerController {
     public ResponseJson getInfo(@SessionAttribute(SessionKey.CURRENT_ADMIN_ID) int aid) {
         return new ResponseJson(true, "", adminService.getInfo(aid));
     }
-    @RequestMapping(value="/addAdmin",method=RequestMethod.POST)
-    public ResponseJson addAdmin(@RequestParam("name")String name,@RequestParam("password")String password,@RequestParam("tel")String tel) {
-        System.out.println(name+":"+password+":"+tel);
-        ResponseJson responseJson = adminService.addAmin(name,password,tel);
-        System.out.println(responseJson);
-        return responseJson;
-    }
-    @RequestMapping(value="/updateAdmin",method=RequestMethod.POST)
-    public ResponseJson updateAdmin(@RequestParam("aid")String aid,@RequestParam("status")String status) {
-        ResponseJson responseJson = adminService.updateAdmin(aid,status);
-        System.out.println(responseJson);
-        return responseJson;
 
-    }
     @RequestMapping(value="/updateUser",method=RequestMethod.POST)
     public ResponseJson updateUserStatus(@RequestParam("userId")Integer userId,@RequestParam("data")String data,@RequestParam("type")String type) {
         ResponseJson responseJson =userService.updateUser(userId,data,type);
@@ -101,5 +89,34 @@ public class ManagerController {
         System.out.println(responseJson);
         return responseJson;
     }
+/**
+ * 超级管理员
+ */
+    @RequestMapping(value="/supper/{adminId}",method= RequestMethod.GET)
+    public ModelAndView supperHome(@PathVariable("adminId")Integer adminId, HttpSession session) {
+        ModelAndView mav = new ModelAndView();
+        Integer admIdSession = (Integer) session.getAttribute(SessionKey.CURRENT_ADMIN_ID);
+        if(admIdSession==null||adminId<=100||admIdSession<=100||adminId!=admIdSession) {
+            mav.setViewName("redirect:/back/index");
+            return mav;
+        }
+        System.out.println("超级管理员登录:"+admIdSession);
 
+        mav.setViewName("/back/supper/index.html");
+        return mav;
+    }
+    @RequestMapping(value="/addAdmin",method=RequestMethod.POST)
+    public ResponseJson addAdmin(@RequestParam("name")String name,@RequestParam("password")String password,@RequestParam("tel")String tel) {
+        System.out.println(name+":"+password+":"+tel);
+        ResponseJson responseJson = adminService.addAmin(name,password,tel);
+        System.out.println(responseJson);
+        return responseJson;
+    }
+    @RequestMapping(value="/updateAdmin",method=RequestMethod.POST)
+    public ResponseJson updateAdmin(@RequestParam("aid")String aid,@RequestParam("status")String status) {
+        ResponseJson responseJson = adminService.updateAdmin(aid,status);
+        System.out.println(responseJson);
+        return responseJson;
+
+    }
 }

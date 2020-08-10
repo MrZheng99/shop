@@ -5,7 +5,7 @@ import com.zyl.shop.entity.Admin;
 import com.zyl.shop.entity.ResponseJson;
 
 public interface AdminService {
-    Admin login(String account, String Password);
+    Admin login(String account, String password,String role);
 
     /**
      * 查询所有管理员信息，除当前管理员以外

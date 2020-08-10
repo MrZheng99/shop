@@ -5,6 +5,15 @@ public class Admin {
     private String name;
     private String tel;
     private String status;
+private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getStatus() {
 		return status;
@@ -43,6 +52,9 @@ public class Admin {
         return "Admin{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", tel='" + tel + '\'' +
+                ", status='" + status + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }
