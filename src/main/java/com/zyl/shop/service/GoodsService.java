@@ -4,12 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import com.zyl.shop.entity.AddCommentsItem;
-import com.zyl.shop.entity.ResponseJson;
+import com.zyl.shop.entity.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.zyl.shop.entity.Goods;
-import com.zyl.shop.entity.GoodsInfo;
 
 public interface GoodsService {
 	List<String> queryCategroy(); 
@@ -90,4 +86,26 @@ public interface GoodsService {
 	 * @return
 	 */
 	ResponseJson addComments(AddCommentsItem commentsItem);
+
+	/**
+	 * 查询货物的id和名字
+	 * @return
+	 */
+	List<Map<String, Object>> searchGoodNameAndId();
+
+
+
+	/**
+     * 获取销量统计
+     */
+    public  static final class  ReportOp{
+        public static  String BY_DATE = "date";
+        public static  String BY_TYPE = "type";
+        public static  String BY_GID = "gid";
+
+    }
+    ResponseJson report(String op, Sale sale);
+	ResponseJson report(SaleRequsetItem item);
+
+
 }

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>报表</title>
+</head>
+<body>
+<div style="text-align: center;width: 100%;margin-bottom: 30px;margin-top: 30px;">
+    <label><input type="radio"  name="type" value="1" checked>类别</label>
+    <label ><input type="radio" name="type" value="0"  >商品</label>
+    <select id="gid">
+
+    </select>
+    <select id="type">
+    </select>
+    <select id="year">
+    </select>
+    年
+
+    <select id="month">
+    </select>
+    月
+
+    <select id="day">
+    </select>
+    日
+    <label><input type="radio"  name="mdate" value="1" >指定时间
+        <label ><input type="radio" name="mdate1" value="year" checked >年</label>
+        <label ><input type="radio" name="mdate1" value="month" >月</label>
+        <label ><input type="radio" name="mdate1" value="day" >日</label>
+    </label>
+    <label ><input type="radio" name="mdate" value="0" checked >不指定时间</label>
+    <button onclick="refresh()">统计</button>
+</div>
+
+<div id="amount" style="width: 625px;height:400px;float: left"></div>
+<div id="sales" style="width: 625px;height:400px; float: left"></div>
+<div id="amount1" style="width: 625px;height:400px;float: left">
+    <span id="amount_all" style="text-align: center;display: block;"></span>
+
+</div>
+<div id="sales1" style="width: 625px;height:400px;float: left">
+    <span id="sales_all" style="text-align: center;display: block;"></span>
+</div>
+
+</body>
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/echarts.min.js"></script>
+<script type="text/javascript" src="../js/draw.js"></script>
+<script>
+    searchGoods();
+    getTypes();
+    paddingDate();
+
+    function getTypes(){
+        $.get("../../types", function(result){
+            let str = " <option value='0'>全部</option>";
+            $.each(result, function(index, item){
+                str += `<option value="${item.gtid}">${item.typename}</option>`;
+            });
+            $("#type").append($(str));
+        }, "json");
+    }
+    function paddingDate() {
+        var year = new Date().getFullYear();
+        var str = "";
+        for(let i=0;i<5;i++){
+            str += "<option value='"+(year-i)+"'>"+(year-i)+"</option>";
+        }
+        $("#year").html(str);
+        str = "";
+        for(let i=1;i<13;i++){
+            str += "<option value='"+i+"'>"+i+"</option>";
+        }
+        $("#month").html(str);
+        str = "";
+        for(let i=1;i<32;i++){
+            str += "<option value='"+i+"'>"+i+"</option>";
+        }
+        $("#day").html(str);
+    }
+    function searchGoods(){
+        $("#gid").html("");
+        $.get("/goods/name", function(data){
+            let content = "<option value='0'>全部商品</option>";
+            for(let item of data){
+                content += /*html*/`
+				<option value="${item.gid}">${item.goodsname}</option>`;
+
+            }
+            $("#gid").html($(content));
+
+        })
+    }
+    function refresh() {
+        let assignType = $("input[name='type']:checked").val()=="1" ? true : false;
+        let assignDate =  $("input[name='mdate']:checked").val()=="1" ? true:false;
+        let y="" ;
+        let m="" ;
+        let d="" ;
+        let flag;
+
+        if(assignDate) {
+            let mdate =  $("input[name='mdate1']:checked").val();
+            if(mdate=="year"){
+                y = $("#year").val();
+                flag="YEAR";
+            }else{
+                if(mdate=="month"){
+                    y = $("#year").val();
+                    m = $("#month").val();
+                    flag="MONTH";
+
+                }
+                else{
+                    y = $("#year").val();
+                    m = $("#month").val();
+                    d = $("#day").val();
+                    flag="DAY";
+                }
+            }
+        }
+
+        $.ajax({type:"post",url:"/goods/report",
+                contentType:"application/json",
+                data:JSON.stringify({y:y,m:m,d:d,gtid:$("#type").val(),gid:$("#gid").val(),assignType:assignType,assignDate:assignDate}),
+                dataType:"json",
+                success:function (data) {
+                    let sales_all=0;
+                    let amount_all=0;
+                    $.each(data.data,function (index,item) {
+                        amount_all +=parseInt(item.amount);
+                        sales_all +=parseInt(item.sales);
+                    });
+                    if(flag=="YEAR"){
+                        $("#amount_all").html("年销售额："+amount_all+"&nbsp;&nbsp;月均销售额："+(amount_all/12).toFixed(0));
+                        $("#sales_all").html("年销售量："+sales_all+"&nbsp;&nbsp;月均销售量："+(sales_all/12).toFixed(0));
+
+                    }else if(flag=="MONTH"){
+                        $("#amount_all").html("月销售额："+amount_all+"&nbsp;&nbsp;日均销售额："+(amount_all/30).toFixed(2));
+                        $("#sales_all").html("月销售量："+sales_all+"&nbsp;&nbsp;日均销售量："+(sales_all/30).toFixed(2));
+
+                    }
+                amount.clear();
+                sales.clear();
+                    if(!assignType){
+                        //**折线图 随时间变化而变化
+                        // 指定商品，指定时间
+                        //指定商品，不指定时间
+                        if($("#gid").val()!=0){
+                            amount.setOption(getAmountLineOption(data.data));
+                            sales.setOption(getSalesLineOption(data.data,"good"));
+
+                            return;
+                        }
+                        // 不指定商品，指定时间
+                        // 不指定商品，不指定时间
+                        //柱状图
+                        amount.setOption(getAmountBarOption(data.data,"good"));
+                        sales.setOption(getSalesBarOption(data.data,"good"));
+
+                        return;
+                    }
+                    if(assignType){
+                        //**折线图 随时间变化而变化
+                        // 指定类，指定时间
+                        //指定类，不指定时间
+                        if($("#type").val()!=0){
+                            amount.setOption(getAmountBarOption(data.data,"type"));
+                            sales.setOption(getSalesBarOption(data.data,"type"));
+
+                            return;
+                        }
+                        // 指定所有类，指定时间
+                        // 指定所有类，不指定时间
+                        //饼状图
+                        amount.setOption(getAmountBinOption(data.data));
+                        sales.setOption(getSalesBinOption(data.data));
+
+                        return;
+                    }
+                }
+            }
+        );
+
+
+    }
+</script>
+</html>

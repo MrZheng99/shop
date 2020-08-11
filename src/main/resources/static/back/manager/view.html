@@ -211,11 +211,12 @@
 	function searchGoods(){
 		const gtid = $("#goodsType").val();
 		const gname = $("#gname").val();
-		console.log(gtid, gname)
+		$("#goods_info").html("");
 		$.get("/goods", {tid:gtid, gname:gname}, function(data){
-			console.log(data)
-			let content = '';
+			let content;
+			let flag;
 			for(let item of data){
+				content = '';
 				goodsInfo[item.gid] = {
 					gname:item.goodsname,
 					goodsprice:item.goodsprice,
@@ -230,6 +231,12 @@
 				<td>${goodsType[item.goodstype]}</td>
 				<td>${item.goodsprice}</td>
 				<td>${item.store}</td>`;
+				if(item.store<20){
+					flag = true;
+				}else {
+					flag = false;
+				}
+
 				if(item.hot == "1"){
 					content += /*html*/`<td><a href='javascript:changeHotStatus(${item.gid}, 0)' class='green'>[取消热卖]</a></td>`;
 				}else{
@@ -237,15 +244,18 @@
 				}
 				if(item.status == "1"){
 					content += /*html*/`<td class="green">已上架</td>
-					<td><a href='javascript:changeStatus(${item.gid}, 0)' class='red'>[下架]</a>&nbsp;&nbsp;<a href='javascript:void(0);' onclick="ShowDiv(${item.gid})">[编辑]</a></td>
-				</tr>`
+					<td><a href='javascript:changeStatus(${item.gid}, 0)' class='red'>[下架]</a>&nbsp;&nbsp;<a href='javascript:void(0);' onclick="ShowDiv(${item.gid})">[编辑]</a>`
 				}else{
 					content += /*html*/`<td class="red">已下架</td>
-					<td><a href='javascript:changeStatus(${item.gid}, 1)' class='green'>[上架]</a>&nbsp;&nbsp;<a href='javascript:void(0);' onclick="ShowDiv(${item.gid})">[编辑]</a></td>
-				</tr>`
+					<td><a href='javascript:changeStatus(${item.gid}, 1)' class='green'>[上架]</a>&nbsp;&nbsp;<a href='javascript:void(0);' onclick="ShowDiv(${item.gid})">[编辑]</a>`
 				}
+				if(flag){
+					content += "<em>库存告急!!!</em> </td></tr>";
+				}else {
+					content += " </td></tr>";
+				}
+				$("#goods_info").append($(content));
 			}
-			$("#goods_info").html("").append($(content));
 		})
 	}
 

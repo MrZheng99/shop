@@ -7,8 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.zyl.shop.entity.AddCommentsItem;
-import com.zyl.shop.entity.ResponseJson;
+import com.zyl.shop.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,8 +15,6 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.zyl.shop.dao.GoodsDao;
-import com.zyl.shop.entity.Goods;
-import com.zyl.shop.entity.GoodsInfo;
 import com.zyl.shop.service.GoodsService;
 
 @Service
@@ -195,6 +192,10 @@ public class GoodsServiceImpl implements GoodsService {
 		}
 		return goodsDao.searchGoodByTypeAndName(tid, "%"+gname+"%");
 	}
+	@Override
+	public List<Map<String, Object>> searchGoodNameAndId() {
+		return goodsDao.searchGoodNameAndId();
+	}
 
 	@Override
 	public ResponseJson updateGoodStatus(int goodId, String status) {
@@ -242,5 +243,50 @@ public class GoodsServiceImpl implements GoodsService {
 
 		}
 		return new ResponseJson(true);
+	}
+
+
+	@Override
+	public ResponseJson report(String op, Sale sale) {
+		if(sale==null){
+			if(op==null){
+				return new ResponseJson(true,null,goodsDao.queryGoodsSalesTypes());
+			}
+		}
+		return new ResponseJson(true);
+
+	}
+	@Override
+	public ResponseJson report(SaleRequsetItem item) {
+		if(item.getAssignType()){
+			if(item.getAssignDate()){
+				if(item.getGtid()==0){
+					//查找指定时间全部类别
+					return new ResponseJson(true,null,goodsDao.queryGoodsSalesTypesDate(item));
+				}
+				//查找指定时间指定类别
+				return new ResponseJson(true,null,goodsDao.queryGoodsSalesByTypeDate(item));
+			}
+			if(item.getGtid()==0){
+				//查找不指定时间全部类别
+				return new ResponseJson(true,null,goodsDao.queryGoodsSalesTypes());
+			}
+			//查找不指定时间指定类别
+			return new ResponseJson(true,null,goodsDao.queryGoodsSalesByType(item));
+		}
+		if(item.getAssignDate()){
+			if(item.getGid()==0){
+				//查找指定时间全部商品
+				return new ResponseJson(true,null,goodsDao.queryGoodsSalesGoodsDate(item));
+			}
+			//查找指定时间指定商品
+			return new ResponseJson(true,null,goodsDao.queryGoodsSalesByGidDate(item));
+		}
+		if(item.getGid()==0){
+			//查找不指定时间全部商品
+			return new ResponseJson(true,null,goodsDao.queryGoodsSalesGoods(item));
+		}
+		//查找不指定时间指定商品
+		return new ResponseJson(true,null,goodsDao.queryGoodsSalesByGid(item));
 	}
 }

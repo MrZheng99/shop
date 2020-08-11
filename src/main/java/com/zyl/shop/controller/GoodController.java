@@ -6,14 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.zyl.shop.entity.AddCommentsItem;
-import com.zyl.shop.entity.Goods;
+import com.zyl.shop.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.zyl.shop.entity.GoodsInfo;
-import com.zyl.shop.entity.ResponseJson;
 import com.zyl.shop.service.GoodsService;
 
 import javax.servlet.http.HttpSession;
@@ -77,6 +74,10 @@ public class GoodController {
 	public List<GoodsInfo> searchGoodsByTypeAndName(@RequestParam Integer tid, @RequestParam String gname){
 		return goodsService.searchGoodByTypeAndName(tid, gname,false);
 	}
+	@RequestMapping("/goods/name")
+	public List<Map<String,Object>> searchGoodsByTypeAndName(){
+		return goodsService.searchGoodNameAndId();
+	}
 	@RequestMapping("/goods/getComments")
 	public ResponseJson getComments(@RequestParam Integer oid,HttpSession session){
 		Integer userId = (Integer) session.getAttribute("userID");
@@ -119,4 +120,14 @@ public class GoodController {
 	public ResponseJson queryGoodsByName(@PathVariable("name") String name, @PathVariable(value = "pageNum",required = false) Integer pageNum) {
 		return goodsService.queryGoodsByName(name,pageNum);
 	}
+    @RequestMapping(value="/goods/report/default",method=RequestMethod.GET)
+    public ResponseJson reportDefault() {
+        return goodsService.report(null,null);
+    }
+	@RequestMapping(value="/goods/report",method=RequestMethod.POST)
+	public ResponseJson report(@RequestBody SaleRequsetItem item) {
+		System.out.println(item);
+		return goodsService.report(item);
+	}
+
 }

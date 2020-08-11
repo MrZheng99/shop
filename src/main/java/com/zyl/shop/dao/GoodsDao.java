@@ -2,6 +2,7 @@ package com.zyl.shop.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.zyl.shop.entity.*;
 import org.apache.ibatis.annotations.*;
@@ -14,7 +15,8 @@ public interface GoodsDao {
 	 */
 	@Select("select typename from tb_goodstype where status=1")
 	List<String> queryCategroy();
-
+	@Select("select gid,goodsname from tb_goodsinfo where status=1")
+	List<Map<String, Object>> searchGoodNameAndId();
 	/**
 	 * 根据商品类别分页查询商品
 	 * @param categroy
@@ -151,7 +153,7 @@ public interface GoodsDao {
 	 * @param gname like字符串
 	 * @return
 	 */
-	@Select("select * from tb_goodsinfo where (isnull(#{gtid}) or goodstype=#{gtid}) and goodsname like #{gname}")
+	@Select("select * from tb_goodsinfo where (isnull(#{gtid}) or goodstype=#{gtid}) and goodsname like #{gname} order by store")
 	List<GoodsInfo> searchGoodByTypeAndName(@Param("gtid")Integer gtid, @Param("gname")String gname);
 	@Select("select gid,goodsname from tb_goodsinfo where (isnull(#{gtid}) or goodstype=#{gtid}) and goodsname like #{gname} and hot=1 and status=1")
 	List<GoodsInfo> searchHotGoodByTypeAndName(@Param("gtid")Integer gtid, @Param("gname")String gname);
@@ -185,4 +187,105 @@ public interface GoodsDao {
 	 */
 	@Update("UPDATE `tb_goodsassession` SET `assessiondetails`=#{commentsItem.comments}, `date`=now() WHERE `gid`=#{gid} and `uid`=#{commentsItem.uid} and `oid`=#{commentsItem.oid} and `status`=1")
 	void updateGoodsComments(@Param("gid") Integer gid,@Param("commentsItem")AddCommentsItem commentsItem);
+
+
+	/**
+	 * 不指定时间和类别,默认按年按类
+	 * @return
+	 */
+	@Results(
+			id = "sale",
+			value ={
+					@Result(property = "type",column = "typename")}
+	)
+	@Select("select *from (select sum(od.number*g.goodsprice) as amount,t.typename,sum(od.number) as sales from `tb_goodsinfo` g ,`tb_goodstype` t, `tb_orderinfo` o LEFT JOIN `tb_orderdetails` od " +
+			"on o.oid=od.oid " +
+			"where g.gid = od.gid and g.goodstype=t.gtid and o.orderprogress!='未付款' and " +
+			" YEAR(`date`) = YEAR(now()) GROUP BY typename) s order by amount desc;")
+    List<Sale> queryGoodsSalesTypes();
+	/**
+	 * 指定时间，不指定类别
+	 * @return
+	 * @param item
+	 */
+	@ResultMap("sale")
+	@Select("select *from (select sum(od.number*g.goodsprice) as amount,t.typename,sum(od.number) as sales from `tb_goodsinfo` g ,`tb_goodstype` t, `tb_orderinfo` o LEFT JOIN `tb_orderdetails` od " +
+			"on o.oid=od.oid " +
+			"where g.gid = od.gid and g.goodstype=t.gtid and o.orderprogress!='未付款' and " +
+			"(ISNULL(#{item.d}) or DAY(`date`) = #{item.d}) and (ISNULL(#{item.m}) or MONTH(`date`) = #{item.m}) and YEAR(`date`) = #{item.y} GROUP BY typename) s order by amount desc;")
+	List<Sale> queryGoodsSalesTypesDate(@Param("item")SaleRequsetItem item);
+	/**
+	 * 指定类别，不指定时间
+	 * @return
+	 * @param item
+	 */
+	@ResultMap("sale")
+	@Select("select g.goodsname,t.typename ,od.number as sales,od.number*g.goodsprice as amount,YEAR(`date`) y,MONTH(`date`) m ,DAY(`date`) d from `tb_goodsinfo` g,`tb_goodstype` t , `tb_orderinfo` o LEFT JOIN `tb_orderdetails` od " +
+			"on o.oid=od.oid " +
+			"where g.gid = od.gid and t.gtid=g.goodstype and o.orderprogress!='未付款' and " +
+			"g.goodstype = #{item.gtid} ORDER BY amount desc;")
+	List<Sale> queryGoodsSalesByType(@Param("item")SaleRequsetItem item);
+	/**
+	 * 指定类别，指定时间
+	 * @return
+	 * @param item
+	 */
+	@ResultMap("sale")
+	@Select("select g.goodsname,t.typename ,od.number as sales,od.number*g.goodsprice as amount,YEAR(`date`) y,MONTH(`date`) m ,DAY(`date`) d from `tb_goodsinfo` g,`tb_goodstype` t , `tb_orderinfo` o LEFT JOIN `tb_orderdetails` od " +
+			"on o.oid=od.oid " +
+			"where g.gid = od.gid and t.gtid=g.goodstype and o.orderprogress!='未付款' and " +
+			"(ISNULL(#{item.d}) or DAY(`date`) = #{item.d}) and (ISNULL(#{item.m}) or MONTH(`date`) = #{item.m}) and YEAR(`date`) = #{item.y} and g.goodstype = #{item.gtid} ORDER BY amount desc;")
+//	@Select("select *from (select sum(od.number*g.goodsprice) as amount,t.typename,sum(od.number) as sales from `tb_goodsinfo` g ,`tb_goodstype` t, `tb_orderinfo` o LEFT JOIN `tb_orderdetails` od\n" +
+//			"on o.oid=od.oid " +
+//			"where g.gid = od.gid and g.goodstype=t.gtid and o.orderprogress!='未付款' and g.goodstype=#{item.gtid} and " +
+//			"(ISNULL(#{item.d}) or DAY(`date`) = #{item.d}) and (ISNULL(#{item.m}) or MONTH(`date`) = #{item.m}) and YEAR(`date`) = #{item.y} GROUP BY typename) s order by amount desc;")
+	List<Sale> queryGoodsSalesByTypeDate(@Param("item")SaleRequsetItem item);
+	/**
+	 * 不指定时间，不指定商品
+	 * @return
+	 * @param item
+	 */
+	@ResultMap("sale")
+	@Select("select *from(select g.goodsname,sum(od.number) as sales,sum(od.number*g.goodsprice) as amount from `tb_goodsinfo` g ,`tb_goodstype` t, `tb_orderinfo` o LEFT JOIN `tb_orderdetails` od " +
+			"on o.oid=od.oid " +
+			"where g.gid = od.gid and g.goodstype=t.gtid and o.orderprogress!='未付款' " +
+			"GROUP BY goodsname ) s order by amount desc;")
+	List<Sale> queryGoodsSalesGoods(@Param("item")SaleRequsetItem item);
+	/**
+	 * 指定时间，不指定商品
+	 * @return
+	 * @param item
+	 */
+	@ResultMap("sale")
+	@Select("select *from(select g.goodsname,sum(od.number) as sales,sum(od.number*g.goodsprice) as amount from `tb_goodsinfo` g ,`tb_goodstype` t, `tb_orderinfo` o LEFT JOIN `tb_orderdetails` od " +
+			"on o.oid=od.oid " +
+			"where g.gid = od.gid and g.goodstype=t.gtid and o.orderprogress!='未付款' and " +
+			"(ISNULL(#{item.d}) or DAY(`date`) = #{item.d}) and (ISNULL(#{item.m}) or MONTH(`date`) = #{item.m}) and YEAR(`date`) = #{item.y} GROUP BY goodsname ) s order by amount desc;")
+	List<Sale> queryGoodsSalesGoodsDate(@Param("item")SaleRequsetItem item);
+	/**
+	 * 指定商品，不指定时间
+	 * @return
+	 * @param item
+	 */
+	@ResultMap("sale")
+	@Select("select g.goodsname,sum(od.number) as sales,sum(od.number*g.goodsprice) as amount,YEAR(`date`) y,MONTH(`date`) m ,DAY(`date`) d from `tb_goodsinfo` g ,`tb_goodstype` t, `tb_orderinfo` o LEFT JOIN `tb_orderdetails` od " +
+			"on o.oid=od.oid " +
+			"where g.gid = od.gid and g.goodstype=t.gtid and o.orderprogress!='未付款' and " +
+			"g.gid=#{item.gid} GROUP BY goodsname,y,m,d ")
+	List<Sale> queryGoodsSalesByGid(@Param("item")SaleRequsetItem item);
+	/**
+	 * 指定商品，指定时间
+	 * @return
+	 * @param item
+	 */
+	@ResultMap("sale")
+	@Select("select g.goodsname,sum(od.number) as sales,sum(od.number*g.goodsprice) as amount,YEAR(`date`) y,MONTH(`date`) m ,DAY(`date`) d from `tb_goodsinfo` g ,`tb_goodstype` t, `tb_orderinfo` o LEFT JOIN `tb_orderdetails` od " +
+			"on o.oid=od.oid " +
+			"where g.gid = od.gid and g.goodstype=t.gtid and o.orderprogress!='未付款' and " +
+			"g.gid=#{item.gid} and YEAR(`date`) = #{item.y} and (ISNULL(#{item.d}) or DAY(`date`) = #{item.d}) and (ISNULL(#{item.m}) or MONTH(`date`) = #{item.m}) " +
+			"GROUP BY goodsname,y,m,d;")
+	List<Sale> queryGoodsSalesByGidDate(@Param("item") SaleRequsetItem item);
+
+
+
 }
