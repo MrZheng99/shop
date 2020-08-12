@@ -1,13 +1,17 @@
 package com.zyl.shop.service.impl;
 
-import java.io.File;
-import java.io.IOException;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.zyl.shop.entity.*;
+import com.zyl.shop.util.LucenceUtil;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.zyl.shop.dao.GoodsDao;
 import com.zyl.shop.service.GoodsService;
+
+import javax.imageio.ImageIO;
 
 @Service
 @Transactional
@@ -129,10 +135,14 @@ public class GoodsServiceImpl implements GoodsService {
 		goodsInfo.setGoodsdescription(descr);
 		goodsInfo.setStatus("1");
 		List<String> listImage = new ArrayList<String>();
-		for(MultipartFile file : files) {
-			listImage.add(this.addImage(file));
+		if(files.length>0){
+			for(MultipartFile file : files) {
+				listImage.add(this.addImage(file));
+			}
+			goodsInfo.setImages(String.join(",",listImage));
+
 		}
-		goodsInfo.setImages(String.join(",",listImage));
+
 		goodsDao.addGood(goodsInfo);
 
 	}
@@ -148,23 +158,22 @@ public class GoodsServiceImpl implements GoodsService {
 		goodsInfo.setGoodsdescription(descr);
 		goodsInfo.setStatus("1");
 		List<String> listImage = new ArrayList<String>();
+
 		for(MultipartFile file : files) {
-			listImage.add(this.addImage(file));
+			System.out.println(file.getContentType()+"==========");
+			if(file.getContentType().indexOf("image")>=0)
+				listImage.add(this.addImage(file));
 		}
 		goodsInfo.setImages(String.join(",",listImage));
 		goodsDao.updateGood(goodsInfo);
-
 	}
 
 	@Override
 	public Map<String, Object> uploadImage(MultipartFile file) throws IOException {
-		String fileName = "_"+System.currentTimeMillis()+"."+file.getOriginalFilename().split("\\.", 2)[1];
 
-		File dest = new File(ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + "static/images/goods"),
-				fileName);
-		System.out.println(dest.getAbsolutePath());
-		file.transferTo(dest);
+
 		Map<String, Object> rs = new HashMap<String, Object>();
+		String fileName = addWaterLogo(file);
 		rs.put("fileName", fileName);
 		rs.put("upload", "images\\goods\\" + fileName);
 		return 	rs;
@@ -172,14 +181,46 @@ public class GoodsServiceImpl implements GoodsService {
 
 	private String addImage(MultipartFile file) throws IOException {
 
-		String fileName = "_"+System.currentTimeMillis()+"."+file.getOriginalFilename().split("\\.", 2)[1];
+		//file.transferTo(dest);
+		return 	"images/goods/"+addWaterLogo(file);
 
+	}
+
+	private String addWaterLogo(MultipartFile file) throws IOException {
+		String fileName = "_"+System.currentTimeMillis()+"."+file.getOriginalFilename().split("\\.", 2)[1];
 		File dest = new File(ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + "static/images/goods"),
 				fileName);
-
-		file.transferTo(dest);
-		return 	"images/goods/"+fileName;
-
+		Image srcImg = ImageIO.read( file.getInputStream());
+		int srcImgWidth = srcImg.getWidth(null);
+		int srcImgHeight = srcImg.getHeight(null);
+		// 加水印
+		BufferedImage bufImg = new BufferedImage(srcImgWidth,
+				srcImgHeight,
+				BufferedImage.TYPE_INT_RGB);
+		//获取 Graphics2D 对象
+		Graphics2D g = bufImg.createGraphics();
+		//设置绘图区域
+		g.drawImage(srcImg, 0, 0, srcImgWidth, srcImgHeight, null);
+		//设置字体
+		Font font = new Font("宋体", Font.PLAIN, 20);
+		// 根据图片的背景设置水印颜色
+		g.setColor(Color.green);
+		g.setFont(font);
+		//获取文字长度
+		int len = g.getFontMetrics(
+				g.getFont()).charsWidth("图片來源:ZJ购物商城".toCharArray(),
+				0,
+				"图片來源:ZJ购物商城".length());
+		int x = srcImgWidth - len - 10;
+		int y = srcImgHeight - 20;
+		g.drawString("图片來源:ZJ购物商城", x, y);
+		g.dispose();
+		// 输出图片
+		FileOutputStream outImgStream = new FileOutputStream(dest);
+		ImageIO.write(bufImg, fileName.substring(fileName.lastIndexOf(".")+1), outImgStream);
+		outImgStream.flush();
+		outImgStream.close();
+		return fileName;
 	}
 
 	@Override
@@ -197,7 +238,8 @@ public class GoodsServiceImpl implements GoodsService {
 		return goodsDao.searchGoodNameAndId();
 	}
 
-	@Override
+
+    @Override
 	public ResponseJson updateGoodStatus(int goodId, String status) {
 		Integer row = goodsDao.updateGoodStatus(goodId, status);
 		if(row!=null&&row>0){
@@ -288,5 +330,59 @@ public class GoodsServiceImpl implements GoodsService {
 		}
 		//查找不指定时间指定商品
 		return new ResponseJson(true,null,goodsDao.queryGoodsSalesByGid(item));
+	}
+
+	/**
+	 * lucence搜索
+	 */
+	public static LucenceUtil lu=null;
+
+	@Override
+	public ResponseJson myLucence(String goodsName, Integer pageNum) {
+		initLu();
+		List<Document> docs;
+		if(pageNum==null) {
+			docs = lu.search(new String[] {"id", "name","description","price","images"}, goodsName,8,0, 100);
+		}else {
+			docs = lu.search(new String[] {"id", "name","description","price","images"}, goodsName,8,pageNum, 100);
+		}
+		if(docs.size()<=0) {
+			return new ResponseJson(false,"暂无结果",null);
+		}
+		// 取值
+		Goods goods = null;
+		List<Goods> listGoods = new ArrayList<>();
+		for(Document doc : docs) {
+			goods = new Goods();
+			goods.setId(Integer.valueOf( doc.get("id")));
+			goods.setName(doc.get("name"));
+			goods.setPrice(Float.valueOf( doc.get("price")));
+			goods.setImages(doc.get("images"));
+			listGoods.add(goods);
+			//System.out.println(doc.get("id") + "\t" + doc.get("name") + "\t" + doc.get("images")+ "\t" + doc.get("price")+"\t"+doc.get("description"));
+		}
+		return new ResponseJson(true,"数据获取成功",listGoods);
+	}
+
+    @Override
+    public ResponseJson myLucenceNumber(String name) {
+		initLu();
+        return new ResponseJson(true,null,lu.getNumByName(new String[]{"id", "name","description","price","images"},name,100));
+    }
+
+	/**
+	 * 	先查询字典是否初始化 如果没有则初始化
+	 */
+	private synchronized void initLu(){
+		if(lu==null){
+			lu = new LucenceUtil("Goods", "id", new String[] {"name","description","price","images"});
+			//查询数据库所有商品
+			List<Goods> rs = goodsDao.queryAllGoods();
+			// 清空字典
+			lu.deleteAll();
+			// 添加
+			lu.add(Goods.class,rs);
+			System.out.println("初始化库");
+		}
 	}
 }

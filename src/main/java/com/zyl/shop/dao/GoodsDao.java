@@ -17,6 +17,15 @@ public interface GoodsDao {
 	List<String> queryCategroy();
 	@Select("select gid,goodsname from tb_goodsinfo where status=1")
 	List<Map<String, Object>> searchGoodNameAndId();
+
+	/**
+	 * 所有商品
+	 * @return
+	 */
+	@ResultMap("goodsResult")
+	@Select("select * from tb_goodsinfo g where g.status=1")
+	List<Goods> queryAllGoods();
+
 	/**
 	 * 根据商品类别分页查询商品
 	 * @param categroy

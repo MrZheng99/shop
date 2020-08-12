@@ -24,7 +24,7 @@ $.fn.showPage = function(count,value,op) {
         //当前对象选中
         let num = $(obj).index() + 1;
         // findByPage(num,obj);//调用外部函数按页查询
-        getGoods(value + "/" + (num-1),op);
+        refreshGoods(value ,op,(num-1));
         $(obj).addClass("current"); //给当前点击的这个页码添加样式
         if (num < 5 || num > pageCount - 5) {
             return;

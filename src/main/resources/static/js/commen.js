@@ -8,7 +8,7 @@ function loadPageNumber(value,op) {
     if(op=="type"){
         url="/goods/number/type/" + value;
     }else if(op=="name"){
-        url="/goods/number/name/" + value;
+        url="/search/number/" + value;
     }
     $.ajax({
         type: 'GET',
@@ -36,14 +36,13 @@ function getGoods(value,op) {
         alert("请输入需要搜索的商品名或者类别");
         return;
     }
-    console.log(op);
     loadPageNumber(value,op);
-
     let url = null;
+    console.log(value);
     if(op=="type"){
         url="/goods/type/" + value;
     }else if(op=="name"){
-        url="/goods/name/" + value;
+        url="/search/name/" + value;
     }
     $.ajax({
         type: 'GET',
@@ -57,12 +56,44 @@ function getGoods(value,op) {
                     let d = "<div class='disp'><img src='../" + ele["images"].split(",")[0] + "'><span class='description' onclick='goShopping(" + ele["id"] + ")'>" + ele["name"] +  "</span> <span class='price'>" + "￥" + ele["price"] + "</span><button id='btn" + ele["id"] + "' onclick='joinShoppingCart(" + ele["id"] + ")'>加入购物车</button></div>"
                     $(".content").append(d);
                 }
+            }else{
+                $(".content").append("<span style='text-align: center;display: block;color: red;margin-top: 20px;'>"+msg.msg+"...</span>");
             }
         }
 
     });
 }
+function refreshGoods(value,op,num) {
+    if(value==null||value==""){
+        alert("请输入需要搜索的商品名或者类别");
+        return;
+    }
+    let url = null;
+    console.log(value);
+    if(op=="type"){
+        url="/goods/type/" + value+"/"+num;
+    }else if(op=="name"){
+        url="/search/name/" + value+"/"+num;
+    }
+    $.ajax({
+        type: 'GET',
+        url: url,
+        success: function (msg) {
+            if (msg.success) {
+                $(".content").empty();
+                let ele;
+                for (let i = 0, len = msg.data.length; i < len; i++) {
+                    ele = msg.data[i];
+                    let d = "<div class='disp'><img src='../" + ele["images"].split(",")[0] + "'><span class='description' onclick='goShopping(" + ele["id"] + ")'>" + ele["name"] +  "</span> <span class='price'>" + "￥" + ele["price"] + "</span><button id='btn" + ele["id"] + "' onclick='joinShoppingCart(" + ele["id"] + ")'>加入购物车</button></div>"
+                    $(".content").append(d);
+                }
+            }else{
+                $(".content").append("<span style='text-align: center;display: block;color: red;margin-top: 20px;'>"+msg.msg+"...</span>");
+            }
+        }
 
+    });
+}
 /**
  * 加入购物车
  * @param goodsId

@@ -1,8 +1,11 @@
 package com.zyl.shop.controller;
 
 import com.zyl.shop.entity.Goods;
+import com.zyl.shop.entity.GoodsInfo;
 import com.zyl.shop.entity.ResponseJson;
 import com.zyl.shop.service.impl.GoodsServiceImpl;
+import com.zyl.shop.util.LucenceUtil;
+import org.apache.lucene.document.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,6 +22,7 @@ import java.util.List;
 public class SearchController {
     @Autowired
     GoodsServiceImpl goodsService;
+
     @GetMapping("")
     public ModelAndView jump2Search() {
         ModelAndView mav = new ModelAndView();
@@ -35,5 +40,13 @@ public class SearchController {
             e.printStackTrace();
         }
         return new ResponseJson(false,"获取关键字失败");
+    }
+    @GetMapping(value= {"/name/{name}","/name/{name}/{pageNum}"})
+    public ResponseJson queryGoodsByName(@PathVariable("name") String name, @PathVariable(value = "pageNum",required = false) Integer pageNum) {
+        return goodsService.myLucence(name,pageNum);
+    }
+    @GetMapping(value={ "/number/{name}","/number/{name}/{pageNum}"})
+    public ResponseJson queryGoodsNumber(@PathVariable("name") String name) {
+        return goodsService.myLucenceNumber(name);
     }
 }

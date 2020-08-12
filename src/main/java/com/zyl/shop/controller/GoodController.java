@@ -116,10 +116,10 @@ public class GoodController {
 	public ResponseJson queryGoodsByType(@PathVariable("type") String type,@PathVariable(value = "pageNum",required = false) Integer pageNum) {
 		return goodsService.queryGoodsByType(type,pageNum);
 	}
-	@GetMapping(value= {"/goods/name/{name}","/goods/name/{name}/{pageNum}"})
-	public ResponseJson queryGoodsByName(@PathVariable("name") String name, @PathVariable(value = "pageNum",required = false) Integer pageNum) {
-		return goodsService.queryGoodsByName(name,pageNum);
-	}
+//	@GetMapping(value= {"/goods/name/{name}","/goods/name/{name}/{pageNum}"})
+//	public ResponseJson queryGoodsByName(@PathVariable("name") String name, @PathVariable(value = "pageNum",required = false) Integer pageNum) {
+//		return goodsService.queryGoodsByName(name,pageNum);
+//	}
     @RequestMapping(value="/goods/report/default",method=RequestMethod.GET)
     public ResponseJson reportDefault() {
         return goodsService.report(null,null);

@@ -93,6 +93,7 @@ public interface GoodsService {
 	 */
 	List<Map<String, Object>> searchGoodNameAndId();
 
+	ResponseJson myLucenceNumber(String name);
 
 
 	/**
@@ -106,6 +107,6 @@ public interface GoodsService {
     }
     ResponseJson report(String op, Sale sale);
 	ResponseJson report(SaleRequsetItem item);
-
+	ResponseJson myLucence(String goodsName, Integer pageNum);
 
 }
