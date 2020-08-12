@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>源辰-后台商品添加</title>
-<meta charset="UTF-8">
-<link rel="stylesheet" href="../css/common.css">
-<link rel="stylesheet" href="../css/main.css">
+	<title>源辰-后台商品添加</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../css/common.css">
+	<link rel="stylesheet" href="../css/main.css">
 
 </head>
 <body>
@@ -21,7 +21,7 @@
 							<td class="td_right">商品类型：</td>
 							<td>
 								<select class="select" name="tid" id="goodsType">
-								
+
 								</select>
 							</td>
 							<td class="td_right">商品名称：</td>
@@ -30,13 +30,13 @@
 							</td>
 							<td class="td_right">商品单价：</td>
 							<td>
-								<input type="number" id="price" name="price" class="input-text lh30" size="40" placeholder="单价"/>
+								<input type="number" id="price" name="price" class="input-text lh30" min="0" size="40" placeholder="单价"/>
 							</td>
 						</tr>
 						<tr>
 							<td class="td_right">商品库存：</td>
 							<td>
-								<input type="number" id="balance" name="balance" class="input-text lh30" size="40"  placeholder="库存"/>
+								<input type="number" id="balance" name="balance" class="input-text lh30" min="1" size="40"  placeholder="库存"/>
 							</td>
 						</tr>
 						<tr>
@@ -51,20 +51,21 @@
 							<td>&nbsp;</td>
 							<td colspan="5" align="center">
 								<div id="showPics">
-								
+
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td class="td_right">商品描述：</td>
 							<td colspan="5">
-								 <textarea name="editor1" id="editor1" rows="10" cols="80"></textarea>
+								<textarea name="editor1" id="editor1" rows="10" cols="80"></textarea>
 							</td>
 						</tr>
 						<tr>
 							<td colspan="4" align="center">
 								<input type="button" name="button" class="btn btn82 btn_save2" onclick="addGoodsInfo()" value="添加">
 								<input type="reset" name="button" class="btn btn82 btn_res" value="重置">
+								<span id="editorTip"></span>
 							</td>
 						</tr>
 					</table>
@@ -86,42 +87,67 @@
 			});
 			$("#goodsType").append($(str));
 		}, "json");
+		$("#price").focus(function () {
+			$("#price").css("background-color","#f7fcfe");
+		});
+		$("#balance").focus(function () {
+			$("#balance").css("background-color","#f7fcfe");
+		});
+		$("#gname").focus(function () {
+			$("#gname").css("background-color","#f7fcfe");
+		});
 	});
 </script>
 <script type="text/javascript">
-CKEDITOR.replace( 'editor1' );
+	CKEDITOR.replace( 'editor1' );
+	function addGoodsInfo() {
+		var tno = $.trim($("#goodsType").val());
+		var gname = $.trim($("#gname").val());
+		var price = $.trim($("#price").val());
+		var balance = $.trim($("#balance").val());
+		//var intro = $.trim($("#intro").val());
+		var descr = CKEDITOR.instances.editor1.getData();
+		//var descr = CKEDITOR.instances.editor1.document.$.body.textContent;
 
-function addGoodsInfo() {
-	var tno = $.trim($("#goodsType").val());
-	var gname = $.trim($("#gname").val());
-	var price = $.trim($("#price").val());
-	var balance = $.trim($("#balance").val());
-	//var intro = $.trim($("#intro").val());
-	var descr = CKEDITOR.instances.editor1.getData();
-	//var descr = CKEDITOR.instances.editor1.document.$.body.textContent;
-	
-	$.ajaxFileUpload({
-		url:'../../good',
-		secureuri: false,
-		fileElementId:"pic",
-		dataType:"json",
-		data:{tid:tno, gname:gname,price:price,balance:balance,descr:descr},
-		success:function(data, stuts) {
-			data = parseInt($.trim(data));
-			if (data == 1) {
-				$("#addGoodsForm")[0].reset();
-				$("#showPics").html("");
-				CKEDITOR.instances.editor1.setData("");
-				alert("商品信息添加成功...");
-			} else {
-				alert("商品信息添加失败...");
-			}
-		},
-		error:function(data, status, e) {
-			alert("商品信息添加失败，请稍后重试...\n" + e);
+		if(Number(balance)==0){
+			$("#balance").css("background-color","red");
+			return;
 		}
-	});
-}
+		if(Number(price)==0) {
+			$("#price").css("background-color", "red");
+			return;
+		}
+		if(gname==""){
+			$("#gname").css("background-color", "red");
+			return;
+		}
+		if(descr==""){
+			$("#editorTip").css("color", "red").text("添加商品描述...");
+			return;
+		}
+		$.ajaxFileUpload({
+			url:'../../good',
+			secureuri: false,
+			fileElementId:"pic",
+			dataType:"json",
+			data:{tid:tno, gname:gname,price:price,balance:balance,descr:descr},
+			success:function(data, stuts) {
+				data = parseInt($.trim(data));
+				if (data == 1) {
+					$("#addGoodsForm")[0].reset();
+					$("#showPics").html("");
+					CKEDITOR.instances.editor1.setData("");
+					$("#editorTip").text("");
+					alert("商品信息添加成功...");
+				} else {
+					alert("商品信息添加失败...");
+				}
+			},
+			error:function(data, status, e) {
+				alert("商品信息添加失败，请稍后重试...\n" + e);
+			}
+		});
+	}
 </script>
 </body>
 </html>

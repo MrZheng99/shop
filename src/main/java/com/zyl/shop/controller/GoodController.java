@@ -45,8 +45,7 @@ public class GoodController {
 					   @RequestParam String gname, @RequestParam double price, @RequestParam int balance,
 					   @RequestParam String descr) {
 
-		System.out.println(file[0].getOriginalFilename());
-		System.out.println(descr);
+		descr = descr.replaceAll("(?i)script","");
 		try {
 			goodsService.addGood(file, tid, gname, price, balance, descr);
 		} catch (IOException e) {
@@ -60,8 +59,8 @@ public class GoodController {
 					   @RequestParam String gname, @RequestParam double price, @RequestParam int balance,
 					   @RequestParam String descr) {
 
-		System.out.println(file[0].getOriginalFilename());
-		System.out.println(descr);
+		descr = descr.replaceAll("(?i)script","");
+
 		try {
 			goodsService.updateGood(file, gid,tid, gname, price, balance, descr);
 		} catch (IOException e) {
@@ -116,10 +115,7 @@ public class GoodController {
 	public ResponseJson queryGoodsByType(@PathVariable("type") String type,@PathVariable(value = "pageNum",required = false) Integer pageNum) {
 		return goodsService.queryGoodsByType(type,pageNum);
 	}
-//	@GetMapping(value= {"/goods/name/{name}","/goods/name/{name}/{pageNum}"})
-//	public ResponseJson queryGoodsByName(@PathVariable("name") String name, @PathVariable(value = "pageNum",required = false) Integer pageNum) {
-//		return goodsService.queryGoodsByName(name,pageNum);
-//	}
+
     @RequestMapping(value="/goods/report/default",method=RequestMethod.GET)
     public ResponseJson reportDefault() {
         return goodsService.report(null,null);
