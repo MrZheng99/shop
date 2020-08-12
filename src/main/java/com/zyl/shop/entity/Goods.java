@@ -1,9 +1,7 @@
 package com.zyl.shop.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
-@JsonIgnoreProperties(value = {"handler","hibernateLazyInitializer","fieldHandler"})
 public class Goods {
 	private Integer id;
 	private Float price;

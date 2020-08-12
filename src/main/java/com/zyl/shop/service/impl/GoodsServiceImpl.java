@@ -111,16 +111,11 @@ public class GoodsServiceImpl implements GoodsService {
 	 */
 	@Override
 	public Integer insert2ShoppingCart(Integer userID, Integer goodsId) {
-		//System.out.println(userID+":"+goodsId);
-		//Integer number = goodsDao.queryGoodsShoppingCart(userID, goodsId);
-		//if(number==null||number<=0){
 		Integer row = goodsDao.insert2ShoppingCart(userID, goodsId);
 		if(row>0){
 			return row;
 		}
 		return -1;
-		//}
-		//return 0;
 
 	}
 
@@ -147,6 +142,17 @@ public class GoodsServiceImpl implements GoodsService {
 
 	}
 
+	/**
+	 * 添加商品
+	 * @param files
+	 * @param gid
+	 * @param tid
+	 * @param gname
+	 * @param price
+	 * @param balance
+	 * @param descr
+	 * @throws IOException
+	 */
 	@Override
 	public void updateGood(MultipartFile[] files,int gid, int tid, String gname, double price, int balance, String descr) throws IOException {
 		GoodsInfo goodsInfo = new GoodsInfo();
@@ -158,9 +164,7 @@ public class GoodsServiceImpl implements GoodsService {
 		goodsInfo.setGoodsdescription(descr);
 		goodsInfo.setStatus("1");
 		List<String> listImage = new ArrayList<String>();
-
 		for(MultipartFile file : files) {
-			System.out.println(file.getContentType()+"==========");
 			if(file.getContentType().indexOf("image")>=0)
 				listImage.add(this.addImage(file));
 		}
@@ -168,10 +172,14 @@ public class GoodsServiceImpl implements GoodsService {
 		goodsDao.updateGood(goodsInfo);
 	}
 
+	/**
+	 * 添加商品描述中的图片
+	 * @param file
+	 * @return
+	 * @throws IOException
+	 */
 	@Override
 	public Map<String, Object> uploadImage(MultipartFile file) throws IOException {
-
-
 		Map<String, Object> rs = new HashMap<String, Object>();
 		String fileName = addWaterLogo(file);
 		rs.put("fileName", fileName);
@@ -179,13 +187,22 @@ public class GoodsServiceImpl implements GoodsService {
 		return 	rs;
 	}
 
+	/**
+	 * 添加展示的图片
+	 * @param file
+	 * @return
+	 * @throws IOException
+	 */
 	private String addImage(MultipartFile file) throws IOException {
-
-		//file.transferTo(dest);
 		return 	"images/goods/"+addWaterLogo(file);
-
 	}
 
+	/**
+	 * 添加水印
+	 * @param file
+	 * @return
+	 * @throws IOException
+	 */
 	private String addWaterLogo(MultipartFile file) throws IOException {
 		String fileName = "_"+System.currentTimeMillis()+"."+file.getOriginalFilename().split("\\.", 2)[1];
 		File dest = new File(ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + "static/images/goods"),
@@ -287,7 +304,12 @@ public class GoodsServiceImpl implements GoodsService {
 		return new ResponseJson(true);
 	}
 
-
+	/**
+	 * 统计报表，忘了搞啥的 好像是默认的吧
+	 * @param op
+	 * @param sale
+	 * @return
+	 */
 	@Override
 	public ResponseJson report(String op, Sale sale) {
 		if(sale==null){
@@ -298,6 +320,12 @@ public class GoodsServiceImpl implements GoodsService {
 		return new ResponseJson(true);
 
 	}
+
+	/**
+	 * 统计报表
+	 * @param item
+	 * @return
+	 */
 	@Override
 	public ResponseJson report(SaleRequsetItem item) {
 		if(item.getAssignType()){
@@ -333,10 +361,11 @@ public class GoodsServiceImpl implements GoodsService {
 	}
 
 	/**
-	 * lucence搜索
+	 * lucence分词搜索
+	 * @param goodsName
+	 * @param pageNum
+	 * @return
 	 */
-	public static LucenceUtil lu=null;
-
 	@Override
 	public ResponseJson myLucence(String goodsName, Integer pageNum) {
 		initLu();
@@ -359,11 +388,15 @@ public class GoodsServiceImpl implements GoodsService {
 			goods.setPrice(Float.valueOf( doc.get("price")));
 			goods.setImages(doc.get("images"));
 			listGoods.add(goods);
-			//System.out.println(doc.get("id") + "\t" + doc.get("name") + "\t" + doc.get("images")+ "\t" + doc.get("price")+"\t"+doc.get("description"));
 		}
 		return new ResponseJson(true,"数据获取成功",listGoods);
 	}
 
+	/**
+	 * 获取记录总条数
+	 * @param name
+	 * @return
+	 */
     @Override
     public ResponseJson myLucenceNumber(String name) {
 		initLu();
@@ -373,6 +406,8 @@ public class GoodsServiceImpl implements GoodsService {
 	/**
 	 * 	先查询字典是否初始化 如果没有则初始化
 	 */
+	public static LucenceUtil lu=null;
+
 	private synchronized void initLu(){
 		if(lu==null){
 			lu = new LucenceUtil("Goods", "id", new String[] {"name","description","price","images"});
