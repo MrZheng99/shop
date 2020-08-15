@@ -35,9 +35,9 @@ function loadingSubmission(ypassword,password){
         success:function(data){
             if(data.success){
                 alert("密码修改成功,请重新登录");
-                location.href="/back/index";
+                window.parent.location.href="/back/index";
             }else{
-                layer.msg('密码修改失败');
+                alert.msg('密码修改失败');
             }
         }
     });

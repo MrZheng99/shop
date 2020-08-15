@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 
 import com.zyl.shop.entity.ResponseJson;
+import com.zyl.shop.util.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
@@ -24,12 +25,7 @@ import com.zyl.shop.service.impl.GoodsServiceImpl;
 public class HomeController {
 	@Autowired
 	GoodsServiceImpl goodsService;
-	//存储种类名称到全局变量避免重复查询
-	private List<String> listCategory=null;
-	@PostConstruct
-	private void init(){
-		listCategory =goodsService.queryCategroy();
-	}
+
 	@RequestMapping(value="/{userId}",method=RequestMethod.GET)
 	public ModelAndView home(@PathVariable("userId")Integer userId,HttpSession session) {
 		ModelAndView mav = new ModelAndView();
@@ -51,16 +47,16 @@ public class HomeController {
 	@RequestMapping(value="/queryCategroy",method=RequestMethod.GET)
 	public ResponseJson queryCategroy() {
 		ResponseJson responseJson =new ResponseJson();
-		if(listCategory==null){
-			init();
+		if(Type.listCategory==null){
+			Type.listCategory = goodsService.queryCategroy();
 		}
-		if(listCategory==null) {
+		if(Type.listCategory==null) {
 			responseJson.setSuccess(false);
 			responseJson.setMsg("类别获取失败");
 			return responseJson;
 		}
 		responseJson.setSuccess(true);
-		responseJson.setData(listCategory);
+		responseJson.setData(Type.listCategory);
 		return responseJson;
 	}
     @RequestMapping("/saveKeyWord/{keyWord}")

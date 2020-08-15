@@ -1,8 +1,11 @@
+#server:
+#  servlet:
+#    context-path: "/shop"
 spring:
   datasource:
     # 设置时区保证时间显示一致
     url: jdbc:mysql://120.26.184.107:3306/shop?serverTimezone=GMT%2B8
-    #url: jdbc:mysql://localhost:3306/shop?serverTimezone=GMT%2B8
+#   url: jdbc:mysql://localhost:3306/shop?serverTimezone=GMT%2B8
     username: root
     password: Zheng1125
     driver-class-name: com.mysql.cj.jdbc.Driver

@@ -146,7 +146,7 @@ public interface GoodsDao {
 	@Insert("insert into `tb_goodsinfo`(`gid`, `goodsname`, `goodsprice`, `store`, `status`, `goodsdescription`, `images`,`goodstype`) values(#{gid}, #{goodsname}, #{goodsprice}, #{store}, #{status}, #{goodsdescription},#{images}, #{goodstype})")
 	@Options(useGeneratedKeys=true, keyProperty="gid")
 	void addGood(GoodsInfo goodsInfo);
-	@Insert("UPDATE `tb_goodsinfo` SET `goodsname`=#{goodsname}, `goodsprice`=#{goodsprice}, `store`= #{store}, `goodsdescription`=#{goodsdescription},`images`=concat(images,',',#{images}), `goodstype`=#{goodstype} WHERE (`gid`=#{gid})")
+	@Insert("UPDATE `tb_goodsinfo` SET `goodsname`=#{goodsname}, `goodsprice`=#{goodsprice}, `store`= #{store}, `goodsdescription`=#{goodsdescription},`images`=if(''=#{images},images,concat(images,',',#{images})), `goodstype`=#{goodstype} WHERE (`gid`=#{gid})")
 	void updateGood(GoodsInfo goodsInfo);
 	/**
 	 * 添加商品图片

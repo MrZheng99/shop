@@ -269,7 +269,7 @@
 		})
 	}
 	function changeHotStatus(gid, status){
-		$.post(`/good/hot`, {gid:gid,hot:status}, function(result){
+		$.post(`/goods/hot/update`, {gid:gid,hot:status}, function(result){
 			if(result.success){
 				searchGoods();
 			}else{

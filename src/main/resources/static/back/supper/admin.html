@@ -105,8 +105,8 @@
 							"<td>"+ele["id"]+"</td>" +
 							"<td>"+ele["name"]+"</td>" +
 							"<td>"+ele["tel"]+"</td>" +
-							"<td><font color=\"green\">"+(ele["status"]==1?"正常":"冻结")+"</font></td>" +
-							"<td><a href=\"javascript:void(0)\" onclick='updateAdmin(this,"+ele["id"]+")'>"+(ele["status"]==1?"冻结":"解冻")+"</a></td>" +
+							"<td>"+(ele["status"]==1?"<font color='green'>正常</font>":"<font color='red'>正常</font>")+"</td>" +
+							"<td><a href=\"javascript:void(0)\" onclick='updateAdmin(this,"+ele["id"]+")'>"+(ele["status"]==1?"<font color='red'>冻结</font>":"<font color='green'>解冻</font>")+"</a></td>" +
 							"</tr>";
 					console.log(tr);
 					$("#admin_info").append(tr);
